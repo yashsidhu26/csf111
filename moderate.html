@@ -1,0 +1,2455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C Programming Practice — Moderate Questions</title>
+  <meta name="description" content="20 moderate C programming practice questions — structures, dynamic memory, strings, linked lists, matrices. Each has starter code, a simple solution, and a detailed explanation." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d1117;
+      --bg2:       #161b22;
+      --bg3:       #1c2233;
+      --border:    rgba(255,255,255,0.07);
+      --text:      #e6edf3;
+      --muted:     #8b949e;
+      --accent1:   #58a6ff;
+      --accent2:   #f78166;
+      --accent3:   #3fb950;
+      --accent4:   #d2a8ff;
+      --accent5:   #ffa657;
+      --card-glow: 0 0 0 1px rgba(88,166,255,.12), 0 8px 32px rgba(0,0,0,.5);
+      --radius:    14px;
+      --mono:      'JetBrains Mono', monospace;
+      --sans:      'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(255,166,87,.10) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(247,129,102,.09) 0%, transparent 60%);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ===== HEADER ===== */
+    header { position: relative; z-index: 1; text-align: center; padding: 72px 24px 56px; }
+
+    .header-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,166,87,.1); border: 1px solid rgba(255,166,87,.3);
+      border-radius: 100px; padding: 6px 16px;
+      font-size: 0.75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--accent5); margin-bottom: 24px;
+    }
+    .header-badge svg { width: 14px; height: 14px; }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.15;
+      background: linear-gradient(135deg, #e6edf3 20%, #ffa657 60%, #f78166 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 16px;
+    }
+
+    .header-sub { color: var(--muted); font-size: 1.05rem; max-width: 600px; margin: 0 auto 36px; }
+
+    .stats-row { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .stat-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 100px; padding: 8px 18px;
+      font-size: 0.83rem; font-weight: 500;
+    }
+    .stat-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* ===== FILTER ===== */
+    .filter-bar {
+      position: relative; z-index: 1;
+      display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+      padding: 0 24px 48px;
+    }
+    .filter-btn {
+      padding: 7px 18px; border-radius: 100px;
+      border: 1px solid var(--border); background: var(--bg2);
+      color: var(--muted); font-family: var(--sans);
+      font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all .2s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      border-color: var(--accent5); color: var(--accent5);
+      background: rgba(255,166,87,.08);
+    }
+
+    /* ===== MAIN ===== */
+    main {
+      position: relative; z-index: 1;
+      max-width: 960px; margin: 0 auto;
+      padding: 0 24px 80px;
+      display: flex; flex-direction: column; gap: 28px;
+    }
+
+    /* ===== CARD ===== */
+    .q-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); box-shadow: var(--card-glow);
+      overflow: hidden; transition: transform .25s, box-shadow .25s;
+    }
+    .q-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 1px rgba(255,166,87,.2), 0 16px 48px rgba(0,0,0,.6);
+    }
+    .q-card.hidden { display: none; }
+
+    .q-header {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 24px 28px 20px; border-bottom: 1px solid var(--border);
+    }
+    .q-num {
+      min-width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 1rem; font-weight: 700; flex-shrink: 0;
+    }
+    .q-meta { flex: 1; }
+    .q-title { font-size: 1.08rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .q-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag { padding: 2px 10px; border-radius: 100px; font-size: 0.72rem; font-weight: 600; letter-spacing: .04em; }
+
+    .q-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 24px; }
+
+    .section-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; margin-bottom: 8px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .story-block {
+      background: var(--bg3); border-radius: 10px; padding: 16px 20px;
+      font-size: 0.92rem; color: #c9d1d9; line-height: 1.7;
+      border-left: 3px solid var(--accent5);
+    }
+
+    .req-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .req-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9rem; color: #c9d1d9; }
+    .req-list li::before { content: '▸'; color: var(--accent3); font-size: 0.75rem; margin-top: 3px; flex-shrink: 0; }
+
+    /* ===== CODE BLOCK ===== */
+    .code-wrap { position: relative; border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,.06); }
+    .code-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px; background: #0d1117; border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .code-lang { font-family: var(--mono); font-size: 0.72rem; font-weight: 600; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }
+    .copy-btn {
+      background: none; border: 1px solid rgba(255,255,255,.08); border-radius: 6px;
+      color: var(--muted); font-family: var(--sans); font-size: 0.72rem;
+      padding: 4px 10px; cursor: pointer; transition: all .15s;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,.06); color: var(--text); }
+    .copy-btn.copied { color: var(--accent3); border-color: rgba(63,185,80,.3); }
+    .code-wrap pre { margin: 0; overflow-x: auto; background: #0d1117 !important; }
+    .code-wrap pre code { font-family: var(--mono) !important; font-size: 0.83rem !important; line-height: 1.65 !important; padding: 16px !important; display: block; }
+
+    /* ===== OUTPUT ===== */
+    .output-block {
+      background: #0a0f0d; border: 1px solid rgba(63,185,80,.2);
+      border-radius: 10px; padding: 16px 20px;
+      font-family: var(--mono); font-size: 0.82rem; line-height: 1.7;
+      color: #3fb950; white-space: pre; overflow-x: auto;
+    }
+
+    /* ===== EXPLANATION ===== */
+    .explanation-block {
+      background: #12161f; border: 1px solid rgba(210,168,255,.15);
+      border-left: 3px solid var(--accent4); border-radius: 10px;
+      padding: 18px 22px; display: flex; flex-direction: column; gap: 10px;
+    }
+    .explanation-block .exp-title {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--accent4);
+      margin-bottom: 4px; display: flex; align-items: center; gap: 6px;
+    }
+    .exp-steps { display: flex; flex-direction: column; gap: 8px; }
+    .exp-step { display: flex; gap: 12px; align-items: flex-start; font-size: 0.88rem; color: #c9d1d9; line-height: 1.65; }
+    .exp-step-num {
+      min-width: 22px; height: 22px; border-radius: 50%;
+      background: rgba(210,168,255,.12); color: var(--accent4);
+      font-size: 0.72rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .exp-step code {
+      background: rgba(255,255,255,.06); border-radius: 4px;
+      padding: 1px 6px; font-family: var(--mono); font-size: 0.8rem; color: #ffa657;
+    }
+    .exp-note {
+      margin-top: 6px; padding: 10px 14px;
+      background: rgba(255,166,87,.06); border-radius: 8px;
+      font-size: 0.82rem; color: var(--accent5);
+      border-left: 2px solid rgba(255,166,87,.3);
+    }
+
+    /* ===== SOLUTION TOGGLE ===== */
+    .solution-toggle {
+      display: flex; align-items: center; gap: 10px;
+      width: 100%; padding: 14px 20px; border-radius: 10px;
+      border: 1px dashed rgba(247,129,102,.3);
+      background: rgba(247,129,102,.04);
+      color: var(--accent2); font-family: var(--sans);
+      font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; transition: all .2s; text-align: left;
+    }
+    .solution-toggle:hover { background: rgba(247,129,102,.09); border-color: rgba(247,129,102,.5); }
+    .solution-toggle.active { background: rgba(247,129,102,.08); border-style: solid; border-color: rgba(247,129,102,.4); }
+    .solution-toggle svg { transition: transform .25s; flex-shrink: 0; }
+    .solution-toggle.active svg { transform: rotate(180deg); }
+
+    .solution-panel { display: none; flex-direction: column; gap: 16px; margin-top: 12px; animation: fadeIn .25s ease; }
+    .solution-panel.open { display: flex; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ===== TOPIC COLOURS ===== */
+    .color-struct   .q-num { background:rgba(88,166,255,.12); color:#58a6ff; }
+    .color-struct   .section-label { color:#58a6ff; }
+    .color-struct   .tag.main { background:rgba(88,166,255,.12); color:#58a6ff; }
+
+    .color-memory   .q-num { background:rgba(63,185,80,.12); color:#3fb950; }
+    .color-memory   .section-label { color:#3fb950; }
+    .color-memory   .tag.main { background:rgba(63,185,80,.12); color:#3fb950; }
+
+    .color-string   .q-num { background:rgba(210,168,255,.12); color:#d2a8ff; }
+    .color-string   .section-label { color:#d2a8ff; }
+    .color-string   .tag.main { background:rgba(210,168,255,.12); color:#d2a8ff; }
+
+    .color-linkedlist .q-num { background:rgba(247,129,102,.12); color:#f78166; }
+    .color-linkedlist .section-label { color:#f78166; }
+    .color-linkedlist .tag.main { background:rgba(247,129,102,.12); color:#f78166; }
+
+    .color-matrix   .q-num { background:rgba(255,215,0,.1); color:#ffd700; }
+    .color-matrix   .section-label { color:#ffd700; }
+    .color-matrix   .tag.main { background:rgba(255,215,0,.1); color:#ffd700; }
+
+    .color-pointer  .q-num { background:rgba(255,166,87,.12); color:#ffa657; }
+    .color-pointer  .section-label { color:#ffa657; }
+    .color-pointer  .tag.main { background:rgba(255,166,87,.12); color:#ffa657; }
+
+    .tag.diff { background:rgba(255,255,255,.05); color:var(--muted); }
+
+    /* ===== MISC ===== */
+    .progress-bar-wrap { position: fixed; top: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,.05); z-index: 100; }
+    .progress-bar { height: 100%; background: linear-gradient(90deg, #ffa657, #f78166); width: 0%; transition: width .1s; }
+
+    #scrollTop {
+      position: fixed; bottom: 28px; right: 28px;
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid var(--border); background: var(--bg2); color: var(--muted);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; opacity: 0; transform: translateY(10px);
+      transition: opacity .25s, transform .25s; z-index: 99;
+    }
+    #scrollTop.visible { opacity: 1; transform: translateY(0); }
+    #scrollTop:hover { color: var(--text); border-color: var(--accent5); }
+
+    footer { position: relative; z-index: 1; text-align: center; padding: 32px 24px; color: var(--muted); font-size: 0.82rem; border-top: 1px solid var(--border); }
+
+    @media (max-width: 640px) {
+      .q-header { flex-direction: column; }
+      .q-body { padding: 16px; }
+      .q-header { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<header>
+  <div class="header-badge">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    C Programming Practice
+  </div>
+  <h1>Moderate Questions</h1>
+  <p class="header-sub">20 intermediate challenges — strings, structs, dynamic memory, linked lists, matrices, and sorting. Every question includes starter code, a simple solution, and a detailed step-by-step explanation.</p>
+  <div class="stats-row">
+    <div class="stat-pill"><span class="dot" style="background:#58a6ff"></span> Structures</div>
+    <div class="stat-pill"><span class="dot" style="background:#3fb950"></span> Dynamic Memory</div>
+    <div class="stat-pill"><span class="dot" style="background:#d2a8ff"></span> Strings</div>
+    <div class="stat-pill"><span class="dot" style="background:#f78166"></span> Linked Lists</div>
+    <div class="stat-pill"><span class="dot" style="background:#ffd700"></span> Matrices</div>
+    <div class="stat-pill"><span class="dot" style="background:#ffa657"></span> Sorting</div>
+  </div>
+</header>
+
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterCards('all', this)">All (20)</button>
+  <button class="filter-btn" onclick="filterCards('struct', this)">Structures</button>
+  <button class="filter-btn" onclick="filterCards('memory', this)">Dynamic Memory</button>
+  <button class="filter-btn" onclick="filterCards('string', this)">Strings</button>
+  <button class="filter-btn" onclick="filterCards('linkedlist', this)">Linked Lists</button>
+  <button class="filter-btn" onclick="filterCards('matrix', this)">Matrices</button>
+  <button class="filter-btn" onclick="filterCards('sorting', this)">Sorting</button>
+</div>
+
+<main id="main">
+
+  <!-- ==================== Q1 ==================== -->
+  <article class="q-card color-struct" data-topic="struct">
+    <div class="q-header">
+      <div class="q-num">01</div>
+      <div class="q-meta">
+        <div class="q-title">Student Records — Best Subject Finder</div>
+        <div class="q-tags"><span class="tag main">Structures</span><span class="tag diff">Functions</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">Given a student's name, roll number, and three subject marks, display their full record and then identify which subject they scored highest in.</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li>Implement <code>void displayStudent(Student s)</code> — print name, roll, and all marks</li>
+          <li>Implement <code>void findBestSubject(Student s)</code> — find and print the subject index with the highest mark</li>
+          <li>Handle ties (multiple subjects with the same highest mark)</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q1.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+typedef struct {
+    char name[50];
+    int roll;
+    int marks[3];
+} Student;
+
+void findBestSubject(Student s);
+void displayStudent(Student s);
+
+int main() {
+    Student s = {"Alice", 101, {90, 95, 85}};
+    displayStudent(s);
+    findBestSubject(s);
+    return 0;
+}
+
+void findBestSubject(Student s) {
+    // TODO
+}
+
+void displayStudent(Student s) {
+    // TODO
+}</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">Name: Alice  Roll: 101
+Marks: 90 95 85
+Best subject: Subject 2 with 95 marks</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-1">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-1">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div><strong>displayStudent</strong> is straightforward — print each field using <code>printf</code>. Loop over <code>s.marks[]</code> to print all three marks.</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div><strong>findBestSubject:</strong> Start by assuming subject 0 is the best. Save its index in a variable like <code>bestIdx = 0</code>.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div>Loop through subjects 1 and 2. If any <code>s.marks[i]</code> is strictly greater than <code>s.marks[bestIdx]</code>, update <code>bestIdx = i</code>.</div></div>
+              <div class="exp-step"><div class="exp-step-num">4</div><div>After the loop, <code>bestIdx</code> holds the subject with the highest score. Print it with <code>bestIdx + 1</code> for a human-readable "Subject 2" format.</div></div>
+            </div>
+            <div class="exp-note">📌 We use 1-based subject numbers when printing (<code>bestIdx + 1</code>) because humans count from 1, even though arrays start at 0.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">void displayStudent(Student s) {
+    printf("Name: %s  Roll: %d\n", s.name, s.roll);
+    printf("Marks: ");
+    for (int i = 0; i &lt; 3; i++) {
+        printf("%d ", s.marks[i]);
+    }
+    printf("\n");
+}
+
+void findBestSubject(Student s) {
+    // Start by assuming subject 0 is the best
+    int bestIdx = 0;
+
+    // Check each remaining subject
+    for (int i = 1; i &lt; 3; i++) {
+        if (s.marks[i] &gt; s.marks[bestIdx]) {
+            bestIdx = i;   // found a better subject
+        }
+    }
+
+    // Print 1-based subject number (humans count from 1)
+    printf("Best subject: Subject %d with %d marks\n",
+           bestIdx + 1, s.marks[bestIdx]);
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q2 ==================== -->
+  <article class="q-card color-memory" data-topic="memory">
+    <div class="q-header">
+      <div class="q-num">02</div>
+      <div class="q-meta">
+        <div class="q-title">Dynamic City Name Collection</div>
+        <div class="q-tags"><span class="tag main">Dynamic Memory</span><span class="tag diff">char**</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">Store a list of city names entered by the user. Each city name has a different length — use a <code>char**</code> (array of string pointers) and allocate memory dynamically for each city.</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li>Implement <code>char** createCityList(int n)</code> — allocate n char pointers</li>
+          <li>Implement <code>void fillCities(char** cities, int n)</code> — read n city names from stdin</li>
+          <li>Implement <code>void printCities(char** cities, int n)</code> — print all city names</li>
+          <li>Implement <code>void freeCities(char** cities, int n)</code> — free each string, then the pointer array</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q2.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+char** createCityList(int n);
+void fillCities(char** cities, int n);
+void printCities(char** cities, int n);
+void freeCities(char** cities, int n);
+
+int main() {
+    int n;
+    printf("Enter number of cities: ");
+    scanf("%d", &n);
+    getchar();   // consume newline
+
+    char** cities = createCityList(n);
+    fillCities(cities, n);
+    printCities(cities, n);
+    freeCities(cities, n);
+    return 0;
+}
+
+char** createCityList(int n) { /* TODO */ }
+void fillCities(char** cities, int n) { /* TODO */ }
+void printCities(char** cities, int n) { /* TODO */ }
+void freeCities(char** cities, int n) { /* TODO */ }</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">Enter number of cities: 3
+Enter city 1: Mumbai
+Enter city 2: Delhi
+Enter city 3: Bengaluru
+Cities: Mumbai, Delhi, Bengaluru</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-2">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div><strong>createCityList:</strong> Allocate an array of <code>n</code> <code>char*</code> pointers. Each pointer will later point to one city name string. Don't allocate the strings yet — that's fillCities' job.</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div><strong>fillCities:</strong> For each city, read the name into a temporary buffer using <code>fgets</code>. Remove the trailing newline (<code>'\n'</code>) that <code>fgets</code> adds. Then use <code>strdup()</code> to make a dynamically allocated copy and store its pointer in <code>cities[i]</code>.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div><strong>printCities:</strong> Simply loop and <code>printf</code> each <code>cities[i]</code>.</div></div>
+              <div class="exp-step"><div class="exp-step-num">4</div><div><strong>freeCities:</strong> First free each individual string (<code>free(cities[i])</code>), then free the outer pointer array (<code>free(cities)</code>). Always free from the inside out.</div></div>
+            </div>
+            <div class="exp-note">📌 <code>strdup(s)</code> is shorthand for <code>malloc(strlen(s)+1)</code> + <code>strcpy</code>. It gives you a fresh heap copy of a string. Every <code>strdup</code> must be matched with a <code>free</code>.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">char** createCityList(int n) {
+    // Allocate an array of n char* pointers
+    char** cities = (char**) malloc(n * sizeof(char*));
+    return cities;
+}
+
+void fillCities(char** cities, int n) {
+    char buffer[100];   // temporary storage for each city name
+    for (int i = 0; i &lt; n; i++) {
+        printf("Enter city %d: ", i + 1);
+        fgets(buffer, 100, stdin);
+
+        // fgets includes the '\n' at the end — remove it
+        int len = strlen(buffer);
+        if (buffer[len - 1] == '\n') {
+            buffer[len - 1] = '\0';
+        }
+
+        // strdup makes a heap copy of the string
+        cities[i] = strdup(buffer);
+    }
+}
+
+void printCities(char** cities, int n) {
+    printf("Cities: ");
+    for (int i = 0; i &lt; n; i++) {
+        printf("%s", cities[i]);
+        if (i &lt; n - 1) printf(", ");
+    }
+    printf("\n");
+}
+
+void freeCities(char** cities, int n) {
+    // Step 1: Free each individual string
+    for (int i = 0; i &lt; n; i++) {
+        free(cities[i]);
+    }
+    // Step 2: Free the outer pointer array
+    free(cities);
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q3 ==================== -->
+  <article class="q-card color-string" data-topic="string">
+    <div class="q-header">
+      <div class="q-num">03</div>
+      <div class="q-meta">
+        <div class="q-title">Reverse Words in a Sentence</div>
+        <div class="q-tags"><span class="tag main">Strings</span><span class="tag diff">strtok</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">Given a sentence, print its words in reverse order. The individual words themselves stay intact — only their order in the sentence is reversed. E.g., "Hello World" → "World Hello".</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li>Implement <code>void reverseWords(char* str)</code></li>
+          <li>Split the string into individual words</li>
+          <li>Print the words from last to first</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q3.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+void reverseWords(char* str);
+
+int main() {
+    char str[200];
+    printf("Enter a sentence: ");
+    fgets(str, 200, stdin);
+    reverseWords(str);
+    return 0;
+}
+
+void reverseWords(char* str) {
+    // TODO
+}</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">Enter a sentence: Hello World how are you
+Reversed: you are how World Hello</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-3">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-3">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div>Use <code>strtok(str, " \n")</code> in a loop to split the sentence into individual words. Store each word pointer in an array (e.g., <code>words[50]</code>) and count how many words there are.</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div><code>strtok</code> works by replacing delimiters with <code>'\0'</code> and returning a pointer to each token. The first call takes the string; subsequent calls pass <code>NULL</code> to continue from where it left off.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div>After collecting all words, loop from <code>count - 1</code> down to <code>0</code> and print each word with a space in between.</div></div>
+            </div>
+            <div class="exp-note">📌 <code>strtok</code> modifies the original string by inserting null terminators. That's fine here. The key pattern is: first call = <code>strtok(str, delim)</code>, every following call = <code>strtok(NULL, delim)</code> until it returns <code>NULL</code>.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">void reverseWords(char* str) {
+    char* words[50];   // store pointers to each word
+    int count = 0;
+
+    // strtok splits str on spaces and newlines
+    // First call: pass the actual string
+    char* token = strtok(str, " \n");
+    while (token != NULL) {
+        words[count] = token;   // save the pointer to this word
+        count++;
+        // Subsequent calls: pass NULL to continue
+        token = strtok(NULL, " \n");
+    }
+
+    // Now print words from last to first
+    printf("Reversed: ");
+    for (int i = count - 1; i &gt;= 0; i--) {
+        printf("%s", words[i]);
+        if (i &gt; 0) printf(" ");
+    }
+    printf("\n");
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q4 ==================== -->
+  <article class="q-card color-linkedlist" data-topic="linkedlist">
+    <div class="q-header">
+      <div class="q-num">04</div>
+      <div class="q-meta">
+        <div class="q-title">Simple Bank Account Manager (Linked List)</div>
+        <div class="q-tags"><span class="tag main">Linked Lists</span><span class="tag diff">Structures</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">Build a simple linked list where each node represents a bank account with a holder's name and balance. Implement inserting accounts at the end, printing all accounts, and freeing the whole list.</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li><code>Account</code> struct with <code>name[50]</code>, <code>float balance</code>, <code>struct Account* next</code></li>
+          <li>Implement <code>Account* addAccount(Account* head, char* name, float balance)</code></li>
+          <li>Implement <code>void printAccounts(Account* head)</code></li>
+          <li>Implement <code>void freeAccounts(Account* head)</code></li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q4.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+typedef struct Account {
+    char name[50];
+    float balance;
+    struct Account* next;
+} Account;
+
+Account* addAccount(Account* head, char* name, float balance);
+void printAccounts(Account* head);
+void freeAccounts(Account* head);
+
+int main() {
+    Account* head = NULL;
+    head = addAccount(head, "John",  5000);
+    head = addAccount(head, "Alice", 3000);
+    head = addAccount(head, "Bob",   2500);
+    printAccounts(head);
+    freeAccounts(head);
+    return 0;
+}
+
+Account* addAccount(Account* head, char* name, float balance) {
+    // TODO
+}
+void printAccounts(Account* head) { /* TODO */ }
+void freeAccounts(Account* head)  { /* TODO */ }</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">Account: John    | Balance: 5000.00
+Account: Alice   | Balance: 3000.00
+Account: Bob     | Balance: 2500.00</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-4">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-4">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div><strong>addAccount:</strong> Allocate a new node, copy the name with <code>strcpy</code>, set the balance, and set <code>next = NULL</code>. If the list is empty, return the new node as the head. Otherwise walk to the last node and attach it.</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div><strong>printAccounts:</strong> Standard traversal — walk from head to NULL, printing each node's name and balance with <code>printf("%.2f")</code> for two decimal places.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div><strong>freeAccounts:</strong> You must save <code>curr->next</code> BEFORE freeing <code>curr</code>, because once you call <code>free(curr)</code> the memory is gone and you can't read <code>curr->next</code> from it safely. Save it as <code>next = curr->next</code>, free <code>curr</code>, then set <code>curr = next</code>.</div></div>
+            </div>
+            <div class="exp-note">⚠️ Never access <code>curr->next</code> after calling <code>free(curr)</code>. Always save the next pointer FIRST, then free, then advance.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">Account* addAccount(Account* head, char* name, float balance) {
+    // Create a new account node
+    Account* newNode = (Account*) malloc(sizeof(Account));
+    strcpy(newNode->name, name);
+    newNode->balance = balance;
+    newNode->next = NULL;
+
+    // If list is empty, this node is the head
+    if (head == NULL) return newNode;
+
+    // Otherwise, walk to the last node and attach
+    Account* curr = head;
+    while (curr->next != NULL) {
+        curr = curr->next;
+    }
+    curr->next = newNode;
+    return head;
+}
+
+void printAccounts(Account* head) {
+    Account* curr = head;
+    while (curr != NULL) {
+        printf("Account: %-10s | Balance: %.2f\n",
+               curr->name, curr->balance);
+        curr = curr->next;
+    }
+}
+
+void freeAccounts(Account* head) {
+    Account* curr = head;
+    while (curr != NULL) {
+        Account* next = curr->next;   // SAVE next before freeing
+        free(curr);                   // free current node
+        curr = next;                  // move to the saved next
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q5 ==================== -->
+  <article class="q-card color-memory" data-topic="memory">
+    <div class="q-header">
+      <div class="q-num">05</div>
+      <div class="q-meta">
+        <div class="q-title">Jagged Array for Variable Exam Scores</div>
+        <div class="q-tags"><span class="tag main">Dynamic Memory</span><span class="tag diff">Jagged Array</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">Different students took different numbers of exams. Use a jagged (ragged) array — a <code>int**</code> where each row can have a different length — to store and display each student's scores.</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li>Implement <code>int** createJaggedMarks(int nStudents, int* nExamsPerStudent)</code></li>
+          <li>Implement <code>void fillJaggedMarks(...)</code> — read marks per student</li>
+          <li>Implement <code>void printJaggedMarks(...)</code></li>
+          <li>Implement <code>void freeJaggedMarks(int** marks, int nStudents)</code></li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q5.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int** createJaggedMarks(int nStudents, int* nExamsPerStudent);
+void fillJaggedMarks(int** marks, int* nExamsPerStudent, int nStudents);
+void printJaggedMarks(int** marks, int* nExamsPerStudent, int nStudents);
+void freeJaggedMarks(int** marks, int nStudents);
+
+int main() {
+    int nStudents;
+    printf("Enter number of students: ");
+    scanf("%d", &nStudents);
+
+    int* nExamsPerStudent = (int*)malloc(nStudents * sizeof(int));
+    for (int i = 0; i &lt; nStudents; i++) {
+        printf("Enter number of exams for student %d: ", i + 1);
+        scanf("%d", &nExamsPerStudent[i]);
+    }
+
+    int** marks = createJaggedMarks(nStudents, nExamsPerStudent);
+    fillJaggedMarks(marks, nExamsPerStudent, nStudents);
+    printJaggedMarks(marks, nExamsPerStudent, nStudents);
+    freeJaggedMarks(marks, nStudents);
+    free(nExamsPerStudent);
+    return 0;
+}
+
+int** createJaggedMarks(int nStudents, int* nExamsPerStudent) { /* TODO */ }
+void fillJaggedMarks(int** marks, int* nExamsPerStudent, int nStudents) { /* TODO */ }
+void printJaggedMarks(int** marks, int* nExamsPerStudent, int nStudents) { /* TODO */ }
+void freeJaggedMarks(int** marks, int nStudents) { /* TODO */ }</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">Student 1 (2 exams): 85 90
+Student 2 (3 exams): 70 80 75
+Student 3 (1 exam ): 95</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-5">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-5">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div>A jagged array is a regular dynamic 2D array EXCEPT each row has a different length. Allocate the outer pointer array normally (<code>nStudents</code> pointers), then for row <code>i</code>, allocate exactly <code>nExamsPerStudent[i]</code> integers.</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div><strong>fill:</strong> For each student <code>i</code>, loop <code>nExamsPerStudent[i]</code> times and read each mark with <code>scanf</code>.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div><strong>print:</strong> Same nested loop — but the inner loop ends at <code>nExamsPerStudent[i]</code>, not a fixed size. This is why we pass the array of counts to every function.</div></div>
+              <div class="exp-step"><div class="exp-step-num">4</div><div><strong>free:</strong> Free each row's int array, then free the outer pointer array.</div></div>
+            </div>
+            <div class="exp-note">📌 The key difference from a regular 2D dynamic matrix: the inner <code>malloc</code> uses <code>nExamsPerStudent[i]</code> instead of a fixed column count.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">int** createJaggedMarks(int nStudents, int* nExamsPerStudent) {
+    // Allocate array of row pointers
+    int** marks = (int**) malloc(nStudents * sizeof(int*));
+
+    // Each row gets its own length
+    for (int i = 0; i &lt; nStudents; i++) {
+        marks[i] = (int*) malloc(nExamsPerStudent[i] * sizeof(int));
+    }
+    return marks;
+}
+
+void fillJaggedMarks(int** marks, int* nExamsPerStudent, int nStudents) {
+    for (int i = 0; i &lt; nStudents; i++) {
+        printf("Enter %d marks for student %d: ", nExamsPerStudent[i], i + 1);
+        for (int j = 0; j &lt; nExamsPerStudent[i]; j++) {
+            scanf("%d", &marks[i][j]);
+        }
+    }
+}
+
+void printJaggedMarks(int** marks, int* nExamsPerStudent, int nStudents) {
+    for (int i = 0; i &lt; nStudents; i++) {
+        printf("Student %d (%d exams): ", i + 1, nExamsPerStudent[i]);
+        for (int j = 0; j &lt; nExamsPerStudent[i]; j++) {
+            printf("%d ", marks[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void freeJaggedMarks(int** marks, int nStudents) {
+    for (int i = 0; i &lt; nStudents; i++) {
+        free(marks[i]);   // free each row
+    }
+    free(marks);          // free the outer array
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q6 ==================== -->
+  <article class="q-card color-matrix" data-topic="matrix">
+    <div class="q-header">
+      <div class="q-num">06</div>
+      <div class="q-meta">
+        <div class="q-title">Merge Two Sorted Arrays</div>
+        <div class="q-tags"><span class="tag main">Matrices</span><span class="tag diff">Sorting</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">Given two already-sorted integer arrays, merge them into a single new sorted array without using any sorting algorithm — exploit the fact that both inputs are already sorted.</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li>Implement <code>int* mergeSortedArrays(int* arr1, int n1, int* arr2, int n2)</code></li>
+          <li>Allocate a new array of size <code>n1 + n2</code> using <code>malloc</code></li>
+          <li>Use three index variables to merge in one pass</li>
+          <li>Caller frees the result</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q6.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int* mergeSortedArrays(int* arr1, int n1, int* arr2, int n2);
+
+int main() {
+    int arr1[] = {1, 3, 5};
+    int arr2[] = {2, 4, 6};
+    int* merged = mergeSortedArrays(arr1, 3, arr2, 3);
+
+    for (int i = 0; i &lt; 6; i++) printf("%d ", merged[i]);
+    printf("\n");
+
+    free(merged);
+    return 0;
+}
+
+int* mergeSortedArrays(int* arr1, int n1, int* arr2, int n2) {
+    // TODO
+}</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">1 2 3 4 5 6</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-6">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-6">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div>Allocate a result array of size <code>n1 + n2</code>. Use three index variables: <code>i</code> (position in arr1), <code>j</code> (position in arr2), <code>k</code> (position in merged result).</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div>While both arrays still have elements: compare <code>arr1[i]</code> and <code>arr2[j]</code>. Copy the smaller one into <code>merged[k]</code> and advance that array's index plus <code>k</code>.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div>After the loop, one array might still have leftover elements. Copy all remaining elements from whichever array isn't exhausted yet.</div></div>
+            </div>
+            <div class="exp-note">📌 This is the "merge" step of merge sort. It's O(n1+n2) time — much faster than sorting the combined array from scratch. No sorting algorithm needed at all!</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">int* mergeSortedArrays(int* arr1, int n1, int* arr2, int n2) {
+    int* merged = (int*) malloc((n1 + n2) * sizeof(int));
+    int i = 0;   // index into arr1
+    int j = 0;   // index into arr2
+    int k = 0;   // index into merged
+
+    // Pick the smaller element from the front of each array
+    while (i &lt; n1 && j &lt; n2) {
+        if (arr1[i] &lt;= arr2[j]) {
+            merged[k] = arr1[i];
+            i++;
+        } else {
+            merged[k] = arr2[j];
+            j++;
+        }
+        k++;
+    }
+
+    // Copy leftover elements from arr1 (if any)
+    while (i &lt; n1) {
+        merged[k] = arr1[i];
+        i++;
+        k++;
+    }
+
+    // Copy leftover elements from arr2 (if any)
+    while (j &lt; n2) {
+        merged[k] = arr2[j];
+        j++;
+        k++;
+    }
+
+    return merged;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q7 ==================== -->
+  <article class="q-card color-struct" data-topic="struct">
+    <div class="q-header">
+      <div class="q-num">07</div>
+      <div class="q-meta">
+        <div class="q-title">Employee Directory with Structures</div>
+        <div class="q-tags"><span class="tag main">Structures</span><span class="tag diff">Pointers</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">Manage a growing company employee list. Use an array of <code>Employee</code> structs and a pointer-tracked count to add employees interactively and display all records.</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li><code>Employee</code> struct: <code>int id</code>, <code>char name[50]</code>, <code>float salary</code></li>
+          <li>Implement <code>void addEmployee(Employee* empArr, int* count)</code> — read from stdin, auto-increment id</li>
+          <li>Implement <code>void displayEmployees(Employee* empArr, int count)</code></li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q7.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+typedef struct {
+    int id;
+    char name[50];
+    float salary;
+} Employee;
+
+void addEmployee(Employee* empArr, int* count);
+void displayEmployees(Employee* empArr, int count);
+
+int main() {
+    Employee employees[100];
+    int count = 0;
+
+    addEmployee(employees, &count);
+    addEmployee(employees, &count);
+    displayEmployees(employees, count);
+    return 0;
+}
+
+void addEmployee(Employee* empArr, int* count) { /* TODO */ }
+void displayEmployees(Employee* empArr, int count) { /* TODO */ }</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">Enter name: Riya
+Enter salary: 75000
+Enter name: Arjun
+Enter salary: 82000
+
+ID: 1  Name: Riya   Salary: 75000.00
+ID: 2  Name: Arjun  Salary: 82000.00</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-7">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-7">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div><strong>addEmployee:</strong> The current number of employees is in <code>*count</code>. Use <code>empArr[*count]</code> to access the next empty slot. Fill in its fields, set <code>id = *count + 1</code> for a 1-based ID, then increment <code>*count</code>.</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div>We pass <code>int* count</code> (a pointer) so changes to the count in the function are visible back in <code>main()</code>. Write <code>(*count)++</code> — the parentheses are needed because <code>*count++</code> would increment the pointer, not the value.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div><strong>displayEmployees:</strong> A simple loop from 0 to <code>count - 1</code>, printing each employee's id, name, and salary.</div></div>
+            </div>
+            <div class="exp-note">📌 <code>(*count)++</code> vs <code>*count++</code>: Parentheses matter! Without them, <code>++</code> has higher precedence than <code>*</code> so you'd increment the pointer instead of the value it points to.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">void addEmployee(Employee* empArr, int* count) {
+    // empArr[*count] is the next free slot
+    int idx = *count;
+
+    empArr[idx].id = idx + 1;   // 1-based ID
+
+    printf("Enter name: ");
+    fgets(empArr[idx].name, 50, stdin);
+    // remove trailing newline from fgets
+    int len = strlen(empArr[idx].name);
+    if (empArr[idx].name[len-1] == '\n')
+        empArr[idx].name[len-1] = '\0';
+
+    printf("Enter salary: ");
+    scanf("%f", &empArr[idx].salary);
+    getchar();   // consume newline before next fgets
+
+    (*count)++;   // increment the count in main()
+}
+
+void displayEmployees(Employee* empArr, int count) {
+    printf("\n");
+    for (int i = 0; i &lt; count; i++) {
+        printf("ID: %-3d Name: %-15s Salary: %.2f\n",
+               empArr[i].id, empArr[i].name, empArr[i].salary);
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q8 ==================== -->
+  <article class="q-card color-memory" data-topic="memory">
+    <div class="q-header">
+      <div class="q-num">08</div>
+      <div class="q-meta">
+        <div class="q-title">Dynamic Float Matrix — Create, Sum &amp; Free</div>
+        <div class="q-tags"><span class="tag main">Dynamic Memory</span><span class="tag diff">float**</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">Allocate a 2D matrix of <code>float</code> values dynamically, fill it from user input, compute the total sum of all elements, and properly free the memory.</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li>Implement <code>float** createMatrix(int rows, int cols)</code></li>
+          <li>Implement <code>void fillMatrix(float** mat, int rows, int cols)</code></li>
+          <li>Implement <code>float sumMatrix(float** mat, int rows, int cols)</code> — sum all elements</li>
+          <li>Implement <code>void freeMatrix(float** mat, int rows)</code></li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q8.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+float** createMatrix(int rows, int cols);
+void fillMatrix(float** mat, int rows, int cols);
+float sumMatrix(float** mat, int rows, int cols);
+void freeMatrix(float** mat, int rows);
+
+int main() {
+    int rows, cols;
+    printf("Enter rows and columns: ");
+    scanf("%d%d", &rows, &cols);
+
+    float** mat = createMatrix(rows, cols);
+    fillMatrix(mat, rows, cols);
+    printf("Sum = %.2f\n", sumMatrix(mat, rows, cols));
+    freeMatrix(mat, rows);
+    return 0;
+}
+
+float** createMatrix(int rows, int cols) { /* TODO */ }
+void fillMatrix(float** mat, int rows, int cols) { /* TODO */ }
+float sumMatrix(float** mat, int rows, int cols) { /* TODO */ }
+void freeMatrix(float** mat, int rows) { /* TODO */ }</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">Enter rows and columns: 2 3
+Enter elements: 1.5 2.5 3.0 4.0 5.5 6.0
+Sum = 22.50</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-8">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-8">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div>This is the same pattern as the integer dynamic matrix (Q15 Easy), but with <code>float</code> instead of <code>int</code>. Allocate <code>rows</code> float pointers, then for each row allocate <code>cols</code> floats.</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div><strong>sumMatrix:</strong> Use a <code>float sum = 0.0</code>. Nested loops, add <code>mat[i][j]</code> to sum each iteration. Return the total after both loops finish.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div>Use <code>%f</code> in <code>scanf</code> for floats (not <code>%lf</code> which is for <code>double</code>). Use <code>%.2f</code> in <code>printf</code> to show 2 decimal places.</div></div>
+            </div>
+            <div class="exp-note">📌 <code>scanf("%f", &...):</code> use <code>%f</code> for <code>float*</code>. For <code>printf</code>, both <code>%f</code> and <code>%lf</code> work because floats are promoted to double when passed to variadic functions.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">float** createMatrix(int rows, int cols) {
+    float** mat = (float**) malloc(rows * sizeof(float*));
+    for (int i = 0; i &lt; rows; i++) {
+        mat[i] = (float*) malloc(cols * sizeof(float));
+    }
+    return mat;
+}
+
+void fillMatrix(float** mat, int rows, int cols) {
+    printf("Enter elements: ");
+    for (int i = 0; i &lt; rows; i++) {
+        for (int j = 0; j &lt; cols; j++) {
+            scanf("%f", &mat[i][j]);   // %f for float
+        }
+    }
+}
+
+float sumMatrix(float** mat, int rows, int cols) {
+    float sum = 0.0;
+    for (int i = 0; i &lt; rows; i++) {
+        for (int j = 0; j &lt; cols; j++) {
+            sum += mat[i][j];   // add every element
+        }
+    }
+    return sum;
+}
+
+void freeMatrix(float** mat, int rows) {
+    for (int i = 0; i &lt; rows; i++) {
+        free(mat[i]);   // free each row's float array
+    }
+    free(mat);          // free the outer pointer array
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q9 ==================== -->
+  <article class="q-card color-memory" data-topic="memory">
+    <div class="q-header">
+      <div class="q-num">09</div>
+      <div class="q-meta">
+        <div class="q-title">Expanding a List of Words (realloc)</div>
+        <div class="q-tags"><span class="tag main">Dynamic Memory</span><span class="tag diff">realloc</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">You have an existing list of string pointers. Use <code>realloc</code> to expand it so more strings can be added — existing entries must be preserved.</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li>Implement <code>char** resizeStringList(char** list, int oldSize, int newSize)</code></li>
+          <li>Use <code>realloc</code> to resize the outer <code>char**</code> array</li>
+          <li>Existing string pointers must be preserved</li>
+          <li>Caller adds new strings and frees everything</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q9.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+char** resizeStringList(char** list, int oldSize, int newSize);
+
+int main() {
+    int n = 2;
+    char** list = (char**)malloc(n * sizeof(char*));
+    list[0] = strdup("apple");
+    list[1] = strdup("orange");
+
+    int newN = 4;
+    list = resizeStringList(list, n, newN);
+    list[2] = strdup("banana");
+    list[3] = strdup("grape");
+
+    for (int i = 0; i &lt; newN; i++) {
+        printf("%s\n", list[i]);
+        free(list[i]);
+    }
+    free(list);
+    return 0;
+}
+
+char** resizeStringList(char** list, int oldSize, int newSize) {
+    // TODO
+}</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">apple
+orange
+banana
+grape</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-9">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-9">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div>We only need to resize the <em>outer</em> array of pointers (the <code>char**</code>). The actual strings themselves don't move — their pointers just get copied along by <code>realloc</code> automatically.</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div>Call <code>realloc(list, newSize * sizeof(char*))</code>. This gives us a bigger array of char pointers. The original <code>"apple"</code> and <code>"orange"</code> pointers are preserved unchanged in the first two slots.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div>Always check the return value of <code>realloc</code> for <code>NULL</code>. Save to a temporary variable first to avoid losing the original pointer if realloc fails.</div></div>
+            </div>
+            <div class="exp-note">📌 Note: <code>oldSize</code> isn't actually needed here — <code>realloc</code> knows how much memory was originally allocated. But passing it is good practice for readability and potential validation.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">char** resizeStringList(char** list, int oldSize, int newSize) {
+    // Resize the outer pointer array
+    // realloc automatically preserves the existing char* pointers
+    char** newList = (char**) realloc(list, newSize * sizeof(char*));
+
+    if (newList == NULL) {
+        printf("realloc failed!\n");
+        // list is still valid here — free it before exiting
+        free(list);
+        exit(1);
+    }
+
+    return newList;
+    // The new slots (oldSize to newSize-1) are uninitialized.
+    // The caller will fill them in with strdup().
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q10 ==================== -->
+  <article class="q-card color-struct" data-topic="struct">
+    <div class="q-header">
+      <div class="q-num">10</div>
+      <div class="q-meta">
+        <div class="q-title">Swapping Two Student Structs via Pointers</div>
+        <div class="q-tags"><span class="tag main">Structures</span><span class="tag diff">Pointers</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">Swap the complete data of two <code>Student</code> structs using a function that receives their addresses — after the call, all fields should be exchanged.</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li>Implement <code>void swapStudents(Student* s1, Student* s2)</code></li>
+          <li>Swap all fields: <code>name</code>, <code>roll</code>, and <code>marks[3]</code></li>
+          <li>Use a temporary <code>Student</code> variable for the swap</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q10.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+typedef struct {
+    char name[50];
+    int roll;
+    int marks[3];
+} Student;
+
+void swapStudents(Student* s1, Student* s2);
+
+int main() {
+    Student s1 = {"Alice", 10, {90, 91, 92}};
+    Student s2 = {"Bob",   20, {80, 81, 82}};
+
+    swapStudents(&s1, &s2);
+
+    printf("Student 1: %s\n", s1.name);
+    printf("Student 2: %s\n", s2.name);
+    return 0;
+}
+
+void swapStudents(Student* s1, Student* s2) {
+    // TODO
+}</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">Student 1: Bob
+Student 2: Alice</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-10">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-10">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div>You can't just do <code>s1 = s2</code> because <code>s1</code> and <code>s2</code> are pointers. You need to dereference: <code>*s1 = *s2</code> copies the entire struct value.</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div>The classic 3-step swap works for entire structs: create a <code>Student temp = *s1</code>, then <code>*s1 = *s2</code>, then <code>*s2 = temp</code>. C copies all fields including the arrays automatically when you assign structs.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div>This is much simpler than swapping field-by-field. Struct assignment in C copies every field including arrays — it's a full value copy.</div></div>
+            </div>
+            <div class="exp-note">📌 In C, you CAN assign structs with <code>=</code>. This does a shallow copy of all fields. For arrays inside structs, C copies the array elements. This is different from array-to-array assignment which doesn't work alone.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">void swapStudents(Student* s1, Student* s2) {
+    // Step 1: Save a copy of *s1 in a temporary struct
+    Student temp = *s1;   // copies ALL fields (name, roll, marks[])
+
+    // Step 2: Copy everything from s2 into s1
+    *s1 = *s2;
+
+    // Step 3: Copy the saved original s1 into s2
+    *s2 = temp;
+
+    // After these 3 lines, s1 and s2 are fully swapped.
+    // We do NOT need to work field-by-field; struct assignment does it all.
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q11 ==================== -->
+  <article class="q-card color-string" data-topic="string">
+    <div class="q-header">
+      <div class="q-num">11</div>
+      <div class="q-meta">
+        <div class="q-title">Character Frequency Analyzer</div>
+        <div class="q-tags"><span class="tag main">Strings</span><span class="tag diff">Arrays</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">Given a string, count how many times each character appears. Print only the characters that appear at least once, along with their count.</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li>Implement <code>void countFrequencies(const char* str)</code></li>
+          <li>Use an integer array of size 256 (one slot per ASCII character)</li>
+          <li>Print only characters with count &gt; 0</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q11.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+void countFrequencies(const char* str);
+
+int main() {
+    char str[100];
+    printf("Enter string: ");
+    fgets(str, 100, stdin);
+    countFrequencies(str);
+    return 0;
+}
+
+void countFrequencies(const char* str) {
+    // TODO
+}</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">Enter string: hello
+'h': 1
+'e': 1
+'l': 2
+'o': 1</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-11">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-11">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div>Create an array <code>int freq[256] = {0}</code>. There are 256 possible ASCII characters. Each character's ASCII value is a number (e.g., <code>'a'</code> = 97). Use the character as an index: <code>freq[(int)str[i]]++</code>.</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div>Loop through the string character by character until you hit <code>'\0'</code>. For each character, increment its counter in the <code>freq</code> array.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div>After counting, loop through all 256 possible ASCII values. If <code>freq[i] &gt; 0</code> and the character is printable (not a control character), print it with its count.</div></div>
+            </div>
+            <div class="exp-note">📌 This is a classic "frequency counting" trick. Using a character as an array index works because in C, a <code>char</code> is just a small integer. <code>freq['a']</code> and <code>freq[97]</code> are the same thing.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">void countFrequencies(const char* str) {
+    // One slot for every possible ASCII character value (0–255)
+    int freq[256] = {0};   // initialize all to zero
+
+    // Walk through the string and tally each character
+    int i = 0;
+    while (str[i] != '\0') {
+        freq[(int) str[i]]++;   // use char value as index
+        i++;
+    }
+
+    // Print characters that appeared at least once
+    // We check printable range (32–126) to skip newlines and control chars
+    for (int c = 32; c &lt; 127; c++) {
+        if (freq[c] &gt; 0) {
+            printf("'%c': %d\n", (char)c, freq[c]);
+        }
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q12 ==================== -->
+  <article class="q-card color-memory" data-topic="memory">
+    <div class="q-header">
+      <div class="q-num">12</div>
+      <div class="q-meta">
+        <div class="q-title">Book Title Organizer — Dynamic String List</div>
+        <div class="q-tags"><span class="tag main">Dynamic Memory</span><span class="tag diff">Strings</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">Create a dynamic list of book titles entered by the user. Each title needs its own dynamically allocated memory. Print them all and then free everything properly.</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li>Implement <code>char** createBookList(int n)</code> — allocate n pointers, then read and allocate each title</li>
+          <li>Implement <code>void freeBookList(char** books, int n)</code> — free all strings then the outer array</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q12.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+char** createBookList(int n);
+void freeBookList(char** books, int n);
+
+int main() {
+    int n;
+    printf("Enter number of books: ");
+    scanf("%d", &n);
+    getchar();
+
+    char** books = createBookList(n);
+    for (int i = 0; i &lt; n; i++) printf("%s\n", books[i]);
+    freeBookList(books, n);
+    return 0;
+}
+
+char** createBookList(int n) { /* TODO */ }
+void freeBookList(char** books, int n) { /* TODO */ }</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">Enter number of books: 2
+Enter book 1: The C Programming Language
+Enter book 2: Clean Code
+The C Programming Language
+Clean Code</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-12">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-12">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div>Allocate the outer array of <code>n</code> <code>char*</code> pointers. Then loop <code>n</code> times: read each book title with <code>fgets</code> into a buffer, strip the newline, then use <code>strdup(buffer)</code> to store a heap-allocated copy in <code>books[i]</code>.</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div><code>strdup</code> calls <code>malloc</code> internally, so each <code>books[i]</code> is a separately allocated string on the heap. This means each one must be individually <code>free</code>d.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div><strong>freeBookList:</strong> Free each book title string first, then free the outer pointer array. The order matters — if you free the outer array first, you lose access to the inner pointers and leak memory.</div></div>
+            </div>
+            <div class="exp-note">📌 This is the same pattern as Q2 (city list). Once you understand "allocate outer array → strdup each string → free strings → free outer array", you can handle any dynamic string list.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">char** createBookList(int n) {
+    // Allocate outer array of n char pointers
+    char** books = (char**) malloc(n * sizeof(char*));
+    char buffer[200];
+
+    for (int i = 0; i &lt; n; i++) {
+        printf("Enter book %d: ", i + 1);
+        fgets(buffer, 200, stdin);
+
+        // Remove trailing newline added by fgets
+        int len = strlen(buffer);
+        if (buffer[len - 1] == '\n') buffer[len - 1] = '\0';
+
+        // strdup makes a heap copy of the title string
+        books[i] = strdup(buffer);
+    }
+
+    return books;
+}
+
+void freeBookList(char** books, int n) {
+    // Free each title string first
+    for (int i = 0; i &lt; n; i++) {
+        free(books[i]);
+    }
+    // Then free the outer pointer array
+    free(books);
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q13 ==================== -->
+  <article class="q-card color-linkedlist" data-topic="linkedlist">
+    <div class="q-header">
+      <div class="q-num">13</div>
+      <div class="q-meta">
+        <div class="q-title">Split Linked List by Even/Odd Values</div>
+        <div class="q-tags"><span class="tag main">Linked Lists</span><span class="tag diff">Parity</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">Given a linked list of integers, split it into two separate lists: one containing all even-valued nodes and another containing all odd-valued nodes, preserving original order.</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li>Implement <code>void splitList(Node* head, Node** evenHead, Node** oddHead)</code></li>
+          <li>Use <code>Node** evenHead</code> and <code>Node** oddHead</code> as output parameters (pointer-to-pointer)</li>
+          <li>Do NOT allocate new nodes — reuse existing nodes by relinking</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q13.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+void splitList(Node* head, Node** evenHead, Node** oddHead);
+
+int main() {
+    // Build: 1 -> 2 -> 3 -> 4 -> 5 -> NULL (manually for demo)
+    // Then call splitList and print both halves
+    return 0;
+}</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">Original: 1 -> 2 -> 3 -> 4 -> 5 -> NULL
+Even list: 2 -> 4 -> NULL
+Odd list:  1 -> 3 -> 5 -> NULL</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-13">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-13">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div>Use two "tail" pointers (<code>evenTail</code> and <code>oddTail</code>) to track the last node added to each sub-list. Building from the tail is how we maintain order.</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div>Walk through the original list. For each node, check <code>curr->data % 2 == 0</code>. If even, attach it to the even list's tail; if odd, attach it to the odd list's tail. Advance the appropriate tail pointer.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div>We write to <code>*evenHead</code> and <code>*oddHead</code> (dereferencing pointer-to-pointer) so the caller's variables get updated.</div></div>
+              <div class="exp-step"><div class="exp-step-num">4</div><div>After the loop, make sure both sub-lists end with <code>NULL</code> by setting <code>evenTail->next = NULL</code> and <code>oddTail->next = NULL</code> (if they exist).</div></div>
+            </div>
+            <div class="exp-note">📌 <code>Node**</code> is a pointer to a pointer. We pass <code>&evenHead</code> from main so the function can update the caller's <code>evenHead</code> variable. Writing <code>*evenHead = ...</code> sets that variable.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">void splitList(Node* head, Node** evenHead, Node** oddHead) {
+    *evenHead = NULL;
+    *oddHead  = NULL;
+
+    Node* evenTail = NULL;   // last node added to even list
+    Node* oddTail  = NULL;   // last node added to odd list
+
+    Node* curr = head;
+    while (curr != NULL) {
+        if (curr->data % 2 == 0) {
+            // Attach to even list
+            if (*evenHead == NULL) {
+                *evenHead = curr;     // first even node becomes head
+                evenTail  = curr;
+            } else {
+                evenTail->next = curr;  // append to tail
+                evenTail = curr;
+            }
+        } else {
+            // Attach to odd list
+            if (*oddHead == NULL) {
+                *oddHead = curr;
+                oddTail  = curr;
+            } else {
+                oddTail->next = curr;
+                oddTail = curr;
+            }
+        }
+        curr = curr->next;
+    }
+
+    // Terminate both sub-lists
+    if (evenTail != NULL) evenTail->next = NULL;
+    if (oddTail  != NULL) oddTail->next  = NULL;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q14 ==================== -->
+  <article class="q-card color-sorting" data-topic="sorting">
+    <div class="q-header">
+      <div class="q-num">14</div>
+      <div class="q-meta">
+        <div class="q-title">Sort Students by Roll Number (Bubble Sort)</div>
+        <div class="q-tags"><span class="tag main">Sorting</span><span class="tag diff">Structures</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">Sort an array of student structs in ascending order by roll number using bubble sort. After sorting, display the sorted list.</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li><code>Student</code> struct: <code>int roll</code>, <code>char name[50]</code></li>
+          <li>Implement <code>void sortStudents(Student* arr, int n)</code> using bubble sort</li>
+          <li>Swap entire <code>Student</code> structs (not just one field)</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q14.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+typedef struct {
+    int roll;
+    char name[50];
+} Student;
+
+void sortStudents(Student* arr, int n);
+
+int main() {
+    Student arr[] = {
+        {20, "Charlie"},
+        {10, "Bob"},
+        {15, "Alice"}
+    };
+    int n = 3;
+
+    sortStudents(arr, n);
+
+    for (int i = 0; i &lt; n; i++)
+        printf("%d %s\n", arr[i].roll, arr[i].name);
+    return 0;
+}
+
+void sortStudents(Student* arr, int n) {
+    // TODO
+}</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">10 Bob
+15 Alice
+20 Charlie</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-14">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-14">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div><strong>Bubble sort:</strong> In each pass through the array, compare adjacent elements. If the left one is bigger than the right, swap them. After each full pass, the largest unsorted element "bubbles up" to its correct position.</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div>You need <code>n - 1</code> passes. In each pass, compare elements from index 0 to <code>n - 2 - i</code> (since the last <code>i</code> elements are already sorted). The outer loop counts passes, the inner loop does comparisons.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div>To swap, use a temporary <code>Student</code> variable — <code>Student temp = arr[j]; arr[j] = arr[j+1]; arr[j+1] = temp;</code>. C copies all struct fields including the name array automatically.</div></div>
+            </div>
+            <div class="exp-note">📌 Bubble sort is O(n²) — not fast for large data, but perfectly fine for small arrays and exams. It's simple to write and understand. The key is: compare neighbors → swap if out of order → repeat.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">void sortStudents(Student* arr, int n) {
+    // Bubble sort: n-1 passes through the array
+    for (int i = 0; i &lt; n - 1; i++) {
+        // Each pass, the largest unsorted item bubbles to the right
+        // We don't need to check the last i elements (already sorted)
+        for (int j = 0; j &lt; n - 1 - i; j++) {
+            // If left roll > right roll, swap the whole structs
+            if (arr[j].roll &gt; arr[j + 1].roll) {
+                Student temp  = arr[j];
+                arr[j]        = arr[j + 1];
+                arr[j + 1]    = temp;
+                // C copies all fields (including name[]) in struct assignment
+            }
+        }
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q15 ==================== -->
+  <article class="q-card color-string" data-topic="string">
+    <div class="q-header">
+      <div class="q-num">15</div>
+      <div class="q-meta">
+        <div class="q-title">Replace Spaces with Dashes</div>
+        <div class="q-tags"><span class="tag main">Strings</span><span class="tag diff">In-Place</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">Given a string, replace every space character with a dash (<code>'-'</code>) in-place. No new string needed — modify the original directly.</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li>Implement <code>void replaceSpaces(char* str)</code></li>
+          <li>Walk the string character by character</li>
+          <li>When you encounter <code>' '</code>, replace it with <code>'-'</code></li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q15.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+void replaceSpaces(char* str);
+
+int main() {
+    char str[100];
+    printf("Enter string: ");
+    fgets(str, 100, stdin);
+
+    replaceSpaces(str);
+    printf("Modified string: %s", str);
+    return 0;
+}
+
+void replaceSpaces(char* str) {
+    // TODO
+}</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">Enter string: Hello World from C
+Modified string: Hello-World-from-C</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-15">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-15">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div>This is one of the simplest string problems. Use a <code>for</code> or <code>while</code> loop to walk through each character of the string until you hit <code>'\0'</code>.</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div>Inside the loop, check <code>if (str[i] == ' ')</code>. If true, set <code>str[i] = '-'</code>. This directly modifies the character in memory.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div>Because <code>str</code> is a pointer to the character array in <code>main()</code>, any changes we make here are reflected back in the caller automatically — no need to return anything.</div></div>
+            </div>
+            <div class="exp-note">📌 This is the simplest example of in-place string manipulation. The function modifies the data at the pointer it receives, so the caller sees the changes immediately. No copy, no return value needed.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">void replaceSpaces(char* str) {
+    int i = 0;
+    // Walk every character until the null terminator
+    while (str[i] != '\0') {
+        if (str[i] == ' ') {
+            str[i] = '-';   // replace space with dash directly in memory
+        }
+        i++;
+    }
+    // The original string in main() is now modified — no return needed
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q16 ==================== -->
+  <article class="q-card color-struct" data-topic="struct">
+    <div class="q-header">
+      <div class="q-num">16</div>
+      <div class="q-meta">
+        <div class="q-title">Calculate Student Percentage (5 Subjects)</div>
+        <div class="q-tags"><span class="tag main">Structures</span><span class="tag diff">Math</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">A student has marks in 5 subjects, each out of 100. Calculate and return their overall percentage (total marks / 500 × 100).</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li><code>Student</code> struct: <code>name[50]</code>, <code>roll</code>, <code>marks[5]</code></li>
+          <li>Implement <code>float calculatePercentage(Student s)</code></li>
+          <li>Return percentage as a float (sum / 500.0 × 100)</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q16.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+typedef struct {
+    char name[50];
+    int roll;
+    int marks[5];
+} Student;
+
+float calculatePercentage(Student s);
+
+int main() {
+    Student s = {"Alice", 101, {80, 90, 85, 70, 95}};
+    printf("Percentage: %.2f%%\n", calculatePercentage(s));
+    return 0;
+}
+
+float calculatePercentage(Student s) {
+    // TODO
+}</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">Percentage: 84.00%</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-16">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-16">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div>Loop through <code>s.marks[0]</code> to <code>s.marks[4]</code>, adding each to a running <code>total</code> (int or float).</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div>The maximum possible marks are 5 × 100 = 500. Percentage = <code>total / 500.0 * 100</code>. Write <code>500.0</code> (not <code>500</code>) to force floating-point division.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div>Return the <code>float</code> result. The <code>printf</code> in <code>main()</code> already uses <code>%%</code> to print a literal percent sign after the number.</div></div>
+            </div>
+            <div class="exp-note">📌 <code>%%</code> in printf prints a single literal <code>%</code> character. One <code>%</code> would be interpreted as the start of a format specifier.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">float calculatePercentage(Student s) {
+    int total = 0;
+
+    // Sum all 5 subject marks
+    for (int i = 0; i &lt; 5; i++) {
+        total += s.marks[i];
+    }
+
+    // Percentage = (total marks / max marks) * 100
+    // Divide by 500.0 (not 500) to get a float result
+    float percentage = (total / 500.0) * 100;
+
+    return percentage;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q17 ==================== -->
+  <article class="q-card color-matrix" data-topic="matrix">
+    <div class="q-header">
+      <div class="q-num">17</div>
+      <div class="q-meta">
+        <div class="q-title">Sum Each Row in a Dynamic Matrix</div>
+        <div class="q-tags"><span class="tag main">Matrices</span><span class="tag diff">Dynamic Memory</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">Given a dynamically allocated 2D integer matrix, return a new dynamically allocated array where each element is the sum of the corresponding row.</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li>Implement <code>int* sumEachRow(int** mat, int rows, int cols)</code></li>
+          <li>Return a malloc'd array of size <code>rows</code> where <code>result[i]</code> = sum of row i</li>
+          <li>Caller is responsible for freeing the returned array</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q17.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int* sumEachRow(int** mat, int rows, int cols);
+
+int main() {
+    // Build a 3x3 matrix: {{1,2,3},{4,5,6},{7,8,9}}
+    int rows = 3, cols = 3;
+    int** mat = (int**)malloc(rows * sizeof(int*));
+    int val = 1;
+    for (int i = 0; i &lt; rows; i++) {
+        mat[i] = (int*)malloc(cols * sizeof(int));
+        for (int j = 0; j &lt; cols; j++) mat[i][j] = val++;
+    }
+
+    int* sums = sumEachRow(mat, rows, cols);
+
+    for (int i = 0; i &lt; rows; i++)
+        printf("Row %d sum: %d\n", i, sums[i]);
+
+    free(sums);
+    for (int i = 0; i &lt; rows; i++) free(mat[i]);
+    free(mat);
+    return 0;
+}
+
+int* sumEachRow(int** mat, int rows, int cols) {
+    // TODO
+}</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">Row 0 sum: 6
+Row 1 sum: 15
+Row 2 sum: 24</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-17">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-17">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div>Allocate a 1D result array of size <code>rows</code> using <code>malloc</code>. This array will hold one sum per row.</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div>For each row <code>i</code>, initialize <code>result[i] = 0</code>. Then loop over all columns <code>j</code> and add <code>mat[i][j]</code> to <code>result[i]</code>.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div>Return the result array. The caller (<code>main</code>) is responsible for calling <code>free(sums)</code> when done — this is noted in the function's contract.</div></div>
+            </div>
+            <div class="exp-note">📌 When a function returns a <code>malloc</code>'d pointer, document clearly that the caller must free it. This is a key ownership convention in C.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">int* sumEachRow(int** mat, int rows, int cols) {
+    // Allocate a 1D array to hold one sum per row
+    int* result = (int*) malloc(rows * sizeof(int));
+
+    for (int i = 0; i &lt; rows; i++) {
+        result[i] = 0;   // start with zero for this row
+
+        // Add every element in row i
+        for (int j = 0; j &lt; cols; j++) {
+            result[i] += mat[i][j];
+        }
+    }
+
+    return result;   // caller must free() this!
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q18 ==================== -->
+  <article class="q-card color-linkedlist" data-topic="linkedlist">
+    <div class="q-header">
+      <div class="q-num">18</div>
+      <div class="q-meta">
+        <div class="q-title">Concatenate Two Linked Lists</div>
+        <div class="q-tags"><span class="tag main">Linked Lists</span><span class="tag diff">Traversal</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">Join two singly linked lists end-to-end. The tail of the first list should point to the head of the second list. No new nodes should be allocated.</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li>Implement <code>Node* concatenateLists(Node* head1, Node* head2)</code></li>
+          <li>Find the tail of head1, then set <code>tail->next = head2</code></li>
+          <li>Handle edge cases: either list being <code>NULL</code></li>
+          <li>Return the head of the combined list</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q18.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+Node* concatenateLists(Node* head1, Node* head2);
+
+int main() {
+    // Build list1: 1 -> 2 -> 3 -> NULL
+    // Build list2: 4 -> 5 -> 6 -> NULL
+    // Call concatenateLists(list1, list2) and print
+    return 0;
+}
+
+Node* concatenateLists(Node* head1, Node* head2) {
+    // TODO
+}</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">List 1: 1 -> 2 -> 3 -> NULL
+List 2: 4 -> 5 -> 6 -> NULL
+Combined: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> NULL</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-18">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-18">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div><strong>Edge cases first:</strong> If <code>head1 == NULL</code>, return <code>head2</code> (the second list is the result). If <code>head2 == NULL</code>, return <code>head1</code> unchanged.</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div>Walk <code>curr</code> through the first list until <code>curr->next == NULL</code>. At that point, <code>curr</code> is the tail node of list 1.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div>Set <code>curr->next = head2</code>. This single assignment joins the two lists. Return <code>head1</code> — the start of the now-combined list.</div></div>
+            </div>
+            <div class="exp-note">📌 Concatenation is destructive — the tail of list1 now points into list2. Freeing nodes from both lists later can be done with a single traversal starting from the returned head.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">Node* concatenateLists(Node* head1, Node* head2) {
+    // Edge case: first list is empty
+    if (head1 == NULL) return head2;
+
+    // Edge case: second list is empty
+    if (head2 == NULL) return head1;
+
+    // Find the last node of the first list
+    Node* curr = head1;
+    while (curr->next != NULL) {
+        curr = curr->next;   // move to next until we reach the tail
+    }
+
+    // Attach the second list to the tail of the first
+    curr->next = head2;
+
+    // Return head1 — it's now the head of the full combined list
+    return head1;
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q19 ==================== -->
+  <article class="q-card color-string" data-topic="string">
+    <div class="q-header">
+      <div class="q-num">19</div>
+      <div class="q-meta">
+        <div class="q-title">Word Replacer in a Sentence</div>
+        <div class="q-tags"><span class="tag main">Strings</span><span class="tag diff">strstr</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">Replace the first occurrence of a word in a sentence with a new word, building the result in a newly allocated string that the caller is responsible for freeing.</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li>Implement <code>char* replaceWord(const char* str, const char* oldWord, const char* newWord)</code></li>
+          <li>Return a <code>malloc</code>'d string with the replacement done</li>
+          <li>If <code>oldWord</code> is not found, return a copy of the original string</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q19.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+char* replaceWord(const char* str, const char* oldWord, const char* newWord);
+
+int main() {
+    char str[200], oldWord[50], newWord[50];
+    printf("Enter sentence: ");
+    fgets(str, 200, stdin);
+    printf("Enter word to replace: ");
+    scanf("%s", oldWord);
+    printf("Enter replacement word: ");
+    scanf("%s", newWord);
+
+    char* result = replaceWord(str, oldWord, newWord);
+    printf("Modified: %s\n", result);
+    free(result);
+    return 0;
+}
+
+char* replaceWord(const char* str, const char* oldWord, const char* newWord) {
+    // TODO
+}</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">Enter sentence: I love C programming
+Enter word to replace: C
+Enter replacement word: Python
+Modified: I love Python programming</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-19">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-19">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div>Use <code>strstr(str, oldWord)</code> to find the first occurrence of the word in the string. It returns a pointer to where the match starts, or <code>NULL</code> if not found.</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div>If not found, return a <code>strdup</code> of the original — an exact copy. The caller expects a heap-allocated string either way.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div>If found: Calculate the position of the match as <code>pos = found - str</code> (pointer subtraction). Allocate a result string big enough for the whole new sentence. Copy the part before the match (<code>pos</code> chars), append <code>newWord</code>, then append everything after the match (<code>found + strlen(oldWord)</code>).</div></div>
+            </div>
+            <div class="exp-note">📌 <code>strstr</code> returns a pointer into the original string. Subtracting the start pointer gives the offset (number of chars before the match). <code>strncat</code> and <code>strcat</code> are used to safely build up the result.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">char* replaceWord(const char* str, const char* oldWord, const char* newWord) {
+    // Find the first occurrence of oldWord in str
+    const char* found = strstr(str, oldWord);
+
+    // If oldWord is not in the string, return a copy of the original
+    if (found == NULL) {
+        return strdup(str);
+    }
+
+    // How many characters come BEFORE the match?
+    int pos = (int)(found - str);
+
+    // Allocate enough for: part before + newWord + part after + null
+    int newLen = strlen(str) - strlen(oldWord) + strlen(newWord) + 1;
+    char* result = (char*) malloc(newLen * sizeof(char));
+    result[0] = '\0';   // start as empty string
+
+    // 1. Copy the part of str BEFORE the match
+    strncat(result, str, pos);
+
+    // 2. Append the new word
+    strcat(result, newWord);
+
+    // 3. Append everything AFTER the matched old word
+    strcat(result, found + strlen(oldWord));
+
+    return result;   // caller must free() this
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ==================== Q20 ==================== -->
+  <article class="q-card color-sorting" data-topic="sorting">
+    <div class="q-header">
+      <div class="q-num">20</div>
+      <div class="q-meta">
+        <div class="q-title">Find Common Elements in Two Arrays</div>
+        <div class="q-tags"><span class="tag main">Sorting</span><span class="tag diff">Arrays</span><span class="tag diff">Moderate</span></div>
+      </div>
+    </div>
+    <div class="q-body">
+      <div>
+        <div class="section-label">Story</div>
+        <div class="story-block">Given two integer arrays, find and print all elements that appear in both. The simplest approach is a nested loop ("brute force") which is perfectly fine for moderate-sized arrays.</div>
+      </div>
+      <div>
+        <div class="section-label">Requirements</div>
+        <ul class="req-list">
+          <li>Implement <code>void findCommonElements(int* arr1, int n1, int* arr2, int n2)</code></li>
+          <li>For each element in arr1, check if it exists in arr2</li>
+          <li>Print each common element (print it only once even if it appears multiple times)</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Starter Code</div>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">c — Q20.c</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+          <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void findCommonElements(int* arr1, int n1, int* arr2, int n2);
+
+int main() {
+    int arr1[] = {1, 2, 3, 4, 5};
+    int arr2[] = {3, 5, 7, 9};
+    findCommonElements(arr1, 5, arr2, 4);
+    return 0;
+}
+
+void findCommonElements(int* arr1, int n1, int* arr2, int n2) {
+    // TODO
+}</code></pre>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Example Output</div>
+        <div class="output-block">Common elements: 3 5</div>
+      </div>
+      <div>
+        <button class="solution-toggle" onclick="toggleSolution(this)" id="sol-btn-20">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          Reveal Solution
+        </button>
+        <div class="solution-panel" id="sol-20">
+          <div class="explanation-block">
+            <div class="exp-title">💡 How to think about this</div>
+            <div class="exp-steps">
+              <div class="exp-step"><div class="exp-step-num">1</div><div>The brute-force approach: for each element in <code>arr1</code> (outer loop), check every element in <code>arr2</code> (inner loop). If any element in arr2 matches, print <code>arr1[i]</code> and break out of the inner loop.</div></div>
+              <div class="exp-step"><div class="exp-step-num">2</div><div>Breaking out of the inner loop with <code>break</code> after finding the first match prevents printing a common element multiple times even if it appears several times in arr2.</div></div>
+              <div class="exp-step"><div class="exp-step-num">3</div><div>This is O(n1 × n2) time complexity — not optimal, but simple, correct, and perfectly readable. For an exam, this approach is ideal.</div></div>
+            </div>
+            <div class="exp-note">📌 Using a <code>break</code> after printing is a simple de-duplication trick. More efficient solutions exist (using hash sets or sorting), but this nested loop approach is the clearest to read and write.</div>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header"><span class="code-lang">c — Solution</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><code class="language-c">void findCommonElements(int* arr1, int n1, int* arr2, int n2) {
+    printf("Common elements: ");
+
+    // For each element in arr1...
+    for (int i = 0; i &lt; n1; i++) {
+        // ...check if it exists anywhere in arr2
+        for (int j = 0; j &lt; n2; j++) {
+            if (arr1[i] == arr2[j]) {
+                printf("%d ", arr1[i]);
+                break;   // stop searching arr2; move to next arr1 element
+                // This also prevents printing duplicates if arr2 has repeats
+            }
+        }
+    }
+    printf("\n");
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+</main>
+
+<footer>
+  Made with ❤️ — C Programming Practice · Moderate Questions · 20 Problems
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('pre code').forEach(el => hljs.highlightElement(el));
+  });
+
+  function toggleSolution(btn) {
+    btn.classList.toggle('active');
+    const panelId = btn.id.replace('sol-btn-', 'sol-');
+    const panel = document.getElementById(panelId);
+    if (!panel) return;
+    panel.classList.toggle('open');
+    if (panel.classList.contains('open')) {
+      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg> Hide Solution`;
+      panel.querySelectorAll('pre code').forEach(el => hljs.highlightElement(el));
+    } else {
+      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg> Reveal Solution`;
+    }
+  }
+
+  function copyCode(btn) {
+    const code = btn.closest('.code-wrap').querySelector('code');
+    navigator.clipboard.writeText(code.innerText).then(() => {
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function filterCards(topic, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.q-card').forEach(card => {
+      if (topic === 'all' || card.dataset.topic === topic) card.classList.remove('hidden');
+      else card.classList.add('hidden');
+    });
+  }
+
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progressBar').style.width = (total > 0 ? (scrolled / total) * 100 : 0) + '%';
+    const btn = document.getElementById('scrollTop');
+    scrolled > 400 ? btn.classList.add('visible') : btn.classList.remove('visible');
+  });
+</script>
+</body>
+</html>

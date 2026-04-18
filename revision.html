@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS F111 — Programming Test Prep</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: #2a2a3a;
+    --accent: #7c6af7;
+    --accent2: #f7706a;
+    --accent3: #6af7c0;
+    --accent4: #f7c56a;
+    --text: #e8e8f0;
+    --muted: #888899;
+    --code-bg: #0d0d15;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    line-height: 1.6;
+    padding: 2rem 1rem;
+  }
+
+  .header {
+    text-align: center;
+    padding: 2rem 1rem 3rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+
+  .header h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -1px;
+  }
+
+  .header .sub {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .badges {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.3rem 0.9rem;
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent3);
+  }
+
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .toc h3 {
+    color: var(--accent);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.8rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.3rem;
+  }
+
+  .toc a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    padding: 0.2rem 0;
+    transition: color 0.2s;
+  }
+
+  .toc a:hover { color: var(--accent3); }
+
+  .section {
+    margin-bottom: 2.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    background: var(--surface2);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+  }
+
+  .section-header h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .section-body {
+    padding: 1.5rem;
+  }
+
+  .tip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+
+  .tip .tip-label {
+    font-size: 0.7rem;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+  }
+
+  .tip-warn .tip-label { color: var(--accent2); }
+  .tip-good .tip-label { color: var(--accent3); }
+  .tip-info .tip-label { color: var(--accent4); }
+  .tip-trick .tip-label { color: var(--accent); }
+
+  .tip p, .tip li {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .tip ul { padding-left: 1rem; }
+
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  pre .lang-tag {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.75rem;
+    font-size: 0.65rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--text);
+  }
+
+  .kw { color: #c792ea; }
+  .fn { color: #82aaff; }
+  .str { color: #c3e88d; }
+  .num { color: #f78c6c; }
+  .cmt { color: #546e7a; font-style: italic; }
+  .type { color: #ffcb6b; }
+  .op { color: #89ddff; }
+  .macro { color: #f07178; }
+
+  .inline-code {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.1rem 0.4rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent3);
+  }
+
+  .warn-box {
+    background: rgba(247, 112, 106, 0.08);
+    border: 1px solid rgba(247, 112, 106, 0.3);
+    border-left: 3px solid var(--accent2);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    font-size: 0.85rem;
+    color: #f7a09a;
+  }
+
+  .good-box {
+    background: rgba(106, 247, 192, 0.06);
+    border: 1px solid rgba(106, 247, 192, 0.2);
+    border-left: 3px solid var(--accent3);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    font-size: 0.85rem;
+    color: #9af7d4;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.5rem 0;
+  }
+
+  .pattern-label {
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 1.2rem 0 0.4rem;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    font-family: 'JetBrains Mono', monospace;
+    margin: 0.75rem 0;
+  }
+
+  th {
+    background: var(--surface2);
+    color: var(--accent);
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  td {
+    padding: 0.45rem 0.75rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  @media (max-width: 640px) {
+    .two-col { grid-template-columns: 1fr; }
+    .tip-grid { grid-template-columns: 1fr; }
+    .header h1 { font-size: 1.8rem; }
+  }
+
+  h3.sub-head {
+    color: var(--accent4);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 1.5rem 0 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>CS F111 — Programming Test</h1>
+  <p class="sub">Modules 01–11 · Labs 1–11 · April 19, 2026 · 3hrs · 90 marks · Open Book</p>
+  <div class="badges">
+    <span class="badge">Data Types</span>
+    <span class="badge">Control Flow</span>
+    <span class="badge">Functions</span>
+    <span class="badge">Arrays</span>
+    <span class="badge">Structures</span>
+    <span class="badge">Pointers</span>
+    <span class="badge">Dynamic Memory</span>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h3>Jump To</h3>
+  <div class="toc-grid">
+    <a href="#s1">§1 — Boilerplate & I/O</a>
+    <a href="#s2">§2 — Data Types & Operators</a>
+    <a href="#s3">§3 — Control Flow</a>
+    <a href="#s4">§4 — Functions</a>
+    <a href="#s5">§5 — Arrays & Searching/Sorting</a>
+    <a href="#s6">§6 — Structures</a>
+    <a href="#s7">§7 — Pointers</a>
+    <a href="#s8">§8 — Dynamic Memory</a>
+    <a href="#s9">§9 — Classic Question Patterns</a>
+    <a href="#s10">§10 — Killer Tricks & Pitfalls</a>
+  </div>
+</div>
+
+
+<!-- SECTION 1 -->
+<div class="section" id="s1">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 style="color: var(--accent3)">Boilerplate, I/O & Compilation</h2>
+  </div>
+  <div class="section-body">
+
+    <pre><code><span class="macro">#include &lt;stdio.h&gt;</span>
+<span class="macro">#include &lt;stdlib.h&gt;</span>   <span class="cmt">// malloc, free, exit</span>
+<span class="macro">#include &lt;string.h&gt;</span>   <span class="cmt">// strlen, strcpy, strcmp etc.</span>
+<span class="macro">#include &lt;math.h&gt;</span>     <span class="cmt">// if needed — compile with -lm</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="cmt">// your code</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}
+</code><span class="lang-tag">c</span></pre>
+
+    <div class="tip-grid">
+      <div class="tip tip-good">
+        <div class="tip-label">✓ printf format specifiers</div>
+        <ul>
+          <li><code>%d</code> — int</li>
+          <li><code>%f</code> — float (default 6 dp)</li>
+          <li><code>%.2f</code> — float 2 decimal places</li>
+          <li><code>%lf</code> — double (scanf only)</li>
+          <li><code>%c</code> — char</li>
+          <li><code>%s</code> — string</li>
+          <li><code>%p</code> — pointer address</li>
+          <li><code>%ld</code> — long int</li>
+          <li><code>%u</code> — unsigned int</li>
+        </ul>
+      </div>
+      <div class="tip tip-warn">
+        <div class="tip-label">⚠ scanf traps</div>
+        <ul>
+          <li>Always use <code>&amp;</code> for primitives: <code>scanf("%d", &amp;x)</code></li>
+          <li>Do NOT use <code>&amp;</code> for arrays/strings: <code>scanf("%s", str)</code></li>
+          <li>To read a line with spaces: <code>fgets(str, size, stdin)</code></li>
+          <li>After scanf int, a <code>\n</code> stays in buffer — use <code>getchar()</code> before next <code>fgets</code></li>
+          <li>Use <code>%lf</code> for double in scanf, but <code>%f</code> for printf</li>
+        </ul>
+      </div>
+      <div class="tip tip-info">
+        <div class="tip-label">ℹ compile commands</div>
+        <ul>
+          <li><code>gcc prog.c -o prog</code></li>
+          <li><code>gcc prog.c -o prog -lm</code> (for math.h)</li>
+          <li><code>./prog</code> to run</li>
+          <li>Multi-file: <code>gcc a.c b.c -o out</code></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION 2 -->
+<div class="section" id="s2">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 style="color: var(--accent4)">Data Types, Operators & Expressions</h2>
+  </div>
+  <div class="section-body">
+
+    <table>
+      <tr><th>Type</th><th>Size (typical)</th><th>Range</th><th>Format</th></tr>
+      <tr><td>char</td><td>1 byte</td><td>-128 to 127</td><td>%c / %d</td></tr>
+      <tr><td>int</td><td>4 bytes</td><td>-2³¹ to 2³¹-1</td><td>%d</td></tr>
+      <tr><td>float</td><td>4 bytes</td><td>~6-7 sig. digits</td><td>%f</td></tr>
+      <tr><td>double</td><td>8 bytes</td><td>~15-16 sig. digits</td><td>%lf / %f</td></tr>
+      <tr><td>long int</td><td>8 bytes</td><td>-2⁶³ to 2⁶³-1</td><td>%ld</td></tr>
+    </table>
+
+    <div class="tip-grid">
+      <div class="tip tip-warn">
+        <div class="tip-label">⚠ Integer Division Trap</div>
+        <p>5/2 = 2 (NOT 2.5). To get float result: <code>(float)5/2</code> or <code>5/2.0</code></p>
+      </div>
+      <div class="tip tip-trick">
+        <div class="tip-label">★ Operator Precedence (High→Low)</div>
+        <p style="font-family: 'JetBrains Mono', monospace; font-size:0.78rem; color: var(--text);">
+          <span class="op">() [] -></span> → <span class="op">! ~ ++ -- (cast) * & sizeof</span> → <span class="op">* / %</span> → <span class="op">+ -</span> → <span class="op">&lt;&lt; >></span> → <span class="op">&lt; &lt;= > >=</span> → <span class="op">== !=</span> → <span class="op">&</span> → <span class="op">^</span> → <span class="op">|</span> → <span class="op">&&</span> → <span class="op">||</span> → <span class="op">?:</span> → <span class="op">= += -=</span>
+        </p>
+      </div>
+      <div class="tip tip-info">
+        <div class="tip-label">ℹ Useful char tricks</div>
+        <ul>
+          <li><code>'A' = 65, 'a' = 97, '0' = 48</code></li>
+          <li>Uppercase to lowercase: <code>c + 32</code> or <code>c - 'A' + 'a'</code></li>
+          <li>Digit char to int: <code>c - '0'</code></li>
+          <li>Check digit: <code>c >= '0' && c <= '9'</code></li>
+        </ul>
+      </div>
+      <div class="tip tip-good">
+        <div class="tip-label">✓ Pre vs Post Increment</div>
+        <p><code>int a=5; int b = a++;</code> → b=5, a=6<br>
+        <code>int b = ++a;</code> → b=6, a=6<br>
+        In loops <code>i++</code> and <code>++i</code> behave the same.</p>
+      </div>
+    </div>
+
+    <h3 class="sub-head">Type Casting</h3>
+    <pre><code><span class="type">int</span> a = <span class="num">7</span>, b = <span class="num">2</span>;
+<span class="type">float</span> result = (<span class="type">float</span>)a / b;     <span class="cmt">// 3.5 — cast a BEFORE division</span>
+<span class="type">float</span> result2 = (<span class="type">float</span>)(a / b); <span class="cmt">// 3.0 — WRONG, division happens first</span>
+</code><span class="lang-tag">c</span></pre>
+
+  </div>
+</div>
+
+
+<!-- SECTION 3 -->
+<div class="section" id="s3">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 style="color: var(--accent2)">Control Flow — if/else, switch, loops</h2>
+  </div>
+  <div class="section-body">
+
+    <div class="two-col">
+      <div>
+        <div class="pattern-label">Pattern — FizzBuzz style</div>
+        <pre><code><span class="kw">for</span>(<span class="type">int</span> i=<span class="num">1</span>; i<=<span class="num">100</span>; i++) {
+    <span class="kw">if</span>(i%<span class="num">15</span>==<span class="num">0</span>)      <span class="fn">printf</span>(<span class="str">"FizzBuzz\n"</span>);
+    <span class="kw">else if</span>(i%<span class="num">3</span>==<span class="num">0</span>) <span class="fn">printf</span>(<span class="str">"Fizz\n"</span>);
+    <span class="kw">else if</span>(i%<span class="num">5</span>==<span class="num">0</span>) <span class="fn">printf</span>(<span class="str">"Buzz\n"</span>);
+    <span class="kw">else</span>             <span class="fn">printf</span>(<span class="str">"%d\n"</span>, i);
+}
+</code><span class="lang-tag">c</span></pre>
+      </div>
+      <div>
+        <div class="pattern-label">Pattern — while with sentinel</div>
+        <pre><code><span class="type">int</span> n;
+<span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;n);
+<span class="kw">while</span>(n != <span class="num">-1</span>) {
+    <span class="cmt">// process n</span>
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;n);
+}
+</code><span class="lang-tag">c</span></pre>
+      </div>
+    </div>
+
+    <div class="pattern-label">Switch — remember break!</div>
+    <pre><code><span class="kw">switch</span>(ch) {
+    <span class="kw">case</span> <span class="str">'a'</span>: <span class="fn">printf</span>(<span class="str">"vowel\n"</span>); <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="str">'e'</span>: <span class="fn">printf</span>(<span class="str">"vowel\n"</span>); <span class="kw">break</span>;
+    <span class="kw">default</span>: <span class="fn">printf</span>(<span class="str">"consonant\n"</span>);
+}
+<span class="cmt">// Without break, execution FALLS THROUGH to next case!</span>
+</code><span class="lang-tag">c</span></pre>
+
+    <div class="warn-box">⚠ Missing <code>break</code> in switch causes fall-through — a very common exam mistake. Always add break unless intentional.</div>
+
+    <div class="tip-grid">
+      <div class="tip tip-trick">
+        <div class="tip-label">★ Loop Patterns to Know</div>
+        <ul>
+          <li>Sum of digits of n: <code>while(n) { sum += n%10; n/=10; }</code></li>
+          <li>Reverse a number: <code>while(n) { rev = rev*10 + n%10; n/=10; }</code></li>
+          <li>Count digits: <code>while(n) { count++; n/=10; }</code></li>
+          <li>GCD (Euclidean): <code>while(b) { t=b; b=a%b; a=t; }</code></li>
+          <li>Prime check: loop from 2 to √n</li>
+        </ul>
+      </div>
+      <div class="tip tip-good">
+        <div class="tip-label">✓ do-while vs while</div>
+        <p>Use <code>do-while</code> when you need the body to execute AT LEAST ONCE — e.g., menu-driven programs:</p>
+        <pre style="margin-top:0.5rem"><code><span class="kw">do</span> {
+    <span class="fn">printf</span>(<span class="str">"Enter (0=quit): "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;ch);
+} <span class="kw">while</span>(ch != <span class="num">0</span>);
+</code></pre>
+      </div>
+    </div>
+
+    <div class="pattern-label">Pattern — Star/Number Pattern (exam favourite)</div>
+    <pre><code><span class="cmt">// Right triangle of stars, n rows</span>
+<span class="kw">for</span>(<span class="type">int</span> i=<span class="num">1</span>; i<=n; i++) {
+    <span class="kw">for</span>(<span class="type">int</span> j=<span class="num">1</span>; j<=i; j++)
+        <span class="fn">printf</span>(<span class="str">"* "</span>);
+    <span class="fn">printf</span>(<span class="str">"\n"</span>);
+}
+
+<span class="cmt">// Pyramid</span>
+<span class="kw">for</span>(<span class="type">int</span> i=<span class="num">1</span>; i<=n; i++) {
+    <span class="kw">for</span>(<span class="type">int</span> j=<span class="num">1</span>; j<=n-i; j++) <span class="fn">printf</span>(<span class="str">" "</span>);
+    <span class="kw">for</span>(<span class="type">int</span> j=<span class="num">1</span>; j<=<span class="num">2</span>*i-<span class="num">1</span>; j++) <span class="fn">printf</span>(<span class="str">"*"</span>);
+    <span class="fn">printf</span>(<span class="str">"\n"</span>);
+}
+</code><span class="lang-tag">c</span></pre>
+
+  </div>
+</div>
+
+
+<!-- SECTION 4 -->
+<div class="section" id="s4">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <h2 style="color: var(--accent)">Functions</h2>
+  </div>
+  <div class="section-body">
+
+    <pre><code><span class="cmt">// Always declare prototype BEFORE main if function defined after main</span>
+<span class="type">int</span> <span class="fn">add</span>(<span class="type">int</span>, <span class="type">int</span>);      <span class="cmt">// prototype</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="fn">printf</span>(<span class="str">"%d\n"</span>, <span class="fn">add</span>(<span class="num">3</span>, <span class="num">4</span>));
+    <span class="kw">return</span> <span class="num">0</span>;
+}
+
+<span class="type">int</span> <span class="fn">add</span>(<span class="type">int</span> a, <span class="type">int</span> b) {
+    <span class="kw">return</span> a + b;
+}
+</code><span class="lang-tag">c</span></pre>
+
+    <div class="tip-grid">
+      <div class="tip tip-warn">
+        <div class="tip-label">⚠ Call by Value vs Reference</div>
+        <p>C is <strong>always call-by-value</strong>. To modify a variable inside a function, pass its ADDRESS:</p>
+        <pre style="margin-top:0.4rem"><code><span class="kw">void</span> <span class="fn">swap</span>(<span class="type">int</span> *a, <span class="type">int</span> *b) {
+    <span class="type">int</span> t = *a;
+    *a = *b;
+    *b = t;
+}
+<span class="cmt">// Call: swap(&x, &y);</span>
+</code></pre>
+      </div>
+      <div class="tip tip-good">
+        <div class="tip-label">✓ Scope Rules</div>
+        <ul>
+          <li>Local vars exist only inside their <code>{}</code> block</li>
+          <li>Global vars accessible everywhere — but prefer locals</li>
+          <li><code>static</code> local var: retains value between calls</li>
+          <li>Function args are local copies — changes don't affect caller (unless pointers)</li>
+        </ul>
+      </div>
+      <div class="tip tip-trick">
+        <div class="tip-label">★ Common Function Patterns</div>
+        <ul>
+          <li>Return max of two: <code>return (a>b) ? a : b;</code></li>
+          <li>Check prime, return 1/0</li>
+          <li>Factorial (iterative)</li>
+          <li>Power function</li>
+          <li>Pass array to function: <code>void fn(int arr[], int n)</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pattern-label">Pattern — Stack vs Heap memory</div>
+    <div class="good-box">
+      <strong>Stack</strong>: local variables, function params. Automatically managed. Size fixed at compile time.<br>
+      <strong>Heap</strong>: malloc/calloc/realloc. Manually managed — you must <code>free()</code>. Survives function return if pointer passed out.
+    </div>
+
+  </div>
+</div>
+
+
+<!-- SECTION 5 -->
+<div class="section" id="s5">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <h2 style="color: var(--accent3)">Arrays, Searching & Sorting</h2>
+  </div>
+  <div class="section-body">
+
+    <pre><code><span class="cmt">// Declare + initialize</span>
+<span class="type">int</span> arr[<span class="num">5</span>] = {<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>, <span class="num">50</span>};
+<span class="type">int</span> zeros[<span class="num">100</span>] = {<span class="num">0</span>};   <span class="cmt">// all zeros</span>
+
+<span class="cmt">// Passing array to function (decays to pointer)</span>
+<span class="kw">void</span> <span class="fn">print</span>(<span class="type">int</span> arr[], <span class="type">int</span> n) {
+    <span class="kw">for</span>(<span class="type">int</span> i=<span class="num">0</span>; i&lt;n; i++) <span class="fn">printf</span>(<span class="str">"%d "</span>, arr[i]);
+}
+<span class="cmt">// Call: print(arr, 5);</span>
+</code><span class="lang-tag">c</span></pre>
+
+    <div class="pattern-label">Linear Search</div>
+    <pre><code><span class="type">int</span> <span class="fn">linearSearch</span>(<span class="type">int</span> arr[], <span class="type">int</span> n, <span class="type">int</span> key) {
+    <span class="kw">for</span>(<span class="type">int</span> i=<span class="num">0</span>; i&lt;n; i++)
+        <span class="kw">if</span>(arr[i] == key) <span class="kw">return</span> i;   <span class="cmt">// return index</span>
+    <span class="kw">return</span> <span class="num">-1</span>;   <span class="cmt">// not found</span>
+}
+</code><span class="lang-tag">c</span></pre>
+
+    <div class="pattern-label">Binary Search — SORTED array only</div>
+    <pre><code><span class="type">int</span> <span class="fn">binarySearch</span>(<span class="type">int</span> arr[], <span class="type">int</span> n, <span class="type">int</span> key) {
+    <span class="type">int</span> low=<span class="num">0</span>, high=n-<span class="num">1</span>;
+    <span class="kw">while</span>(low &lt;= high) {
+        <span class="type">int</span> mid = low + (high - low) / <span class="num">2</span>;  <span class="cmt">// safer than (low+high)/2</span>
+        <span class="kw">if</span>(arr[mid] == key) <span class="kw">return</span> mid;
+        <span class="kw">else if</span>(arr[mid] &lt; key) low = mid + <span class="num">1</span>;
+        <span class="kw">else</span> high = mid - <span class="num">1</span>;
+    }
+    <span class="kw">return</span> <span class="num">-1</span>;
+}
+</code><span class="lang-tag">c</span></pre>
+
+    <div class="pattern-label">Bubble Sort</div>
+    <pre><code><span class="kw">void</span> <span class="fn">bubbleSort</span>(<span class="type">int</span> arr[], <span class="type">int</span> n) {
+    <span class="kw">for</span>(<span class="type">int</span> i=<span class="num">0</span>; i&lt;n-<span class="num">1</span>; i++) {
+        <span class="kw">for</span>(<span class="type">int</span> j=<span class="num">0</span>; j&lt;n-i-<span class="num">1</span>; j++) {
+            <span class="kw">if</span>(arr[j] &gt; arr[j+<span class="num">1</span>]) {
+                <span class="type">int</span> t = arr[j]; arr[j] = arr[j+<span class="num">1</span>]; arr[j+<span class="num">1</span>] = t;
+            }
+        }
+    }
+}
+</code><span class="lang-tag">c</span></pre>
+
+    <div class="pattern-label">Selection Sort (also asked)</div>
+    <pre><code><span class="kw">void</span> <span class="fn">selectionSort</span>(<span class="type">int</span> arr[], <span class="type">int</span> n) {
+    <span class="kw">for</span>(<span class="type">int</span> i=<span class="num">0</span>; i&lt;n-<span class="num">1</span>; i++) {
+        <span class="type">int</span> minIdx = i;
+        <span class="kw">for</span>(<span class="type">int</span> j=i+<span class="num">1</span>; j&lt;n; j++)
+            <span class="kw">if</span>(arr[j] &lt; arr[minIdx]) minIdx = j;
+        <span class="type">int</span> t = arr[i]; arr[i] = arr[minIdx]; arr[minIdx] = t;
+    }
+}
+</code><span class="lang-tag">c</span></pre>
+
+    <div class="pattern-label">2D Arrays</div>
+    <pre><code><span class="type">int</span> mat[<span class="num">3</span>][<span class="num">3</span>] = {{<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>},{<span class="num">4</span>,<span class="num">5</span>,<span class="num">6</span>},{<span class="num">7</span>,<span class="num">8</span>,<span class="num">9</span>}};
+
+<span class="cmt">// Matrix addition</span>
+<span class="kw">for</span>(<span class="type">int</span> i=<span class="num">0</span>; i&lt;r; i++)
+    <span class="kw">for</span>(<span class="type">int</span> j=<span class="num">0</span>; j&lt;c; j++)
+        result[i][j] = a[i][j] + b[i][j];
+
+<span class="cmt">// Matrix multiplication</span>
+<span class="kw">for</span>(<span class="type">int</span> i=<span class="num">0</span>; i&lt;r1; i++)
+    <span class="kw">for</span>(<span class="type">int</span> j=<span class="num">0</span>; j&lt;c2; j++) {
+        result[i][j] = <span class="num">0</span>;
+        <span class="kw">for</span>(<span class="type">int</span> k=<span class="num">0</span>; k&lt;c1; k++)
+            result[i][j] += a[i][k] * b[k][j];
+    }
+
+<span class="cmt">// Pass 2D array to function — MUST specify column size</span>
+<span class="kw">void</span> <span class="fn">printMat</span>(<span class="type">int</span> mat[][<span class="num">3</span>], <span class="type">int</span> rows) { ... }
+</code><span class="lang-tag">c</span></pre>
+
+    <div class="warn-box">⚠ Array indices go from <code>0</code> to <code>n-1</code>. Off-by-one is the #1 array bug. Always double-check loop bounds.</div>
+
+  </div>
+</div>
+
+
+<!-- SECTION 6 -->
+<div class="section" id="s6">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2 style="color: var(--accent4)">Structures</h2>
+  </div>
+  <div class="section-body">
+
+    <pre><code><span class="kw">typedef</span> <span class="kw">struct</span> {
+    <span class="type">int</span> id;
+    <span class="type">char</span> name[<span class="num">50</span>];
+    <span class="type">float</span> gpa;
+} <span class="type">Student</span>;
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">Student</span> s1 = {<span class="num">1</span>, <span class="str">"Alice"</span>, <span class="num">9.5</span>};
+    <span class="fn">printf</span>(<span class="str">"%s has GPA %.2f\n"</span>, s1.name, s1.gpa);
+
+    <span class="type">Student</span> arr[<span class="num">10</span>];           <span class="cmt">// array of structs</span>
+    arr[<span class="num">0</span>].id = <span class="num">101</span>;
+    <span class="fn">strcpy</span>(arr[<span class="num">0</span>].name, <span class="str">"Bob"</span>);  <span class="cmt">// DON'T use = for strings inside structs</span>
+}
+</code><span class="lang-tag">c</span></pre>
+
+    <div class="tip-grid">
+      <div class="tip tip-warn">
+        <div class="tip-label">⚠ String in struct</div>
+        <p>You CANNOT do <code>s.name = "Alice"</code>. Use <code>strcpy(s.name, "Alice")</code>. Or initialize at declaration time.</p>
+      </div>
+      <div class="tip tip-good">
+        <div class="tip-label">✓ Passing struct to function</div>
+        <p>Pass by value: <code>void fn(Student s)</code> — gets a copy.<br>
+        Pass by pointer: <code>void fn(Student *s)</code> — access with <code>s->field</code> or <code>(*s).field</code>.</p>
+      </div>
+      <div class="tip tip-trick">
+        <div class="tip-label">★ Arrow vs Dot</div>
+        <p><code>s.name</code> — s is a struct variable<br>
+        <code>ptr->name</code> — ptr is a pointer to struct<br>
+        They're equivalent: <code>ptr->name == (*ptr).name</code></p>
+      </div>
+    </div>
+
+    <div class="pattern-label">Array of Structures — search by field</div>
+    <pre><code><span class="kw">void</span> <span class="fn">findById</span>(<span class="type">Student</span> arr[], <span class="type">int</span> n, <span class="type">int</span> id) {
+    <span class="kw">for</span>(<span class="type">int</span> i=<span class="num">0</span>; i&lt;n; i++) {
+        <span class="kw">if</span>(arr[i].id == id) {
+            <span class="fn">printf</span>(<span class="str">"Found: %s\n"</span>, arr[i].name);
+            <span class="kw">return</span>;
+        }
+    }
+    <span class="fn">printf</span>(<span class="str">"Not found\n"</span>);
+}
+</code><span class="lang-tag">c</span></pre>
+
+  </div>
+</div>
+
+
+<!-- SECTION 7 -->
+<div class="section" id="s7">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <h2 style="color: var(--accent2)">Pointers</h2>
+  </div>
+  <div class="section-body">
+
+    <pre><code><span class="type">int</span> x = <span class="num">10</span>;
+<span class="type">int</span> *p = &amp;x;         <span class="cmt">// p holds address of x</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, *p);   <span class="cmt">// dereference: prints 10</span>
+*p = <span class="num">20</span>;             <span class="cmt">// changes x to 20</span>
+<span class="fn">printf</span>(<span class="str">"%p\n"</span>, p);   <span class="cmt">// prints address</span>
+</code><span class="lang-tag">c</span></pre>
+
+    <div class="tip-grid">
+      <div class="tip tip-trick">
+        <div class="tip-label">★ Pointer Arithmetic</div>
+        <pre><code><span class="type">int</span> arr[] = {<span class="num">10</span>,<span class="num">20</span>,<span class="num">30</span>};
+<span class="type">int</span> *p = arr;  <span class="cmt">// points to arr[0]</span>
+p++;           <span class="cmt">// now points to arr[1]</span>
+*(p+<span class="num">1</span>)        <span class="cmt">// = arr[2] = 30</span>
+<span class="cmt">// arr[i] == *(arr+i) always!</span>
+</code></pre>
+      </div>
+      <div class="tip tip-warn">
+        <div class="tip-label">⚠ Common Pointer Mistakes</div>
+        <ul>
+          <li>Uninitialized pointer: <code>int *p; *p = 5;</code> — CRASH</li>
+          <li>Dangling pointer: using pointer after <code>free()</code></li>
+          <li>Memory leak: malloc without free</li>
+          <li>Don't forget <code>*</code> when declaring: <code>int *p, q;</code> — q is int, NOT int*</li>
+        </ul>
+      </div>
+      <div class="tip tip-good">
+        <div class="tip-label">✓ Arrays of Pointers</div>
+        <pre><code><span class="type">char</span> *names[] = {<span class="str">"Alice"</span>,<span class="str">"Bob"</span>,<span class="str">"Carol"</span>};
+<span class="fn">printf</span>(<span class="str">"%s\n"</span>, names[<span class="num">1</span>]); <span class="cmt">// Bob</span>
+</code></pre>
+      </div>
+    </div>
+
+    <div class="pattern-label">Pointer to struct — modify via function</div>
+    <pre><code><span class="kw">void</span> <span class="fn">updateGPA</span>(<span class="type">Student</span> *s, <span class="type">float</span> newGPA) {
+    s->gpa = newGPA;       <span class="cmt">// same as (*s).gpa = newGPA</span>
+}
+<span class="cmt">// Call: updateGPA(&s1, 9.8);</span>
+</code><span class="lang-tag">c</span></pre>
+
+  </div>
+</div>
+
+
+<!-- SECTION 8 -->
+<div class="section" id="s8">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <h2 style="color: var(--accent3)">Dynamic Memory Allocation</h2>
+  </div>
+  <div class="section-body">
+
+    <pre><code><span class="macro">#include &lt;stdlib.h&gt;</span>
+
+<span class="cmt">// malloc — uninitialized memory</span>
+<span class="type">int</span> *arr = (<span class="type">int</span> *)<span class="fn">malloc</span>(n * <span class="kw">sizeof</span>(<span class="type">int</span>));
+
+<span class="cmt">// calloc — zero-initialized memory</span>
+<span class="type">int</span> *arr = (<span class="type">int</span> *)<span class="fn">calloc</span>(n, <span class="kw">sizeof</span>(<span class="type">int</span>));
+
+<span class="cmt">// ALWAYS check for NULL</span>
+<span class="kw">if</span>(arr == NULL) {
+    <span class="fn">printf</span>(<span class="str">"Memory allocation failed!\n"</span>);
+    <span class="fn">exit</span>(<span class="num">1</span>);
+}
+
+<span class="cmt">// Use it like a normal array</span>
+<span class="kw">for</span>(<span class="type">int</span> i=<span class="num">0</span>; i&lt;n; i++) arr[i] = i*<span class="num">10</span>;
+
+<span class="cmt">// ALWAYS free when done</span>
+<span class="fn">free</span>(arr);
+arr = NULL;  <span class="cmt">// good practice to avoid dangling pointer</span>
+</code><span class="lang-tag">c</span></pre>
+
+    <div class="pattern-label">Dynamic array of structs</div>
+    <pre><code><span class="type">Student</span> *students = (<span class="type">Student</span> *)<span class="fn">malloc</span>(n * <span class="kw">sizeof</span>(<span class="type">Student</span>));
+<span class="kw">if</span>(!students) { <span class="fn">perror</span>(<span class="str">"malloc"</span>); <span class="fn">exit</span>(<span class="num">1</span>); }
+
+students[<span class="num">0</span>].id = <span class="num">1</span>;
+<span class="fn">strcpy</span>(students[<span class="num">0</span>].name, <span class="str">"Alice"</span>);
+
+<span class="fn">free</span>(students);
+</code><span class="lang-tag">c</span></pre>
+
+    <div class="pattern-label">2D dynamic array</div>
+    <pre><code><span class="type">int</span> **mat = (<span class="type">int</span> **)<span class="fn">malloc</span>(r * <span class="kw">sizeof</span>(<span class="type">int</span> *));
+<span class="kw">for</span>(<span class="type">int</span> i=<span class="num">0</span>; i&lt;r; i++)
+    mat[i] = (<span class="type">int</span> *)<span class="fn">malloc</span>(c * <span class="kw">sizeof</span>(<span class="type">int</span>));
+
+<span class="cmt">// Use: mat[i][j]</span>
+
+<span class="cmt">// Free in reverse order</span>
+<span class="kw">for</span>(<span class="type">int</span> i=<span class="num">0</span>; i&lt;r; i++) <span class="fn">free</span>(mat[i]);
+<span class="fn">free</span>(mat);
+</code><span class="lang-tag">c</span></pre>
+
+    <div class="warn-box">⚠ For dynamic 2D arrays: free each row first, THEN free the outer pointer. Wrong order = memory corruption.</div>
+
+  </div>
+</div>
+
+
+<!-- SECTION 9 -->
+<div class="section" id="s9">
+  <div class="section-header">
+    <span class="section-num">09</span>
+    <h2 style="color: var(--accent)">Classic Question Patterns — What Will Be Asked</h2>
+  </div>
+  <div class="section-body">
+
+    <div class="tip-grid">
+      <div class="tip tip-trick">
+        <div class="tip-label">★ Number Theory (Module 3)</div>
+        <ul>
+          <li>Check prime (loop 2 to √n, use <code>i*i &lt;= n</code>)</li>
+          <li>Print all primes up to N (Sieve or naive)</li>
+          <li>GCD using Euclid: <code>while(b){ t=b;b=a%b;a=t; } return a;</code></li>
+          <li>LCM = (a*b)/gcd(a,b)</li>
+          <li>Fibonacci: iterative with two vars</li>
+          <li>Perfect number (sum of divisors = n)</li>
+          <li>Armstrong number (sum of cubes of digits = n)</li>
+        </ul>
+      </div>
+      <div class="tip tip-trick">
+        <div class="tip-label">★ Array Problems (Module 8)</div>
+        <ul>
+          <li>Find max, min, sum, average</li>
+          <li>Reverse an array in-place</li>
+          <li>Rotate array left/right by k</li>
+          <li>Remove duplicates</li>
+          <li>Count occurrences of element</li>
+          <li>Merge two sorted arrays</li>
+          <li>Second largest element</li>
+        </ul>
+      </div>
+      <div class="tip tip-trick">
+        <div class="tip-label">★ 2D Array / Matrix (Module 8)</div>
+        <ul>
+          <li>Matrix add, subtract, multiply</li>
+          <li>Transpose</li>
+          <li>Row/col sum</li>
+          <li>Diagonal sum</li>
+          <li>Check symmetric</li>
+          <li>Spiral traversal (harder)</li>
+        </ul>
+      </div>
+      <div class="tip tip-trick">
+        <div class="tip-label">★ Struct Problems (Module 9)</div>
+        <ul>
+          <li>Student records: read N, print sorted by GPA</li>
+          <li>Find highest/lowest scorer</li>
+          <li>Count students above average</li>
+          <li>Employee: salary calculation with allowances</li>
+          <li>Complex number struct: add, multiply</li>
+        </ul>
+      </div>
+      <div class="tip tip-trick">
+        <div class="tip-label">★ Pointer Problems (Module 10)</div>
+        <ul>
+          <li>Swap using pointers</li>
+          <li>Pass array, modify in-place</li>
+          <li>Return pointer from function</li>
+          <li>Pointer to struct: update fields</li>
+          <li>Function pointer (less likely)</li>
+        </ul>
+      </div>
+      <div class="tip tip-trick">
+        <div class="tip-label">★ Dynamic Memory (Module 11)</div>
+        <ul>
+          <li>Read n at runtime, allocate array</li>
+          <li>Resize array using realloc</li>
+          <li>Dynamic array of structs</li>
+          <li>Build a simple stack/queue using dynamic array</li>
+          <li>2D dynamic matrix operations</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="sub-head">High-value complete programs</h3>
+
+    <div class="pattern-label">Pattern — Student records with dynamic alloc + sorting</div>
+    <pre><code><span class="macro">#include &lt;stdio.h&gt;</span>
+<span class="macro">#include &lt;stdlib.h&gt;</span>
+<span class="macro">#include &lt;string.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> {
+    <span class="type">char</span> name[<span class="num">50</span>];
+    <span class="type">float</span> gpa;
+} <span class="type">Student</span>;
+
+<span class="type">int</span> <span class="fn">cmpGPA</span>(<span class="kw">const</span> <span class="kw">void</span> *a, <span class="kw">const</span> <span class="kw">void</span> *b) {
+    <span class="type">Student</span> *sa = (<span class="type">Student</span> *)a;
+    <span class="type">Student</span> *sb = (<span class="type">Student</span> *)b;
+    <span class="kw">if</span>(sa->gpa &gt; sb->gpa) <span class="kw">return</span> -<span class="num">1</span>;
+    <span class="kw">if</span>(sa->gpa &lt; sb->gpa) <span class="kw">return</span>  <span class="num">1</span>;
+    <span class="kw">return</span> <span class="num">0</span>;
+}
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> n;
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;n);
+    <span class="type">Student</span> *s = (<span class="type">Student</span> *)<span class="fn">malloc</span>(n * <span class="kw">sizeof</span>(<span class="type">Student</span>));
+    <span class="kw">if</span>(!s) { <span class="fn">printf</span>(<span class="str">"malloc failed\n"</span>); <span class="kw">return</span> <span class="num">1</span>; }
+
+    <span class="kw">for</span>(<span class="type">int</span> i=<span class="num">0</span>; i&lt;n; i++)
+        <span class="fn">scanf</span>(<span class="str">"%s %f"</span>, s[i].name, &amp;s[i].gpa);
+
+    <span class="fn">qsort</span>(s, n, <span class="kw">sizeof</span>(<span class="type">Student</span>), cmpGPA); <span class="cmt">// stdlib sort!</span>
+
+    <span class="kw">for</span>(<span class="type">int</span> i=<span class="num">0</span>; i&lt;n; i++)
+        <span class="fn">printf</span>(<span class="str">"%s %.2f\n"</span>, s[i].name, s[i].gpa);
+
+    <span class="fn">free</span>(s);
+    <span class="kw">return</span> <span class="num">0</span>;
+}
+</code><span class="lang-tag">c</span></pre>
+
+    <div class="pattern-label">Pattern — Reverse array in-place using pointers</div>
+    <pre><code><span class="kw">void</span> <span class="fn">reverse</span>(<span class="type">int</span> *arr, <span class="type">int</span> n) {
+    <span class="type">int</span> *left = arr;
+    <span class="type">int</span> *right = arr + n - <span class="num">1</span>;
+    <span class="kw">while</span>(left &lt; right) {
+        <span class="type">int</span> t = *left;
+        *left = *right;
+        *right = t;
+        left++; right--;
+    }
+}
+</code><span class="lang-tag">c</span></pre>
+
+  </div>
+</div>
+
+
+<!-- SECTION 10 -->
+<div class="section" id="s10">
+  <div class="section-header">
+    <span class="section-num">10</span>
+    <h2 style="color: var(--accent2)">Killer Tricks, Pitfalls & Exam Strategy</h2>
+  </div>
+  <div class="section-body">
+
+    <div class="tip-grid">
+      <div class="tip tip-warn">
+        <div class="tip-label">⚠ Top 10 Bugs That Cost Marks</div>
+        <ul>
+          <li>Missing <code>return 0;</code> in main</li>
+          <li>Using <code>=</code> instead of <code>==</code> in condition</li>
+          <li>Off-by-one: <code>i &lt;= n</code> vs <code>i &lt; n</code></li>
+          <li>Forgetting <code>&amp;</code> in scanf for int/float/char</li>
+          <li>Using <code>&amp;</code> in scanf for string/array</li>
+          <li>Integer division when float expected</li>
+          <li>Missing break in switch</li>
+          <li>Not freeing malloc'd memory</li>
+          <li><code>strcpy</code> instead of <code>=</code> for char arrays</li>
+          <li>Array out of bounds (arr[n] when size is n)</li>
+        </ul>
+      </div>
+      <div class="tip tip-good">
+        <div class="tip-label">✓ Smart Shortcuts</div>
+        <ul>
+          <li>Ternary: <code>max = (a>b) ? a : b;</code></li>
+          <li>Swap without temp: <code>a^=b; b^=a; a^=b;</code></li>
+          <li>Check power of 2: <code>n &amp; (n-1) == 0</code></li>
+          <li>Even/odd: <code>n%2==0</code> or <code>n&amp;1==0</code></li>
+          <li>Absolute value: <code>a &lt; 0 ? -a : a</code> or <code>abs(a)</code></li>
+          <li>Zero-out array: <code>memset(arr, 0, n*sizeof(int))</code></li>
+        </ul>
+      </div>
+      <div class="tip tip-info">
+        <div class="tip-label">ℹ 3-hr Exam Time Strategy</div>
+        <ul>
+          <li>Read ALL questions first (5 min)</li>
+          <li>Attempt easy questions first, bank marks</li>
+          <li>For each function: write prototype → body → test call</li>
+          <li>Always test with edge cases: n=0, n=1, negative numbers</li>
+          <li>Even partial marks > blank: write struct + function signatures</li>
+          <li>Comment your logic — it signals intent even if code is buggy</li>
+        </ul>
+      </div>
+      <div class="tip tip-trick">
+        <div class="tip-label">★ Harder Topics at Module 10-11 Level</div>
+        <ul>
+          <li>Pointer to pointer (<code>int **</code>) for 2D dynamic</li>
+          <li>Function returning malloc'd pointer</li>
+          <li>Modify array size using realloc</li>
+          <li>Struct with pointer member</li>
+          <li>Passing pointer to function that fills an array</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <h3 class="sub-head">Quick Reference — Useful stdlib functions</h3>
+    <table>
+      <tr><th>Function</th><th>Header</th><th>What it does</th></tr>
+      <tr><td>strlen(s)</td><td>string.h</td><td>Length of string (excl \0)</td></tr>
+      <tr><td>strcpy(dst,src)</td><td>string.h</td><td>Copy src into dst</td></tr>
+      <tr><td>strcat(dst,src)</td><td>string.h</td><td>Append src to dst</td></tr>
+      <tr><td>strcmp(a,b)</td><td>string.h</td><td>0 if equal, &lt;0 if a&lt;b, &gt;0 if a&gt;b</td></tr>
+      <tr><td>memset(ptr,val,n)</td><td>string.h</td><td>Set n bytes to val</td></tr>
+      <tr><td>malloc(n)</td><td>stdlib.h</td><td>Alloc n bytes, uninitialized</td></tr>
+      <tr><td>calloc(n,sz)</td><td>stdlib.h</td><td>Alloc n*sz bytes, zeroed</td></tr>
+      <tr><td>realloc(ptr,n)</td><td>stdlib.h</td><td>Resize existing allocation</td></tr>
+      <tr><td>free(ptr)</td><td>stdlib.h</td><td>Release heap memory</td></tr>
+      <tr><td>qsort(arr,n,sz,cmp)</td><td>stdlib.h</td><td>Sort any array with comparator</td></tr>
+      <tr><td>abs(n)</td><td>stdlib.h</td><td>Absolute value of int</td></tr>
+      <tr><td>sqrt(x)</td><td>math.h</td><td>Square root (needs -lm)</td></tr>
+      <tr><td>pow(x,y)</td><td>math.h</td><td>x^y (needs -lm)</td></tr>
+    </table>
+
+    <hr class="divider">
+    <h3 class="sub-head">Memory Map — Visual</h3>
+    <pre><code><span class="cmt">/* Memory layout of a C program:
+   ┌─────────────────┐ High address
+   │  Stack          │ ← local vars, function frames (grows ↓)
+   ├─────────────────┤
+   │  ↕ (gap)        │
+   ├─────────────────┤
+   │  Heap           │ ← malloc/calloc (grows ↑)
+   ├─────────────────┤
+   │  BSS            │ ← uninitialized globals
+   ├─────────────────┤
+   │  Data           │ ← initialized globals & statics
+   ├─────────────────┤
+   │  Text/Code      │ ← your compiled functions
+   └─────────────────┘ Low address (0x0...)
+*/</span>
+</code><span class="lang-tag">c</span></pre>
+
+    <div class="good-box">
+      <strong>Final tip:</strong> The open-book exam allows material on the portal — so have sorted bookmarks. But don't rely on lookup for basics (syntax, format specifiers) — those need to be in your head. Use reference time for tricky pointer/malloc patterns.
+    </div>
+
+  </div>
+</div>
+
+<div style="text-align:center; padding: 2rem; color: var(--muted); font-size:0.8rem; font-family:'JetBrains Mono',monospace;">
+  CS F111 · 2nd Sem 2025-26 · Modules 01–11 · All the best Yash! 🚀
+</div>
+
+</body>
+</html>
