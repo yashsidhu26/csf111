@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIO F111 Ultimate Open-Book Helper</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --primary-light: #1e293b;
+            --secondary: #3b82f6;
+            --accent: #10b981;
+            --warning: #ef4444;
+            --bg-light: #f8fafc;
+            --text-dark: #0f172a;
+            --text-light: #475569;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            overflow: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .logo {
+            padding: 25px;
+            font-size: 1.6rem;
+            font-weight: 800;
+            border-bottom: 1px solid var(--primary-light);
+            text-align: center;
+            background: linear-gradient(135deg, var(--secondary), #8b5cf6);
+            color: white;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 15px 0;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .nav-links li {
+            padding: 16px 25px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            border-left: 4px solid transparent;
+            color: #cbd5e1;
+        }
+
+        .nav-links li:hover {
+            background-color: var(--primary-light);
+            color: white;
+        }
+
+        .nav-links li.active {
+            background-color: var(--primary-light);
+            border-left: 4px solid var(--accent);
+            color: white;
+            font-weight: 600;
+        }
+
+        .nav-links li span.icon {
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+            scroll-behavior: smooth;
+        }
+
+        .tab-content {
+            display: none;
+            animation: slideUp 0.4s ease-out forwards;
+        }
+
+        .tab-content.active { display: block; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.4rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+
+        p.subtitle {
+            color: var(--text-light);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 15px;
+        }
+
+        /* Search bar */
+        .search-container {
+            position: sticky;
+            top: 0;
+            background: var(--bg-light);
+            padding-bottom: 20px;
+            z-index: 5;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 16px 24px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .search-bar:focus { 
+            border-color: var(--secondary); 
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); 
+        }
+
+        /* Solver Cards */
+        .solver-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .solver-card {
+            background: white;
+            border-radius: 10px;
+            border-left: 5px solid var(--secondary);
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .solver-card.high { border-left-color: var(--warning); }
+        .solver-card.med { border-left-color: var(--accent); }
+
+        .solver-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .solver-scenario {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .solver-page {
+            background: var(--primary-light);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .solver-action {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .solver-action strong { color: var(--text-dark); }
+
+        /* Writing Style Cards */
+        .qa-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+        }
+
+        .qa-question {
+            background: var(--primary-light);
+            color: white;
+            padding: 20px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .qa-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .qa-bad {
+            background: #fef2f2;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #fecaca;
+        }
+
+        .qa-good {
+            background: #ecfdf5;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #a7f3d0;
+        }
+
+        .qa-bad h4 { color: #dc2626; margin-bottom: 8px; }
+        .qa-good h4 { color: #059669; margin-bottom: 8px; }
+
+        .qa-tip {
+            grid-column: span 2;
+            padding: 15px;
+            background: #f0f9ff;
+            border-radius: 8px;
+            color: #0369a1;
+            font-size: 0.95rem;
+            border: 1px solid #bae6fd;
+        }
+
+        /* Index Grid */
+        .index-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .index-unit {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid var(--border);
+        }
+
+        .index-unit h3 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--bg-light);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .index-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 0.95rem;
+            border-bottom: 1px dashed var(--border);
+            color: var(--text-light);
+        }
+        
+        .index-item:last-child { border-bottom: none; }
+        .index-item .pg { font-weight: 700; color: var(--primary); }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        th, td { padding: 15px 20px; text-align: left; }
+        thead { background: var(--primary); color: white; }
+        tbody tr { border-bottom: 1px solid var(--border); }
+        tbody tr:hover { background: #f1f5f9; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">BIO F111<br><span style="font-size:0.9rem; font-weight:400; color:#cbd5e1;">Open-Book Helper</span></div>
+        <ul class="nav-links">
+            <li class="active" onclick="switchTab('solver', this)"><span class="icon">🆘</span> Open-Book Solver</li>
+            <li onclick="switchTab('writing', this)"><span class="icon">✍️</span> Answer Writing Style</li>
+            <li onclick="switchTab('detailed-index', this)"><span class="icon">📑</span> Ultra-Detailed Index</li>
+            <li onclick="switchTab('master-table', this)"><span class="icon">📊</span> Standard Master Table</li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        <!-- TAB 1: OPEN BOOK SOLVER -->
+        <div id="solver" class="tab-content active">
+            <h1>🆘 The Open-Book Solver</h1>
+            <p class="subtitle">Search for keywords from your exam question to instantly find the concept and exact page number.</p>
+
+            <div class="search-container">
+                <input type="text" id="solverSearch" class="search-bar" placeholder="Type a keyword (e.g., 'graph', 'toxin', 'ATP', 'blood')..." onkeyup="filterSolver()">
+            </div>
+
+            <div class="solver-grid" id="solverGrid">
+                
+                <!-- Solver Items -->
+                <div class="solver-card high">
+                    <div class="solver-header">
+                        <span class="solver-scenario">Question has a Graph showing DNA Amount changing (1x to 2x)</span>
+                        <span class="solver-page">Pg 125, 204</span>
+                    </div>
+                    <div class="solver-action">
+                        <strong>Concept:</strong> Cell Cycle & Flow Cytometry.<br>
+                        <strong>Action:</strong> If DNA doubles, it is passing through the <strong>S-Phase</strong>. A peak at 1x is G1, a peak at 2x is G2/M phase. If the question mentions mitochondrial DNA vs Nuclear DNA, remember mtDNA replicates independently of the cell cycle!
+                    </div>
+                </div>
+
+                <div class="solver-card high">
+                    <div class="solver-header">
+                        <span class="solver-scenario">Question asks to map Restriction Enzymes from an Agarose Gel</span>
+                        <span class="solver-page">Pg 220, 226</span>
+                    </div>
+                    <div class="solver-action">
+                        <strong>Concept:</strong> Restriction Mapping & Gel Electrophoresis.<br>
+                        <strong>Action:</strong> Look at the bands. Remember: <strong>Smallest fragments travel furthest (bottom of gel)</strong>. If a circular plasmid is cut once, you get 1 band. If cut twice, you get 2 bands. The sum of the fragments must equal the total plasmid size.
+                    </div>
+                </div>
+
+                <div class="solver-card med">
+                    <div class="solver-header">
+                        <span class="solver-scenario">Question involves a specific Toxin/Chemical stopping a bodily function</span>
+                        <span class="solver-page">Pg 82, 368, 299</span>
+                    </div>
+                    <div class="solver-action">
+                        <strong>Concept:</strong> Enzyme Inhibition or Receptor Blocking.<br>
+                        <strong>Action:</strong> If it's a nerve gas/toxin (Pg 82), it's likely an enzyme inhibitor (competitive or non-competitive). If it affects heart/breathing, it might block neurotransmitter reuptake (Pg 368) or bind to hemoglobin preventing Oxygen transport (like Carbon Monoxide, Pg 299).
+                    </div>
+                </div>
+
+                <div class="solver-card high">
+                    <div class="solver-header">
+                        <span class="solver-scenario">Question asks about calculating ATP yield with a mutant/missing enzyme</span>
+                        <span class="solver-page">Pg 95-100, Appendix A-1</span>
+                    </div>
+                    <div class="solver-action">
+                        <strong>Concept:</strong> Cellular Respiration Pathways.<br>
+                        <strong>Action:</strong> Go to the diagrams. Normal Glycolysis = 2 ATP + 2 NADH. Normal TCA = 2 ATP, 6 NADH, 2 FADH2. If the mutant skips a step (like the 2024 PYQ), subtract the specific ATP/NADH generated at that specific step using Appendix A-1/A-2 diagrams.
+                    </div>
+                </div>
+
+                <div class="solver-card high">
+                    <div class="solver-header">
+                        <span class="solver-scenario">Question involves Pedigrees, Carriers, and Probability</span>
+                        <span class="solver-page">Pg 153-154, 163-164</span>
+                    </div>
+                    <div class="solver-action">
+                        <strong>Concept:</strong> Mendelian or Sex-Linked Inheritance.<br>
+                        <strong>Action:</strong> Is it mostly males affected? It's Sex-Linked Recessive (Pg 163). Do unaffected parents have an affected child? It's Autosomal Recessive (Pg 153). Remember to use the rule of multiplication for probabilities (Pg 152).
+                    </div>
+                </div>
+
+                <div class="solver-card med">
+                    <div class="solver-header">
+                        <span class="solver-scenario">Question tracks a food item through the body</span>
+                        <span class="solver-page">Pg 264-272</span>
+                    </div>
+                    <div class="solver-action">
+                        <strong>Concept:</strong> Digestive System & Macromolecule breakdown.<br>
+                        <strong>Action:</strong> Carbs start digesting in the mouth (salivary amylase, pg 267). Proteins in the stomach (pepsin/acid, pg 268). Fats in the small intestine (bile/lipase, pg 269). Absorption happens in the small intestine villi (pg 270).
+                    </div>
+                </div>
+
+                <div class="solver-card">
+                    <div class="solver-header">
+                        <span class="solver-scenario">Question compares two cells in the body having different structures/functions</span>
+                        <span class="solver-page">Pg 198-200</span>
+                    </div>
+                    <div class="solver-action">
+                        <strong>Concept:</strong> Gene Regulation / Differentiation.<br>
+                        <strong>Action:</strong> ALL somatic cells have the EXACT same DNA. The difference is solely due to <strong>Gene Regulation</strong> (which genes are turned "on" or "off" via transcription factors, DNA packing, or enhancers).
+                    </div>
+                </div>
+
+                <div class="solver-card">
+                    <div class="solver-header">
+                        <span class="solver-scenario">Question mentions Plasmolysis, flaccid, or turgid cells</span>
+                        <span class="solver-page">Pg 84-85</span>
+                    </div>
+                    <div class="solver-action">
+                        <strong>Concept:</strong> Osmosis and Water Balance.<br>
+                        <strong>Action:</strong> Water moves from Hypotonic (low solute) to Hypertonic (high solute). Plant cells want to be hypotonic (turgid). Animal cells will burst in hypotonic environments and shrivel in hypertonic environments.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TAB 2: ANSWER WRITING STYLE -->
+        <div id="writing" class="tab-content">
+            <h1>✍️ BITS Answer Writing Strategy</h1>
+            <p class="subtitle">How to write open-book answers that get full marks. Rule #1: "No justification, NO marks. Irrelevantly long answers are NOT entertained."</p>
+
+            <div class="qa-card">
+                <div class="qa-question">
+                    <strong>2024 PYQ (F1):</strong> One of your female colleagues used a hair straightening iron to straighten her curly hair. Based on your learning from the course explain the biochemical concept behind this. [2 Marks]
+                </div>
+                <div class="qa-body">
+                    <div class="qa-bad">
+                        <h4>❌ The "Rambling/Basic" Answer (0.5/2 Marks)</h4>
+                        <p>The hair straightener uses heat to make the hair straight. Hair is made of proteins, and the high temperature melts the hair into a straight line. When it cools down, it stays straight because she used the iron to physically pull it.</p>
+                    </div>
+                    <div class="qa-good">
+                        <h4>✅ The "Biochemical" Answer (2/2 Marks)</h4>
+                        <p>Hair is composed of the protein <strong>keratin</strong>. The heat from the iron causes <strong>denaturation</strong>, breaking the weak hydrogen bonds and disulfide bridges that maintain the protein's <strong>secondary and tertiary structures</strong> (the curls). Upon cooling in a straight position, new bonds reform, holding the straight structure.</p>
+                    </div>
+                    <div class="qa-tip">
+                        <strong>Strategy Tip:</strong> Always use the exact biochemical vocabulary from the book (Denaturation, Hydrogen bonds, Tertiary structure). Never use layman terms like "melts".
+                    </div>
+                </div>
+            </div>
+
+            <div class="qa-card">
+                <div class="qa-question">
+                    <strong>2023 PYQ (Q1):</strong> Indian Government banned polythene bags. Why hasn't a ban been implemented on paper bags, as a cow was seen eating paper bags in the street? Give a suitable biochemical justification. [4 Marks]
+                </div>
+                <div class="qa-body">
+                    <div class="qa-bad">
+                        <h4>❌ The "General Knowledge" Answer (1/4 Marks)</h4>
+                        <p>Paper bags are eco-friendly and biodegradable, while plastic bags pollute the environment and choke animals. Cows shouldn't eat either, but paper digests easier than plastic.</p>
+                    </div>
+                    <div class="qa-good">
+                        <h4>✅ The "Course Concept" Answer (4/4 Marks)</h4>
+                        <p>Paper bags are made of <strong>cellulose</strong>, a plant polysaccharide. While cows themselves lack cellulase, their digestive tracts harbor <strong>symbiotic bacteria</strong> that produce enzymes capable of hydrolyzing cellulose into usable glucose monomers. Polythene is a synthetic polymer that neither the cow nor its microbiome possesses enzymes to break down, leading to deadly intestinal blockage.</p>
+                    </div>
+                    <div class="qa-tip">
+                        <strong>Strategy Tip:</strong> Connect real-world scenarios to specific book concepts. Mention the molecule (Cellulose), the organism trait (Symbiotic bacteria), and the chemical reaction (Hydrolysis).
+                    </div>
+                </div>
+            </div>
+            
+            <div class="qa-card">
+                <div class="qa-question">
+                    <strong>2024 PYQ (F4):</strong> Aerobic bacteria do not have mitochondria yet they generate ATP. Name the process(es) involved and the site for the same. [2 Marks]
+                </div>
+                <div class="qa-body">
+                    <div class="qa-bad">
+                        <h4>❌ The "Over-explained" Answer (1/2 Marks)</h4>
+                        <p>Because they are prokaryotes, they don't have membrane bound organelles like mitochondria. So they just do glycolysis in the cytoplasm which makes 2 ATP, and they don't need the rest of the cycle because they are small.</p>
+                    </div>
+                    <div class="qa-good">
+                        <h4>✅ The "Direct & Accurate" Answer (2/2 Marks)</h4>
+                        <p><strong>Processes:</strong> Glycolysis, Krebs Cycle, and Electron Transport Chain (ETC).<br>
+                        <strong>Sites:</strong> Glycolysis and Krebs cycle occur in the <strong>cytosol/cytoplasm</strong>. The Electron Transport Chain and ATP Synthase are embedded in the <strong>plasma membrane</strong>.</p>
+                    </div>
+                    <div class="qa-tip">
+                        <strong>Strategy Tip:</strong> If a question asks to "Name" or "Identify", use bullet points. Do not write paragraphs. BITS professors grade based on a strict keyword rubric.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TAB 3: ULTRA DETAILED INDEX -->
+        <div id="detailed-index" class="tab-content">
+            <h1>📑 Ultra-Detailed Book Index</h1>
+            <p class="subtitle">Expanded index linking highly specific concepts, sub-topics, and Appendix diagrams to page numbers.</p>
+
+            <div class="index-grid">
+                <!-- Chemistry & Macromolecules -->
+                <div class="index-unit">
+                    <h3>🧪 Chemistry & Macromolecules</h3>
+                    <div class="index-item"><span>Isotopes & Radioactive Tracers</span> <span class="pg">Pg 25-27</span></div>
+                    <div class="index-item"><span>Water: Cohesion/Adhesion/Osmosis</span> <span class="pg">Pg 28-31, 84</span></div>
+                    <div class="index-item"><span>pH, Acids, Bases & Buffers</span> <span class="pg">Pg 31-32</span></div>
+                    <div class="index-item"><span>Carbohydrates (Mono, Di, Polysaccharides)</span> <span class="pg">Pg 39-42</span></div>
+                    <div class="index-item"><span>Lipids (Triglycerides, Sat/Unsat, Steroids)</span> <span class="pg">Pg 42-45</span></div>
+                    <div class="index-item"><span>Proteins (Amino acids, Peptide bonds, Shape)</span> <span class="pg">Pg 45-48</span></div>
+                </div>
+
+                <!-- Cells & Membranes -->
+                <div class="index-unit">
+                    <h3>🔬 Cells & Transport</h3>
+                    <div class="index-item"><span>Prokaryote vs Eukaryote Structure</span> <span class="pg">Pg 56-59</span></div>
+                    <div class="index-item"><span>Endomembrane System (ER, Golgi, Lysosomes)</span> <span class="pg">Pg 64-67</span></div>
+                    <div class="index-item"><span>Chloroplasts vs Mitochondria (Structure/Origin)</span> <span class="pg">Pg 68</span></div>
+                    <div class="index-item"><span>Cytoskeleton, Cilia, Flagella</span> <span class="pg">Pg 68-69</span></div>
+                    <div class="index-item"><span>Fluid Mosaic Model (Phospholipid bilayer)</span> <span class="pg">Pg 60</span></div>
+                    <div class="index-item"><span>Passive/Active Transport & Facilitated Diff.</span> <span class="pg">Pg 83-86</span></div>
+                    <div class="index-item"><span>Exocytosis & Endocytosis</span> <span class="pg">Pg 86</span></div>
+                </div>
+
+                <!-- Energy & Metabolism -->
+                <div class="index-unit">
+                    <h3>⚡ Energy & Metabolism</h3>
+                    <div class="index-item"><span>ATP Structure & Phosphate Transfer</span> <span class="pg">Pg 79-80</span></div>
+                    <div class="index-item"><span>Enzymes & Activation Energy</span> <span class="pg">Pg 80-82</span></div>
+                    <div class="index-item"><span>Enzyme Inhibition (Competitive/Non-comp)</span> <span class="pg">Pg 82</span></div>
+                    <div class="index-item"><span>Glycolysis (Inputs/Outputs/Location)</span> <span class="pg">Pg 96, A-1</span></div>
+                    <div class="index-item"><span>Citric Acid (TCA) Cycle</span> <span class="pg">Pg 97, A-2</span></div>
+                    <div class="index-item"><span>Electron Transport Chain & ATP Synthase</span> <span class="pg">Pg 98-99</span></div>
+                    <div class="index-item"><span>Fermentation (Lactic & Alcoholic)</span> <span class="pg">Pg 101-103</span></div>
+                    <div class="index-item"><span>Photosynthesis: Light Reactions</span> <span class="pg">Pg 110-114, A-3</span></div>
+                    <div class="index-item"><span>Photosynthesis: Calvin Cycle</span> <span class="pg">Pg 115-116, A-4</span></div>
+                </div>
+
+                <!-- Genetics & DNA -->
+                <div class="index-unit">
+                    <h3>🧬 Genetics & Reproduction</h3>
+                    <div class="index-item"><span>Cell Cycle (G1, S, G2, M) & Cancer</span> <span class="pg">Pg 125-129</span></div>
+                    <div class="index-item"><span>Mitosis vs Meiosis (Detailed Comparison)</span> <span class="pg">Pg 134-135</span></div>
+                    <div class="index-item"><span>Crossing Over & Nondisjunction</span> <span class="pg">Pg 136-138</span></div>
+                    <div class="index-item"><span>Mendelian Genetics (Punnett, Laws)</span> <span class="pg">Pg 146-150</span></div>
+                    <div class="index-item"><span>Incomplete Dominance, Codominance, Pleiotropy</span> <span class="pg">Pg 158-160</span></div>
+                    <div class="index-item"><span>Sex-Linked Genes & Pedigrees</span> <span class="pg">Pg 163, 153</span></div>
+                    <div class="index-item"><span>DNA Replication Machinery</span> <span class="pg">Pg 174-175</span></div>
+                    <div class="index-item"><span>Transcription (Promoters, RNA Pol)</span> <span class="pg">Pg 179</span></div>
+                    <div class="index-item"><span>RNA Processing (Splicing, Introns/Exons)</span> <span class="pg">Pg 180</span></div>
+                    <div class="index-item"><span>Translation (tRNA, Ribosomes, Codons)</span> <span class="pg">Pg 180-182</span></div>
+                    <div class="index-item"><span>Mutations (Missense, Nonsense, Frameshift)</span> <span class="pg">Pg 184</span></div>
+                    <div class="index-item"><span>Operons (lac Operon regulation)</span> <span class="pg">Pg 198-199</span></div>
+                </div>
+
+                <!-- Biotechnology -->
+                <div class="index-unit">
+                    <h3>🔬 Biotechnology</h3>
+                    <div class="index-item"><span>Plasmids & Gene Cloning</span> <span class="pg">Pg 218-219</span></div>
+                    <div class="index-item"><span>Restriction Enzymes & Sticky Ends</span> <span class="pg">Pg 220</span></div>
+                    <div class="index-item"><span>Gel Electrophoresis</span> <span class="pg">Pg 220-221</span></div>
+                    <div class="index-item"><span>PCR (Polymerase Chain Reaction)</span> <span class="pg">Pg 225-226</span></div>
+                    <div class="index-item"><span>DNA Profiling & STRs</span> <span class="pg">Pg 226-227</span></div>
+                    <div class="index-item"><span>Genomics & Bioinformatics</span> <span class="pg">Pg 228-230</span></div>
+                </div>
+
+                <!-- Animal Systems -->
+                <div class="index-unit">
+                    <h3>🦁 Animal Systems</h3>
+                    <div class="index-item"><span>Negative & Positive Feedback Loops</span> <span class="pg">Pg 254</span></div>
+                    <div class="index-item"><span>Thermoregulation & Osmoregulation</span> <span class="pg">Pg 255-256</span></div>
+                    <div class="index-item"><span>Digestion (Enzymes, Alimentary Canal)</span> <span class="pg">Pg 266-271</span></div>
+                    <div class="index-item"><span>Heart Structure & Cardiac Cycle</span> <span class="pg">Pg 286-287</span></div>
+                    <div class="index-item"><span>Blood Flow & Capillary Exchange</span> <span class="pg">Pg 288-290</span></div>
+                    <div class="index-item"><span>Respiration (Lungs, Gas Exchange, Hb)</span> <span class="pg">Pg 297-300</span></div>
+                    <div class="index-item"><span>Innate vs Adaptive Immunity</span> <span class="pg">Pg 306, 310</span></div>
+                    <div class="index-item"><span>Clonal Selection (B-cells, T-cells, Memory)</span> <span class="pg">Pg 311-313</span></div>
+                    <div class="index-item"><span>Endocrine Glands & Hormones List</span> <span class="pg">Pg 326</span></div>
+                    <div class="index-item"><span>Gametogenesis (Spermatogenesis vs Oogenesis)</span> <span class="pg">Pg 344-345</span></div>
+                    <div class="index-item"><span>Female Reproductive Cycle (Hormones)</span> <span class="pg">Pg 346-347</span></div>
+                    <div class="index-item"><span>Action Potentials & Synapses</span> <span class="pg">Pg 365-367</span></div>
+                    <div class="index-item"><span>Muscle Contraction (Sliding Filament)</span> <span class="pg">Pg 384-385</span></div>
+                </div>
+
+                <!-- Plant Systems -->
+                <div class="index-unit">
+                    <h3>🌿 Plant Systems</h3>
+                    <div class="index-item"><span>Roots, Stems, Leaves (Modifications)</span> <span class="pg">Pg 395-397</span></div>
+                    <div class="index-item"><span>Plant Tissue Systems (Xylem, Phloem)</span> <span class="pg">Pg 398</span></div>
+                    <div class="index-item"><span>Primary vs Secondary Growth</span> <span class="pg">Pg 401-403</span></div>
+                    <div class="index-item"><span>Transpiration & Cohesion-Tension</span> <span class="pg">Pg 417-418</span></div>
+                    <div class="index-item"><span>Pressure-Flow Mechanism (Phloem)</span> <span class="pg">Pg 419</span></div>
+                    <div class="index-item"><span>Plant Hormones (Auxins, Ethylene, ABA)</span> <span class="pg">Pg 420-423</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: MASTER TABLE (Original) -->
+        <div id="master-table" class="tab-content">
+            <h1>📊 Standard Master Table</h1>
+            <p class="subtitle">Quick-search index linking Handout topics to Textbook Pages & PYQ Frequency.</p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Topic / Term</th>
+                            <th>Handout / Lab?</th>
+                            <th>PYQ (Count)</th>
+                            <th>Book Page(s)</th>
+                            <th>Priority</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Gametogenesis</td><td>Yes</td><td>2</td><td>344–345</td><td><span class="badge high">HIGH</span></td></tr>
+                        <tr><td>Neurons & Action Potentials</td><td>Yes</td><td>2</td><td>364–367</td><td><span class="badge high">HIGH</span></td></tr>
+                        <tr><td>Cell Signaling & Receptors</td><td>Yes</td><td>1</td><td>202, 324</td><td><span class="badge high">HIGH</span></td></tr>
+                        <tr><td>Vaccines & Immunity</td><td>Yes</td><td>2</td><td>310–314</td><td><span class="badge high">HIGH</span></td></tr>
+                        <tr><td>Allergies & Immune Disorders</td><td>Yes</td><td>1</td><td>315–317</td><td><span class="badge med">MED</span></td></tr>
+                        <tr><td>Digestive Sys & Enzymes</td><td>Yes</td><td>2</td><td>264–272</td><td><span class="badge high">HIGH</span></td></tr>
+                        <tr><td>Urinary System & Nephrons</td><td>Yes</td><td>2</td><td>256–258</td><td><span class="badge high">HIGH</span></td></tr>
+                        <tr><td>Cardiovascular & Blood Flow</td><td>Yes</td><td>1</td><td>284–288</td><td><span class="badge med">MED</span></td></tr>
+                        <tr><td>Cellular Respiration</td><td>Yes</td><td>2</td><td>94–100</td><td><span class="badge high">HIGH</span></td></tr>
+                        <tr><td>Photosynthesis</td><td>Yes</td><td>2</td><td>108–116</td><td><span class="badge high">HIGH</span></td></tr>
+                        <tr><td>Gene Cloning & Vectors</td><td>Yes</td><td>2</td><td>218–219</td><td><span class="badge high">HIGH</span></td></tr>
+                        <tr><td>Restriction Enzymes</td><td>Yes</td><td>2</td><td>220</td><td><span class="badge high">HIGH</span></td></tr>
+                        <tr><td>DNA Profiling, PCR, STRs</td><td>Yes</td><td>2</td><td>224–227</td><td><span class="badge high">HIGH</span></td></tr>
+                        <tr><td>Cell Cycle & Mitosis</td><td>Yes (Lab)</td><td>2</td><td>125–128</td><td><span class="badge high">HIGH</span></td></tr>
+                        <tr><td>Transcription & Translation</td><td>Yes</td><td>1</td><td>176–182</td><td><span class="badge high">HIGH</span></td></tr>
+                        <tr><td>Mendelian Genetics</td><td>Yes</td><td>1</td><td>146–150</td><td><span class="badge med">MED</span></td></tr>
+                        <tr><td>Hormones (Insulin, Steroids)</td><td>Yes</td><td>2</td><td>324–331</td><td><span class="badge high">HIGH</span></td></tr>
+                        <tr><td>Autonomic Nervous System</td><td>Yes</td><td>1</td><td>369–370</td><td><span class="badge med">MED</span></td></tr>
+                        <tr><td>SCNT / Reproductive Cloning</td><td>Yes</td><td>1</td><td>206–207</td><td><span class="badge med">MED</span></td></tr>
+                        <tr><td>Bioinformatics & Genomics</td><td>Yes (Lab)</td><td>0</td><td>228–231</td><td><span class="badge low">LOW</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Tab switching logic
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+        }
+
+        // Solver filtering logic
+        function filterSolver() {
+            let input = document.getElementById("solverSearch").value.toLowerCase();
+            let cards = document.getElementsByClassName("solver-card");
+
+            for (let i = 0; i < cards.length; i++) {
+                let text = cards[i].innerText.toLowerCase();
+                if (text.includes(input)) {
+                    cards[i].style.display = "";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
