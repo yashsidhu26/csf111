@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Guide: Understanding Self and Society (HSS F101)</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #2563eb;
+            --accent: #f59e0b;
+            --danger: #dc2626;
+            --success: #16a34a;
+            --bg-color: #f8fafc;
+            --sidebar-bg: #0f172a;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --def-bg: #e0f2fe;
+            --summary-bg: #fef9c3;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        body {
+            display: flex;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            background-color: #0b1120;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-header p {
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 10px 0;
+        }
+
+        .nav-links li {
+            padding: 0;
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 12px 20px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: #1e293b;
+            color: white;
+            border-left-color: var(--secondary);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+            scroll-behavior: smooth;
+        }
+
+        .page {
+            display: none;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1.page-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin: 40px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: #334155;
+            margin: 25px 0 10px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Callouts */
+        .summary-box {
+            background-color: var(--summary-bg);
+            border-left: 5px solid var(--accent);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .summary-box h4 {
+            color: #b45309;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .def-box {
+            background-color: var(--def-bg);
+            border-left: 5px solid var(--secondary);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .def-box strong {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .exam-tip {
+            background-color: #fee2e2;
+            border-left: 5px solid var(--danger);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .exam-tip h4 {
+            color: var(--danger);
+            margin-bottom: 5px;
+        }
+
+        .priority {
+            color: var(--danger);
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Exam Questions Section */
+        .exam-questions {
+            background-color: #f1f5f9;
+            border: 2px dashed #94a3b8;
+            padding: 25px;
+            margin-top: 50px;
+            border-radius: 8px;
+        }
+
+        .exam-questions h3 {
+            color: var(--primary);
+            margin-top: 0;
+            text-align: center;
+        }
+
+        /* Mini TOC */
+        .mini-toc {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .mini-toc h4 {
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .mini-toc ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+
+        .mini-toc a {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+
+        .mini-toc a:hover {
+            text-decoration: underline;
+        }
+
+        /* Utility */
+        .highlight {
+            background-color: #fef08a;
+            padding: 0 4px;
+            border-radius: 2px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h1>Study Guide</h1>
+            <p>Understanding Self & Society (HSS F101)</p>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home" class="active" onclick="showPage('home')">Home & Master Index</a></li>
+            <li><a href="#culture" onclick="showPage('culture')">Module 1: Culture & Society</a></li>
+            <li><a href="#state" onclick="showPage('state')">Module 2: State & Society</a></li>
+            <li><a href="#ethics" onclick="showPage('ethics')">Module 3: Ethics & Society</a></li>
+            <li><a href="#glossary" onclick="showPage('glossary')">Glossary of Key Terms</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+
+        <!-- HOME PAGE -->
+        <div id="home" class="page active">
+            <h1 class="page-title">Welcome to your HSS F101 Study Guide</h1>
+            
+            <div class="summary-box">
+                <h4>📝 How to use this guide</h4>
+                <p>This comprehensive HTML study guide compiles <strong>everything</strong> from your provided lecture PDFs and the course handout. It is structured identically to the course modules. Use the sidebar to navigate between modules.</p>
+                <ul>
+                    <li>Look for the <span class="priority">⭐</span> icon. It flags high-priority, exam-likely concepts.</li>
+                    <li>Read the <strong>Lecture Summaries</strong> at the top of each topic for a quick 3-5 sentence refresher.</li>
+                    <li>Review the <strong>Likely Exam Questions</strong> at the bottom of each page to test your knowledge.</li>
+                    <li>Use the <strong>Glossary</strong> tab for rapid definition lookups.</li>
+                </ul>
+            </div>
+
+            <h2>Course Objectives & Scope</h2>
+            <ul>
+                <li>To introduce students to various knowledge systems and styles of thinking within the Humanities and Social Sciences (HSS).</li>
+                <li>To encourage students to evaluate and adopt novel ideas of engagement and collaboration.</li>
+                <li>To facilitate an understanding of values such as personal integrity, social responsibility, and respect for differences.</li>
+            </ul>
+
+            <h2>Evaluation Scheme (From Handout)</h2>
+            <table>
+                <tr>
+                    <th>Component</th>
+                    <th>Duration</th>
+                    <th>Weightage</th>
+                    <th>Nature</th>
+                </tr>
+                <tr>
+                    <td>Mid-Semester Test</td>
+                    <td>90 Min.</td>
+                    <td>40%</td>
+                    <td>Close Book (MCQ)</td>
+                </tr>
+                <tr>
+                    <td>Comprehensive Examination</td>
+                    <td>3 h</td>
+                    <td>60%</td>
+                    <td>Close Book (MCQ)</td>
+                </tr>
+            </table>
+            <div class="exam-tip">
+                <h4>💡 Exam Tip</h4>
+                <p>Since the exams are <strong>MCQ (Multiple Choice Questions)</strong>, you must pay special attention to specific thinkers, book titles, dates, exact definitions, and exact classifications (e.g., the 5 stages of social movements, the 4 As of ICT). Broad understanding is good, but <em>factual precision</em> is critical for MCQs.</p>
+            </div>
+        </div>
+
+        <!-- MODULE 1: CULTURE & SOCIETY -->
+        <div id="culture" class="page">
+            <h1 class="page-title">Module 1: Culture & Society</h1>
+            
+            <div class="mini-toc">
+                <h4>In this module:</h4>
+                <ul>
+                    <li><a href="#c-ideology">1. Understanding Ideology</a></li>
+                    <li><a href="#c-culture">2. Understanding Self and Society through Culture</a></li>
+                    <li><a href="#c-images">3. Reading Images</a></li>
+                    <li><a href="#c-theatre">4. How Societies Tell Stories: Theatre</a></li>
+                </ul>
+            </div>
+
+            <hr>
+            <h2 id="c-ideology">1. Understanding Ideology</h2>
+            
+            <div class="summary-box">
+                <h4>📝 Lecture Summary</h4>
+                <p>This lecture traces the evolution of the concept of "Ideology" from its origins as the "science of ideas" to a Marxist critique of power and societal control. It outlines how ideology serves the material interests of those who own the means of production and communication, effectively maintaining the status quo. Through thinkers like Marx, Gramsci, and Althusser, the lecture explains how cultural norms and institutions manufacture consent, proving that ideology is not just abstract thought, but a tangible mechanism of power that shapes everything from science to popular culture.</p>
+            </div>
+
+            <h3>Origin and Evolution</h3>
+            <ul>
+                <li><strong>Antoine Destutt de Tracy (1796):</strong> Coined the term as the <span class="highlight">"science of ideas"</span>.</li>
+                <li><strong>Karl Marx (1845):</strong> Defined ideology as <span class="highlight">"false consciousness"</span> in <em>The German Ideology</em>. It shapes the modern conception of ideology.</li>
+            </ul>
+
+            <div class="def-box">
+                <strong><span class="priority">⭐</span> Base and Superstructure Model (Marxist Theory)</strong><br>
+                <p><strong>Base:</strong> Means of production (tools, machines, factories, land) and Relations of production (Proletariat, Bourgeoisie, private property, capital). The base shapes and maintains the superstructure.</p>
+                <p><strong>Superstructure:</strong> Everything not directly to do with production (Art, Family, Culture, Religion, Philosophy, Law, Media, Politics, Science, Education). The superstructure maintains and shapes the base.</p>
+                <p><em>Note: This moves in a spiral pattern, but the base is generally dominant.</em></p>
+            </div>
+
+            <h3>20th Century Thought on Ideology <span class="priority">⭐</span></h3>
+            <ul>
+                <li><strong>Antonio Gramsci (1891–1937):</strong> Developed the concept of <strong>"Cultural Hegemony"</strong>. Argued that the bourgeoisie rules not just through police/army, but by making their own values ("common sense") the default culture for everyone through the systematic generation of consent.</li>
+                <li><strong>The Frankfurt School (Adorno & Horkheimer):</strong> Wrote about <strong>"the Culture Industry"</strong>. Argued that popular culture is a factory producing standardized ideology, creating passive consumers and preventing critical thought.</li>
+                <li><strong>Louis Althusser (1918–1990):</strong> Proposed <strong>Ideological State Apparatuses (ISAs)</strong> (family, school, church) and <strong>Repressive State Apparatuses (RSAs)</strong> (police, military). Argued that institutions "interpellate" (hail/recruit) us into being subjects who willingly follow the system.</li>
+                <li><strong>Michel Foucault (1926–1984):</strong> Focused on <strong>"Power/Knowledge"</strong>. Showed how "truth" is created by systems (medicine, psychiatry, law) to dominate people. Power is productive, not just oppressive.</li>
+                <li><strong>Slavoj Žižek (1947–):</strong> Moved away from "false consciousness". Argues: <em>"they know very well, but they are doing it anyway"</em> (we know our systems are broken, but we act as if they work).</li>
+            </ul>
+
+            <h3>Understanding Ideology as Power</h3>
+            <p>To understand ideology, ask three questions:</p>
+            <ol>
+                <li>Whose material interests are served?</li>
+                <li>Who owns/controls the means of production?</li>
+                <li>Who owns/controls the medium of communication?</li>
+            </ol>
+            <p><strong>Science and Ideology Examples:</strong> Eugenics/Racial science, Lysenkoism (Soviet extreme environmentalism), Social Darwinism (justifying inequality/colonialism), Cold War military funding (shaping physics/ARPANET), Green Revolution (yield maximization ignoring social consequences).</p>
+
+            <hr>
+            <h2 id="c-culture">2. Understanding Self and Society through Culture</h2>
+
+            <div class="summary-box">
+                <h4>📝 Lecture Summary</h4>
+                <p>This lecture explores how society constructs the "self" and how deep-seated cultural values, traditions, and norms dictate human behavior. It contrasts Indian collectivist and high-context communication styles with Western individualist and low-context styles. By applying frameworks like Hofstede's cultural dimensions and Hall's Iceberg Model, the lecture demonstrates that while surface-level artifacts are visible, the true drivers of social life—such as hierarchy, polychronic time, and relationship-oriented communication—are hidden beneath the surface.</p>
+            </div>
+
+            <h3>The Socially Constructed Self</h3>
+            <p><em>"The self is not something that exists from birth, but arises in the process of social experience."</em> - George Herbert Mead</p>
+
+            <h3>What is Culture?</h3>
+            <div class="def-box">
+                <strong><span class="priority">⭐</span> Definitions of Culture</strong><br>
+                <ul>
+                    <li><strong>Geert Hofstede:</strong> "The collective programming of the mind that distinguishes the members of one group or category of people from others."</li>
+                    <li><strong>Edward Burnett Tylor (1871):</strong> "Culture, or civilisation, taken in its broad, ethnographic sense, is that complex whole which includes knowledge, belief, art, morals, law, custom..."</li>
+                    <li><strong>Origin:</strong> The word ‘culture’ comes from the Latin word <em>Cultura</em>, meaning to ‘cultivate’.</li>
+                </ul>
+            </div>
+
+            <h3><span class="priority">⭐</span> The Iceberg Model of Culture (Edward T. Hall)</h3>
+            <p>Culture is like an iceberg; only a small part is visible, but the hidden parts guide how people think and act.</p>
+            <ul>
+                <li><strong>Visible (Easy to see / The What):</strong> Behaviours, artifacts, food, literature, art, holidays, language.</li>
+                <li><strong>Invisible (Difficult to see / The Why):</strong> Ideas about beauty, truth, logic, justice, family, norms, values, basic assumptions. Dealing with time, space, power, conflicts, emotions.</li>
+            </ul>
+
+            <h3><span class="priority">⭐</span> Hofstede's Individualism vs. Collectivism</h3>
+            <table>
+                <tr>
+                    <th>Individualist Societies (e.g., USA)</th>
+                    <th>Collectivist Societies (e.g., India)</th>
+                </tr>
+                <tr>
+                    <td>People see themselves as independent</td>
+                    <td>People see themselves as part of a group</td>
+                </tr>
+                <tr>
+                    <td>Personal goals take precedence</td>
+                    <td>Family and community come first</td>
+                </tr>
+                <tr>
+                    <td>Privacy and personal choice are valued</td>
+                    <td>Decisions consider social impact; Conformity</td>
+                </tr>
+            </table>
+
+            <h3>Cultural Orientations: Values, Traditions, Norms</h3>
+            <ul>
+                <li><strong>Values (The WHY):</strong> Deeply held abstract beliefs about what is important/right. (e.g., In India: respect for elders; In Japan: harmony/<em>wa</em>; In China: saving face/<em>miànzi</em>).</li>
+                <li><strong>Traditions (The WHAT and HOW):</strong> Established customs/rituals passed down. Concrete and observable, time-bound and repetitive. (e.g., Diwali Lakshmi Puja).</li>
+                <li><strong>Norms (The RULES):</strong> Social rules dictating behavior in specific contexts. The "do's and don'ts". (e.g., Removing shoes before entering Indian homes, punctuality in Germany).</li>
+            </ul>
+
+            <h3>Communication and Time (Edward T. Hall)</h3>
+            <div class="def-box">
+                <strong><span class="priority">⭐</span> High vs Low Context Communication</strong><br>
+                <ul>
+                    <li><strong>Low Context (Western):</strong> Communication is explicit and direct. Words carry the primary meaning. Task-oriented.</li>
+                    <li><strong>High Context (Indian):</strong> Communication is implicit and indirect. Context and shared understanding matter more than spoken words. Relationship-oriented. (e.g., "We will try" means polite refusal).</li>
+                </ul>
+            </div>
+            
+            <div class="def-box">
+                <strong><span class="priority">⭐</span> Monochronic vs Polychronic Time</strong><br>
+                <ul>
+                    <li><strong>Monochronic:</strong> Clock time takes precedence. Time is linear, precious. Punctuality is strictly valued.</li>
+                    <li><strong>Polychronic (Indian):</strong> People are more important than time. Time is circular. Multitasking is common, schedules are flexible, adjusting plans for guests is normal.</li>
+                </ul>
+            </div>
+
+            <h3>Acculturation Strategies</h3>
+            <p>The process of change resulting from first-hand contact between cultural groups:</p>
+            <ol>
+                <li><strong>Integration (Multiculturalism):</strong> Maintaining original cultural identity while participating fully in the dominant society.</li>
+                <li><strong>Assimilation (Melting Pot):</strong> Discarding original cultural identity to adopt the dominant group's culture.</li>
+                <li><strong>Marginalization (Exclusion):</strong> Losing contact with original culture while also being excluded from the dominant society.</li>
+            </ol>
+
+            <hr>
+            <h2 id="c-images">3. Reading Images</h2>
+            
+            <div class="summary-box">
+                <h4>📝 Lecture Summary</h4>
+                <p>This lecture argues that visual transparency is a myth; all images are constructed and organized to generate specific meanings. By differentiating between what is explicitly shown, what is suggested, and the resulting visual codes, students learn that images both reflect and construct reality. The lecture utilizes examples like algorithmic biases in AI image generation, commercially produced stock photos perpetuating gender tropes, and "slum tourism" photography, proving that visual literacy requires reading between the visible and the invisible.</p>
+            </div>
+
+            <h3>Visual Culture & Reading Images</h3>
+            <ul>
+                <li><strong>Image:</strong> A representation in visual format (Verbal, Mental, Graphic/Data, Photorealistic).</li>
+                <li><strong>Visual Culture:</strong> The production, consumption, and distribution of images and visual content that can be shared and understood by larger communities.</li>
+                <li><strong>Key Finding <span class="priority">⭐</span>:</strong> The transparency of images is a myth. Images are constructions. Visual ≠ Visible.</li>
+                <li><strong>Reading Images:</strong> Requires visual literacy (shared meanings and visual codes). It involves analyzing the difference between:
+                    <ul>
+                        <li>What is <em>shown</em></li>
+                        <li>What is <em>suggested</em></li>
+                        <li>What meaning is <em>generated</em></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>Case Studies in Visual Meaning</h3>
+            <ul>
+                <li><strong>Stock Photos (Criminality & Gender):</strong> The gendering of crime determines visualization. "Criminal Man" is shown with weapons, violence, and hoodies. "Criminal Woman" is shown without weapons, repentant, with therapists. This shows there is no "neutral" image.</li>
+                <li><strong>AI Image Generation:</strong> When prompted "Poor person begging on the road", AI infers invisible details (urban sidewalk, concrete wall, Western-looking city) because it fills gaps with statistically common visual patterns and dominant media representations.</li>
+                <li><strong>Slum Tourism / African Poverty:</strong> Repeated imagery becomes normalized. Images of Sudan (1993, Kevin Carter's vulture photo) standardize African poverty as a site of tragedy needing a "White saviour", ignoring colonial history. Slum tourism (Dharavi) aestheticizes poverty.</li>
+            </ul>
+
+            <hr>
+            <h2 id="c-theatre">4. How Societies Tell Stories: Theatre, Culture and Social Life</h2>
+
+            <div class="summary-box">
+                <h4>📝 Lecture Summary</h4>
+                <p>This lecture traces the history of theatre from the prehistoric cave paintings of Lakhajoar to the highly codified Sanskrit theatre of the Natyasastra. It establishes that theatre originated from early human rituals and a deep respect for nature. Through the lens of Lord Brahma creating the "Fifth Veda" (Natyaveda) to provide moral instruction via aesthetic experience (Rasa), the lecture illustrates how theatre functions as a cultural space synthesizing ritual, representation, and social transformation.</p>
+            </div>
+
+            <h3>Prehistoric Theatre</h3>
+            <p>Evidence from Mesolithic cave paintings at <strong>Lakhajoar, Madhya Pradesh</strong>.</p>
+            <div class="def-box">
+                <strong><span class="priority">⭐</span> Four Characteristics of Prehistoric Theatre</strong>
+                <ol>
+                    <li><strong>Theatre Proper:</strong> More than just dance (presence of speech bubbles, masks, configurations).</li>
+                    <li><strong>Imitation:</strong> Central to this theatre (e.g., animal masks, tumbling resembling animal dances).</li>
+                    <li><strong>Performance Space:</strong> Isolated or sequestered (Lakhajoar is not a mainstream site).</li>
+                    <li><strong>Ritualistic Structure:</strong> Presence of a wizard/shaman chanting turns it into a ritual.</li>
+                </ol>
+            </div>
+            <p><strong>Ritual (Victor Turner):</strong> "A stereotyped sequence of activities involving gestures, words and objects, performed in a sequestered place, and designed to influence preternatural entities..."</p>
+
+            <h3>Sanskrit Theatre & The Fifth Veda</h3>
+            <p>According to the <strong>Natyasastra</strong> by <strong>Bharata Muni</strong>:</p>
+            <ul>
+                <li>Created by Lord Brahma during the Treta Yuga to overcome lust, greed, and jealousy.</li>
+                <li><strong>Natyaveda (The Fifth Veda)</strong> was created taking elements from the four Vedas:
+                    <ul>
+                        <li>Lyrics (पाठ्य) from <strong>Rigveda</strong></li>
+                        <li>Music (गीत) from <strong>Samaveda</strong></li>
+                        <li>Gestures (अभिनय) from <strong>Yajurveda</strong></li>
+                        <li>Aesthetic experience (रस/Rasa) from <strong>Atharvaveda</strong></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>Early Performances & Rules</h3>
+            <ul>
+                <li><strong>1st Performance:</strong> Anonymous, focused on Devas vs Asuras. Asuras disrupted it. Brahma established that drama is a mimicry of the world.</li>
+                <li><strong>2nd Performance:</strong> <em>Amrita Manthana</em> (Churning of the Ocean of Milk).</li>
+                <li><strong>3rd Performance:</strong> <em>Tripuradaha</em> (The Burning of the Three Cities).</li>
+            </ul>
+            <div class="def-box">
+                <strong><span class="priority">⭐</span> Six Characteristics of Sanskrit Theatre</strong>
+                <ol>
+                    <li>Religious-ritual structure</li>
+                    <li>Mimicry of actions</li>
+                    <li>Presence of protagonists vs antagonists</li>
+                    <li>Dance is integral</li>
+                    <li>Must lead to <strong>rasa</strong> (aesthetic experience)</li>
+                    <li>Theatre as moral instruction and social transformation</li>
+                </ol>
+            </div>
+
+            <div class="exam-questions">
+                <h3>📝 Likely Exam Questions for Module 1</h3>
+                <ol>
+                    <li>Which thinker defined ideology as "false consciousness" and in which book? (<em>Karl Marx, The German Ideology</em>)</li>
+                    <li>Identify the components of the Marxist Base and Superstructure. Does the base or superstructure contain "Education and Media"? (<em>Superstructure</em>)</li>
+                    <li>In Edward T. Hall's Iceberg Model of Culture, which elements are considered "invisible"? (<em>Values, norms, perception of time/space</em>)</li>
+                    <li>Differentiate between high-context and low-context communication cultures using examples. (<em>High: India, implicit, relationship-oriented. Low: West, explicit, task-oriented.</em>)</li>
+                    <li>What is the difference between assimilation and integration in acculturation strategies?</li>
+                    <li>According to Bharata Muni's Natyasastra, from which Veda was the element of "Rasa" (aesthetic experience) derived? (<em>Atharvaveda</em>)</li>
+                </ol>
+            </div>
+
+        </div>
+
+        <!-- MODULE 2: STATE & SOCIETY -->
+        <div id="state" class="page">
+            <h1 class="page-title">Module 2: State & Society</h1>
+            
+            <div class="mini-toc">
+                <h4>In this module:</h4>
+                <ul>
+                    <li><a href="#s-gov">1. Governance System in India</a></li>
+                    <li><a href="#s-movements">2. Social Movements</a></li>
+                    <li><a href="#s-obligation">3. State, Society, and Political Obligation</a></li>
+                    <li><a href="#s-psych">4. Social Dynamics & Psychological Factors</a></li>
+                    <li><a href="#s-tech">5. Technology, Society & Governance (DPI)</a></li>
+                </ul>
+            </div>
+
+            <hr>
+            <h2 id="s-gov">1. Governance System in India</h2>
+
+            <div class="summary-box">
+                <h4>📝 Lecture Summary</h4>
+                <p>This lecture maps the evolution of India's governance from historical invasions to the democratic republic established by the Constitution. It focuses heavily on the doctrine of the Separation of Powers (Montesquieu), detailing the functions of the Legislature, Executive, and Judiciary. Crucially, it explains the system of "Checks and Balances" that prevents any single branch from becoming tyrannical, ensuring that power in a democracy is shared but governed by overlapping watchdogs.</p>
+            </div>
+
+            <h3>Origin and Separation of Powers <span class="priority">⭐</span></h3>
+            <ul>
+                <li><strong>Montesquieu:</strong> Proposed the idea in his book <em>The Spirit of Laws</em>.</li>
+                <li><strong>Why separate power?</strong> To prevent tyranny, protect individual liberty, ensure accountability, and for efficiency. "Power divided is freedom preserved."</li>
+            </ul>
+
+            <h3>Three Wings of Governance</h3>
+            <table>
+                <tr>
+                    <th>Branch</th>
+                    <th>Composition</th>
+                    <th>Primary Functions</th>
+                </tr>
+                <tr>
+                    <td><strong>Legislature</strong></td>
+                    <td>President + Rajya Sabha (Upper House) + Lok Sabha (Lower House)</td>
+                    <td>Make laws (Union List), pass budget, hold executive accountable (No-Confidence Motion in LS), amend Constitution.</td>
+                </tr>
+                <tr>
+                    <td><strong>Executive</strong></td>
+                    <td><strong>Political:</strong> President (Formal head), PM & Council (Real power).<br><strong>Permanent:</strong> Bureaucrats (IAS, IPS).</td>
+                    <td>Implement laws, policy formulation, administration, diplomacy, emergency powers.</td>
+                </tr>
+                <tr>
+                    <td><strong>Judiciary</strong></td>
+                    <td>Supreme Court (Apex), High Courts, District Courts, Tribunals.</td>
+                    <td>Interpret laws, <strong>Judicial Review</strong>, Guardian of Constitution, Protector of Fundamental Rights (Writ Jurisdiction), Dispute resolution.</td>
+                </tr>
+            </table>
+
+            <h3>System of 'Checks and Balances' <span class="priority">⭐</span></h3>
+            <ul>
+                <li><strong>Legislature over Executive:</strong> No-Confidence Motion, Question Hour, controls finances.</li>
+                <li><strong>Executive over Legislature:</strong> President can summon/prorogue/dissolve parliament; Presidential assent needed for bills.</li>
+                <li><strong>Judiciary over Leg/Exec:</strong> Judicial Review (can strike down unconstitutional laws/actions).</li>
+                <li><strong>Leg/Exec over Judiciary:</strong> Parliament can impeach judges, amend Constitution to overcome rulings; Executive appoints judges (though currently through Collegium).</li>
+            </ul>
+
+            <hr>
+            <h2 id="s-movements">2. Social Movements</h2>
+
+            <div class="summary-box">
+                <h4>📝 Lecture Summary</h4>
+                <p>This lecture defines social movements as large-scale collective behaviors aiming to promote or resist change. It categorizes movements into six distinct types based on their goals—from alternative to revolutionary—and outlines the five-stage lifecycle of a movement from its incipience to its ultimate demise. By exploring the Feminist and Environmental movements, the lecture highlights how resource mobilization, shared grievances, and intersectionality drive and sustain collective action.</p>
+            </div>
+
+            <div class="def-box">
+                <strong>Social Movement:</strong> A form of collective behaviour in which a large number of people are united in an attempt to promote or resist social change.
+            </div>
+
+            <h3><span class="priority">⭐</span> Six Types of Social Movements</h3>
+            <ol>
+                <li><strong>Alternative:</strong> Alter specific behaviors (e.g., Prohibition/dry law).</li>
+                <li><strong>Reformative:</strong> Advocate fundamental social reforms (e.g., Anti-untouchability, anti-sati).</li>
+                <li><strong>Transformative:</strong> Revolutionary, total transformation of society (e.g., French, Russian Revolutions).</li>
+                <li><strong>Reactionary:</strong> Embrace past values, fundamentalist (e.g., religious fundamentalist movements).</li>
+                <li><strong>Expressive:</strong> Express personal feelings, alternative lifestyles (e.g., Hippie movement).</li>
+                <li><strong>Transnational:</strong> Global orientation across boundaries (e.g., Labour, Human Rights, Environmental).</li>
+            </ol>
+
+            <h3><span class="priority">⭐</span> The 5-Stage Life-Cycle (Armand Mauss)</h3>
+            <ol>
+                <li><strong>Incipience:</strong> Prevalence of discontent, leaders emerge, define message. (Many fail here).</li>
+                <li><strong>Coalescence:</strong> Interest groups form, networking, resource mobilization (money, media).</li>
+                <li><strong>Institutionalization:</strong> Formal organization with full-time staff, budget. Risk: becomes 'just another organization'.</li>
+                <li><strong>Fragmentation:</strong> Conflicts over leadership/doctrine, internal divisions weaken action.</li>
+                <li><strong>Demise:</strong> End of movement as originally conceived. Goals may be accomplished, legacy lives on.</li>
+            </ol>
+
+            <h3>Key Movements</h3>
+            <ul>
+                <li><strong>Feminist Movement:</strong> 1st Wave (1830s-20s: Voting/civil equality, Wollstonecraft). 2nd Wave (1960s-80s: Post-WWII patriarchal family, De Beauvoir, "Personal is political"). 3rd Wave (1990s+: Intersectional, opposing gender binaries).</li>
+                <li><strong>Environmental Movement:</strong> Chipko (Amrita Devi 1730 AD, later Uttarakhand), Narmada Bachao Andolan (Medha Patkar, Baba Amte against large dams). <strong>Ecofeminism:</strong> Connections between domination of nature and exploitation of women.</li>
+            </ul>
+
+            <hr>
+            <h2 id="s-obligation">3. State, Society, and Political Obligation</h2>
+
+            <div class="summary-box">
+                <h4>📝 Lecture Summary</h4>
+                <p>This lecture examines the theoretical relationship between the state and society, focusing on why individuals obey political authority—the core concept of "Political Obligation." It traverses history from Socrates' classical argument of tacit consent, through the Divine Right of Kings, into the Enlightenment's Social Contract theories (Hobbes, Locke, Rousseau). It concludes by examining justifications for civil disobedience (Thoreau, Rawls) and comparing Western individual-centric models with Non-Western harmony-centric traditions.</p>
+            </div>
+
+            <h3>Definitions</h3>
+            <ul>
+                <li><strong>State (Max Weber):</strong> Entity with monopoly over legitimate use of force.</li>
+                <li><strong>Society (Emile Durkheim):</strong> System of social relationships held together by shared norms, values, collective consciousness.</li>
+                <li><strong>Political Obligation:</strong> The moral or legal duty of citizens to obey the laws of the state.</li>
+            </ul>
+
+            <h3><span class="priority">⭐</span> Theories of Political Obligation & State-Society Relations</h3>
+            <table>
+                <tr>
+                    <th>Thinker / Era</th>
+                    <th>Core Idea on Obligation / State</th>
+                </tr>
+                <tr>
+                    <td><strong>Socrates</strong></td>
+                    <td>Tacit consent. State nurtures citizens; even if unjustly sentenced, one must obey the law (Proto-social contract).</td>
+                </tr>
+                <tr>
+                    <td><strong>Aristotle</strong></td>
+                    <td>Humans are political animals. State exists for the "good life".</td>
+                </tr>
+                <tr>
+                    <td><strong>Thomas Aquinas</strong></td>
+                    <td>Divine Right. Political authority is part of natural order established by God.</td>
+                </tr>
+                <tr>
+                    <td><strong>Thomas Hobbes</strong></td>
+                    <td>Life is "nasty, brutish, and short". We surrender rights for <strong>security</strong>.</td>
+                </tr>
+                <tr>
+                    <td><strong>John Locke</strong></td>
+                    <td>State protects <strong>natural rights (life, liberty, property)</strong>. If it fails, citizens have the <strong>right to revolt</strong>.</td>
+                </tr>
+                <tr>
+                    <td><strong>J.J. Rousseau</strong></td>
+                    <td>State represents the <strong>General Will</strong>. "Man is born free, but everywhere in chains."</td>
+                </tr>
+                <tr>
+                    <td><strong>Karl Marx</strong></td>
+                    <td>State serves the dominant economic class.</td>
+                </tr>
+            </table>
+
+            <h3>Civil Disobedience</h3>
+            <ul>
+                <li><strong>Henry David Thoreau (Transcendentalism):</strong> Advocated resistance to unjust laws. Refused to pay tax protesting slavery/war. Influenced Gandhi and MLK.</li>
+                <li><strong>John Rawls:</strong> Public, nonviolent act aimed at correcting unjust laws.</li>
+                <li><strong>Max Weber's 3 Types of Legitimacy <span class="priority">⭐</span>:</strong> 1. Traditional (custom/inheritance), 2. Charismatic (personal leadership), 3. Legal-rational (formal rules/bureaucracy).</li>
+            </ul>
+
+            <hr>
+            <h2 id="s-psych">4. Social Dynamics & Psychological Factors</h2>
+
+            <div class="summary-box">
+                <h4>📝 Lecture Summary</h4>
+                <p>This lecture delves into the psychological mechanisms that structure social interactions. It explains how cognitive categorization leads to in-group favoritism and prejudice, and examines how humans attribute causes to behaviors, often falling prey to attributional errors. Furthermore, it outlines the forces of social influence—conformity, compliance, and obedience—using Milgram's classic experiments to show how situational pressures and authority figures can override individual morality.</p>
+            </div>
+
+            <h3>Categorization & In-Group Favouritism</h3>
+            <ul>
+                <li><strong>Group Polarization:</strong> Group discussion leads to more extreme opinions.</li>
+                <li><strong>Prejudice:</strong> Cognitive (Stereotypes), Affective (Emotions like fear), Behavioral (Discrimination).</li>
+                <li><strong>Recategorization <span class="priority">⭐</span>:</strong> Shifting "Us vs Them" to "We".
+                    <ul>
+                        <li><em>Common Ingroup Identity Model:</em> "We are all Indians".</li>
+                        <li><em>Cross-Categorization:</em> Highlighting overlapping identities.</li>
+                        <li><em>Superordinate Goals:</em> Shared goals requiring cooperation (e.g., disaster relief).</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3><span class="priority">⭐</span> Attribution Theory</h3>
+            <p>Determining causes behind behavior (Internal/traits vs External/situation). Based on <em>Consensus</em>, <em>Consistency</em>, <em>Distinctiveness</em>.</p>
+            <div class="def-box">
+                <strong>Attributional Errors:</strong>
+                <ul>
+                    <li><strong>Fundamental Attribution Error (Correspondence Bias):</strong> Overestimating internal causes for *others'* behavior (e.g., "They are lazy").</li>
+                    <li><strong>Actor-Observer Effect:</strong> Attributing own behavior to external causes, but others to internal (e.g., "Traffic was bad" vs "They are lazy").</li>
+                    <li><strong>Self-Serving Bias:</strong> Taking credit for success, blaming situation for failures.</li>
+                </ul>
+            </div>
+
+            <h3>Social Influence: Conformity, Compliance, Obedience</h3>
+            <ul>
+                <li><strong>Conformity:</strong> Changing behavior to adhere to social norms. Driven by <em>Normative influence</em> (desire to be liked) or <em>Informational influence</em> (desire to be right).</li>
+                <li><strong>Compliance Techniques <span class="priority">⭐</span>:</strong>
+                    <ul>
+                        <li><em>Foot-in-the-Door:</em> Small request → Agreement → Larger request.</li>
+                        <li><em>Door-in-the-Face:</em> Large unreasonable request → Refusal → Smaller request.</li>
+                        <li><em>Ingratiation:</em> Gaining favors through positive interactions/likability.</li>
+                        <li><em>Playing Hard to Get:</em> Increasing perceived value through scarcity.</li>
+                    </ul>
+                </li>
+                <li><strong>Obedience:</strong> Acting on orders of an authority. 
+                    <ul>
+                        <li><em>Milgram's Experiment:</em> 65% administered maximum shocks. Shows ordinary people perform harmful acts under authority pressure.</li>
+                    </ul>
+                </li>
+                <li><strong>Groupthink:</strong> Faulty decision-making prioritizing harmony over critical thinking (illusion of unanimity). Countered by <em>Realistic Appraisal</em>.</li>
+            </ul>
+
+            <hr>
+            <h2 id="s-tech">5. Technology, Society & Governance in India (DPI)</h2>
+
+            <div class="summary-box">
+                <h4>📝 Lecture Summary</h4>
+                <p>This lecture analyzes India's unique Digital Public Infrastructure (DPI) model—a "third path" of open-source, state-built rails topped with private innovation, contrasting with US and Chinese models. It explores the 4 As of ICT access, the structure of the "India Stack" (Aadhaar, UPI, DigiLocker), and the critical tensions between financial inclusion and mass surveillance. The lecture questions the validity of consent in a digitally illiterate population and highlights the regulatory gaps in privacy and algorithmic bias.</p>
+            </div>
+
+            <h3><span class="priority">⭐</span> The 4 As of ICT</h3>
+            <p><strong>Availability, Accessibility, Affordability, Adoptability.</strong> (Tony Roberts adds <em>Awareness</em> and <em>Ability</em>).</p>
+
+            <h3><span class="priority">⭐</span> India's DPI Model (India Stack)</h3>
+            <p>India chose a third path: open-source, interoperable, state-built rails with private innovation on top. "Minimalism by design".</p>
+            <ul>
+                <li><strong>Identity Layer (Aadhaar):</strong> 1.38B enrolled. Replaced local bureaucrats with central systems.</li>
+                <li><strong>Payments Layer (UPI):</strong> ₹20.6 trillion in March 2024. Near-zero cost (Zero-MDR paradox). High market concentration (PhonePe + GPay = 85%).</li>
+                <li><strong>Documents Layer (DigiLocker):</strong> Legally equivalent physical docs.</li>
+                <li><strong>Health Layer (ABHA/CoWIN):</strong> 600M+ IDs. Federated health records.</li>
+            </ul>
+
+            <h3>State Governance & Regulation</h3>
+            <ul>
+                <li><strong>Direct Service Delivery:</strong> DBT (Direct Benefit Transfer) saved ₹2.7 lakh crore by eliminating ghost beneficiaries.</li>
+                <li><strong>Telecom Act 2023:</strong> Allows surveillance without prior judicial approval.</li>
+                <li><strong>DPDP Act 2023:</strong> Data protection law, but contains sweeping government exemptions.</li>
+                <li><strong>IT Rules 2021:</strong> Message traceability breaks end-to-end encryption.</li>
+            </ul>
+
+            <h3>Risks and Tensions</h3>
+            <ul>
+                <li><strong>Privacy Paradox:</strong> Citizens over-disclose data due to coercive disclosure (No KYC = no service), convenience, and social norms.</li>
+                <li><strong>Exclusion:</strong> 8.1 crore failed Aadhaar authentications in 2018; biometric failures deny rations to the most vulnerable (starvation deaths in Jharkhand).</li>
+                <li><strong>Algorithmic Bias:</strong> Selection, Confirmation, Representation, Amplification bias.</li>
+                <li><strong>Meaningful Consent:</strong> Structurally impossible for 300M digitally illiterate users facing 2500-word privacy policies.</li>
+            </ul>
+
+            <div class="exam-questions">
+                <h3>📝 Likely Exam Questions for Module 2</h3>
+                <ol>
+                    <li>According to Montesquieu, what is the primary purpose of the Separation of Powers? (<em>Prevent tyranny, protect liberty</em>)</li>
+                    <li>Match the thinker to the concept: John Locke, J.J. Rousseau, Thomas Hobbes. (<em>Locke=Natural Rights/Revolt, Rousseau=General Will, Hobbes=Security/Leviathan</em>)</li>
+                    <li>Which stage of Armand Mauss's social movement life-cycle is characterized by formal organization and full-time staff? (<em>Institutionalization</em>)</li>
+                    <li>In attribution theory, what is the "Actor-Observer effect"? (<em>Attributing own behavior to external causes, others' to internal causes</em>)</li>
+                    <li>Identify the compliance technique where a large, unreasonable request is followed by a smaller, reasonable one. (<em>Door-in-the-Face</em>)</li>
+                    <li>What does the "Zero-MDR paradox" in UPI refer to? (<em>Unsustainable for banks long-term, relies on data monetization rather than transaction fees</em>)</li>
+                    <li>What are the 4 As of ICT access? (<em>Availability, Accessibility, Affordability, Adoptability</em>)</li>
+                </ol>
+            </div>
+
+        </div>
+
+        <!-- MODULE 3: ETHICS & SOCIETY -->
+        <div id="ethics" class="page">
+            <h1 class="page-title">Module 3: Ethics & Society</h1>
+            
+            <div class="mini-toc">
+                <h4>In this module:</h4>
+                <ul>
+                    <li><a href="#e-approaches">1. Approaches to Ethics</a></li>
+                    <li><a href="#e-context">2. Ethics in Context</a></li>
+                    <li><a href="#e-media">3. Media in the Mirror: Media Ethics</a></li>
+                </ul>
+            </div>
+
+            <hr>
+            <h2 id="e-approaches">1. Approaches to Ethics</h2>
+
+            <div class="summary-box">
+                <h4>📝 Lecture Summary</h4>
+                <p>This lecture introduces ethics as the study of values required to live a good human life. It outlines three foundational ethical theories: Aristotle's Virtue Ethics (focusing on character and the Doctrine of Mean), John Stuart Mill's Utilitarianism (focusing on maximizing overall happiness), and Immanuel Kant's Deontology (focusing on absolute duty and the Categorical Imperative). The lecture concludes by applying these frameworks to professional ethics, specifically examining whistle-blowing and the true meaning of corporate loyalty.</p>
+            </div>
+
+            <p><strong>Ethics</strong> is a study of values to live a good human life. An ethical approach must be prescriptive, universal, and practical.</p>
+            <p>Two fundamental questions:</p>
+            <ol>
+                <li>How should I live? (Character/Virtues)</li>
+                <li>What should I do? (Moral principles/rules)</li>
+            </ol>
+
+            <h3><span class="priority">⭐</span> Three Ethical Thinkers & Theories</h3>
+            <table>
+                <tr>
+                    <th>Thinker</th>
+                    <th>Theory</th>
+                    <th>Core Concepts</th>
+                </tr>
+                <tr>
+                    <td><strong>Aristotle</strong></td>
+                    <td>Virtue Ethics</td>
+                    <td>
+                        <ul>
+                            <li><strong>Teleological Approach:</strong> Telos = Purpose/Goal (Goal is good human life).</li>
+                            <li><strong>Eudaimonia:</strong> Happiness / "The good life".</li>
+                            <li><strong>Rationality:</strong> The distinguishing human feature.</li>
+                            <li><strong>Doctrine of Mean:</strong> Virtues lie in moderation between extremes (e.g., Courage is between cowardice and foolhardiness).</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>John Stuart Mill</strong><br>(Also Jeremy Bentham)</td>
+                    <td>Utilitarianism</td>
+                    <td>
+                        <ul>
+                            <li>Motivated by pleasure, avoidance of pain.</li>
+                            <li><strong>Utilitarian Principle:</strong> "Maximization of overall happiness."</li>
+                            <li>Higher pleasures (intellect) vs Lower pleasures (body).</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Immanuel Kant</strong></td>
+                    <td>Deontological Ethics</td>
+                    <td>
+                        <ul>
+                            <li><strong>Deon:</strong> Greek for duty. Rightness depends on correspondence to duty.</li>
+                            <li>Intentions matter more than achieved goals.</li>
+                            <li><strong>Categorical Imperative:</strong> Unconditional command of reason.</li>
+                            <li><em>Formulation 1:</em> Act only on maxims that can become universal laws.</li>
+                            <li><em>Formulation 2:</em> Treat humanity always as an end, never merely as a means.</li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+
+            <h3>Applied / Professional Ethics</h3>
+            <p>Professional ethics is the study of conduct in professional issues.</p>
+            <div class="def-box">
+                <strong><span class="priority">⭐</span> Whistle-Blowing</strong><br>
+                The voluntary release of nonpublic information, as a moral protest, by a member or former member of an organization outside the normal channels of communication to an appropriate audience about illegal/immoral conduct opposed to public interest.
+            </div>
+            <ul>
+                <li><strong>Conditions for Justified Whistle-blowing:</strong> Sufficient moral importance, all facts understood, internal channels exhausted, best method chosen, chances for success.</li>
+                <li><strong>The Loyal Agent Argument:</strong> Are whistleblowers disloyal? <strong>No.</strong> True loyalty is commitment to the <em>true interests</em> of the organization, which must coincide with the interests of society/the planet. Following blind orders is not true loyalty.</li>
+            </ul>
+
+            <hr>
+            <h2 id="e-context">2. Ethics in Context: Across Time, Place, and Society</h2>
+
+            <div class="summary-box">
+                <h4>📝 Lecture Summary</h4>
+                <p>This lecture contextualizes ethics, emphasizing that moral principles are socially constructed rather than absolute. It traces the evolution of ethics from Ancient (virtue-centric) to Medieval (religion-centric) to Modern (reason/rights-centric) paradigms. The lecture highlights the tension between cultural relativism and ethical absolutism, showing how ideology and power dynamics determine "who decides what is right," and insists that ethics is a dynamic, living practice requiring continuous reflection.</p>
+            </div>
+
+            <ul>
+                <li><strong>Ethics are constructed, not absolute.</strong> They are shaped by historical contexts, social structures, and power dynamics.</li>
+                <li><strong>Ethics across time <span class="priority">⭐</span>:</strong>
+                    <ul>
+                        <li><strong>Ancient:</strong> Virtue, duty, harmony (Aristotle, Confucius, Buddha, Kautilya).</li>
+                        <li><strong>Medieval:</strong> Religion dominance, moral law, Dharma (Augustine, Aquinas, Shankaracharya).</li>
+                        <li><strong>Modern:</strong> Reason, rights, consequences, duty, non-violence (Kant, Mill, Gandhi, Ambedkar).</li>
+                    </ul>
+                </li>
+                <li><strong>Cultural Relativism vs Ethical Absolutism:</strong>
+                    <ul>
+                        <li><em>Relativism:</em> Moral values understood within their cultural context.</li>
+                        <li><em>Absolutism:</em> Moral principles are universally valid regardless of context (e.g., killing innocents is always wrong).</li>
+                    </ul>
+                </li>
+                <li><strong>Ethics, Power, Ideology:</strong> Ethics are shaped by those in power. Ideology (structured belief systems) justifies power relations.</li>
+                <li><strong>Everyday Ethics:</strong> Lived practice involving moral dilemmas and empathy.</li>
+                <li><strong>Glocal Balance:</strong> Balancing local traditions with global responsibilities (e.g., human rights vs indigenous ethics).</li>
+            </ul>
+
+            <hr>
+            <h2 id="e-media">3. Media in the Mirror: Ethics in the Age of Truth and Technology</h2>
+
+            <div class="summary-box">
+                <h4>📝 Lecture Summary</h4>
+                <p>This lecture confronts the ethical crisis in modern media, where the pursuit of ratings often overrides critical reporting. It details the core principles of journalistic ethics (Truth, Accuracy, Objectivity, Privacy) and categorizes modern threats like Fake News (mis/dis/mal-information), deepfakes, sensationalism, and algorithmic bias. By reviewing regulatory frameworks like the IT Rules 2021 and DPDP Act, the lecture stresses the critical need for media literacy to safely navigate the digital environment.</p>
+            </div>
+
+            <h3>Core Principles of Media Ethics</h3>
+            <p>Truth (factual reporting), Accuracy (precision), Objectivity (fairness/impartiality), Respect for dignity, Privacy.</p>
+
+            <h3><span class="priority">⭐</span> Major Issues in Media Today</h3>
+            <ul>
+                <li><strong>Fake News Categories:</strong>
+                    <ol>
+                        <li><strong>Misinformation:</strong> False info spread <em>without</em> intent to harm.</li>
+                        <li><strong>Disinformation:</strong> False info deliberately created/spread <em>with intent</em> to harm.</li>
+                        <li><strong>Malinformation:</strong> Based on reality but used to harm (e.g., sharing an old protest photo claiming it's happening now).</li>
+                    </ol>
+                </li>
+                <li><strong>Sensationalism:</strong> "Yellow journalism". Emphasizes shock value over facts for TRP.</li>
+                <li><strong>Stereotyping:</strong> Simplistic representation ignoring diversity. Measured in Quantity (under/overrepresentation) and Quality (positive/negative).</li>
+                <li><strong>Deepfakes:</strong> AI-created convincing fake media. Issues: Non-consensual use, deception.</li>
+                <li><strong>Clickbait:</strong> Hyperbolic headlines to increase website traffic.</li>
+                <li><strong>Algorithmic Bias:</strong> Systematic machine learning errors leading to discrimination (Selection bias, Confirmation bias, Representation bias, Amplification bias).</li>
+                <li><strong>Digital Surveillance:</strong> Monitoring by govt/corps raising privacy concerns.</li>
+            </ul>
+
+            <h3>Ethical Frameworks & Codes of Conduct</h3>
+            <ul>
+                <li><strong>News:</strong> Press Council of India (PCI) - Ensures objective/accurate reporting, prevents libel.</li>
+                <li><strong>Advertising:</strong> Advertising Standards Council of India (ASCI) - Ensures truthful claims, prevents misleading ads.</li>
+                <li><strong>Digital Media <span class="priority">⭐</span>:</strong>
+                    <ul>
+                        <li><em>Digital Personal Data Protection Act (DPDP):</em> Rules on data collection/usage.</li>
+                        <li><em>IT Rules 2021:</em> Three-tier grievance system for news and OTT, traceability.</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="exam-questions">
+                <h3>📝 Likely Exam Questions for Module 3</h3>
+                <ol>
+                    <li>According to Aristotle, what is the ultimate goal (Telos) of human life? (<em>Eudaimonia / Happiness</em>)</li>
+                    <li>Which formulation of Kant's Categorical Imperative states you must not use people merely as tools? (<em>Treat humanity always as an end, never merely as a means</em>)</li>
+                    <li>Is a whistleblower considered a "disloyal agent" in professional ethics? (<em>No, true loyalty is to the organization's true interests/society</em>)</li>
+                    <li>Differentiate between Misinformation and Disinformation. (<em>Misinformation lacks the intent to harm, Disinformation is deliberately intended to harm</em>)</li>
+                    <li>What is Malinformation? (<em>Factual/real information used out of context to cause harm</em>)</li>
+                    <li>Which governing body regulates advertising standards in India? (<em>ASCI - Advertising Standards Council of India</em>)</li>
+                </ol>
+            </div>
+
+        </div>
+
+        <!-- GLOSSARY -->
+        <div id="glossary" class="page">
+            <h1 class="page-title">Glossary of Key Terms</h1>
+            
+            <div class="def-box"><strong>Base and Superstructure:</strong> Marxist concept where the economic Base (production) dictates the cultural/legal Superstructure, which in turn maintains the Base.</div>
+            
+            <div class="def-box"><strong>Categorical Imperative:</strong> Immanuel Kant's deontological concept of an unconditional moral obligation binding in all circumstances.</div>
+            
+            <div class="def-box"><strong>Cultural Hegemony:</strong> Antonio Gramsci's theory that the ruling class maintains power by making their ideology the "common sense" of society.</div>
+            
+            <div class="def-box"><strong>Deontology:</strong> Kantian ethics focused on duty and intentions rather than consequences.</div>
+            
+            <div class="def-box"><strong>Disinformation:</strong> False information deliberately created and spread to deceive and cause harm.</div>
+            
+            <div class="def-box"><strong>Doctrine of Mean:</strong> Aristotle's principle that virtue is the moderate middle ground between the extremes of excess and deficiency.</div>
+            
+            <div class="def-box"><strong>Eudaimonia:</strong> Aristotle's term for the highest human good, often translated as happiness or flourishing.</div>
+            
+            <div class="def-box"><strong>Fundamental Attribution Error:</strong> The psychological tendency to overestimate internal traits and underestimate situational factors when judging others' behavior.</div>
+            
+            <div class="def-box"><strong>High-Context Culture:</strong> Cultures (like India) where communication relies heavily on implicit shared understandings, non-verbal cues, and relationships.</div>
+            
+            <div class="def-box"><strong>Ideological State Apparatuses (ISAs):</strong> Althusser's term for institutions like family, religion, and schools that transmit ruling-class ideology without physical force.</div>
+            
+            <div class="def-box"><strong>Malinformation:</strong> True information used maliciously or out of context to cause harm.</div>
+            
+            <div class="def-box"><strong>Misinformation:</strong> False information shared without the deliberate intent to cause harm.</div>
+            
+            <div class="def-box"><strong>Polychronic Time:</strong> A cultural view of time as fluid and circular, where relationships and multitasking take precedence over strict schedules.</div>
+            
+            <div class="def-box"><strong>Rasa:</strong> The aesthetic experience or emotional essence generated in classical Sanskrit theatre (Natyasastra).</div>
+            
+            <div class="def-box"><strong>Teleological Approach:</strong> Aristotle's ethics based on the purpose, end, or goal (Telos) of human life.</div>
+            
+            <div class="def-box"><strong>Utilitarianism:</strong> J.S. Mill and Jeremy Bentham's ethical theory that the best action is the one that maximizes overall happiness.</div>
+            
+            <div class="def-box"><strong>Zero-MDR Paradox:</strong> In India's UPI system, the fact that merchants pay zero Merchant Discount Rate, causing banks to rely on data monetization rather than transaction fees.</div>
+
+        </div>
+
+    </div>
+
+    <!-- JavaScript for Navigation -->
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Remove active class from all links
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Show target page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Highlight target link
+            event.target.classList.add('active');
+            
+            // Scroll to top
+            document.querySelector('.main-content').scrollTop = 0;
+        }
+
+        // Handle initial load based on URL hash
+        window.onload = function() {
+            const hash = window.location.hash.substring(1);
+            if(hash && document.getElementById(hash)) {
+                // Mock an event object for showPage
+                window.event = { target: document.querySelector(`a[href="#${hash}"]`) };
+                showPage(hash);
+            }
+        }
+    </script>
+</body>
+</html>
