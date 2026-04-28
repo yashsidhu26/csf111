@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSS F101 – Understanding Self and Society | Master Index</title>
+    <style>
+        :root {
+            --must-know: #c0392b;
+            --important: #e67e22;
+            --good-to-know: #2980b9;
+            --bg: #f9fafb;
+            --card-bg: #ffffff;
+            --text: #1a1a2e;
+            --text-secondary: #4a4a6a;
+            --border: #e0e0e0;
+            --accent: #2c3e50;
+            --module-1: #6c5ce7;
+            --module-2: #00b894;
+            --module-3: #fdcb6e;
+            --module-4: #e17055;
+            --module-5: #0984e3;
+            --sidebar-bg: #1e1e2f;
+            --highlight: #fff3cd;
+            --callout-bg: #f0f4ff;
+            --exam-tip-bg: #ffe8e8;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            color: #e0e0e0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 24px 20px;
+            flex-shrink: 0;
+            z-index: 100;
+        }
+        .sidebar h2 {
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #444;
+            padding-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+        .sidebar nav a {
+            display: block;
+            color: #c0c0d0;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        .sidebar nav a:hover,
+        .sidebar nav a.active {
+            background: #333350;
+            color: #ffffff;
+        }
+        .sidebar .module-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 6px;
+            vertical-align: middle;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .tag-m1 {
+            background: var(--module-1);
+            color: #fff;
+        }
+        .tag-m2 {
+            background: var(--module-2);
+            color: #fff;
+        }
+        .tag-m3 {
+            background: var(--module-3);
+            color: #333;
+        }
+        .tag-m4 {
+            background: var(--module-4);
+            color: #fff;
+        }
+        .tag-m5 {
+            background: var(--module-5);
+            color: #fff;
+        }
+        .main-content {
+            flex: 1;
+            padding: 32px 40px;
+            max-width: 1100px;
+        }
+        .main-content h1 {
+            font-size: 2.4rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 24px;
+        }
+        .module-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            border-left: 5px solid var(--module-1);
+            transition: all 0.25s;
+            text-decoration: none;
+            color: var(--text);
+            display: block;
+            cursor: pointer;
+        }
+        .module-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+        }
+        .module-card.m2 {
+            border-left-color: var(--module-2);
+        }
+        .module-card.m3 {
+            border-left-color: var(--module-3);
+        }
+        .module-card.m4 {
+            border-left-color: var(--module-4);
+        }
+        .module-card.m5 {
+            border-left-color: var(--module-5);
+        }
+        .module-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 6px;
+        }
+        .module-card .lecture-count {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .module-card .topics {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        .glossary-card {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: #fff;
+            border-radius: 14px;
+            padding: 24px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            transition: all 0.25s;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+        .glossary-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+        .glossary-card h3 {
+            font-size: 1.4rem;
+        }
+        .exam-alert {
+            background: #ffe8e8;
+            border: 2px solid #c0392b;
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin-top: 30px;
+            color: #7b0000;
+        }
+        .exam-alert h4 {
+            margin-bottom: 6px;
+        }
+        .info-box {
+            background: #e8f4fd;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-top: 20px;
+            color: #1a5276;
+            border-left: 4px solid #2980b9;
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 16px;
+            }
+            .sidebar nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+            .sidebar nav a {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+            .main-content {
+                padding: 20px;
+            }
+            .module-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>📚 HSS F101</h2>
+            <nav>
+                <a href="#top" class="active">🏠 Master Index</a>
+                <a href="module1_individual.html">Module 1 <span class="module-tag tag-m1">Individual</span></a>
+                <a href="module2_environment.html">Module 2 <span class="module-tag tag-m2">Environment</span></a>
+                <a href="module3_culture.html">Module 3 <span class="module-tag tag-m3">Culture</span></a>
+                <a href="module4_state.html">Module 4 <span class="module-tag tag-m4">State</span></a>
+                <a href="module5_ethics.html">Module 5 <span class="module-tag tag-m5">Ethics</span></a>
+                <a href="glossary.html" style="margin-top:12px; border-top:1px solid #444; padding-top:12px;">📖 Glossary</a>
+            </nav>
+        </aside>
+        <main class="main-content" id="top">
+            <h1>Understanding Self and Society</h1>
+            <p class="subtitle">HSS F101 — Comprehensive Exam Study Guide | Prof. Sailaja Nandigama & Prof. Vijayakumar Chintalapalli</p>
+
+            <div class="info-box">
+                <strong>📋 Exam Format:</strong> Both Mid-Semester (40%) and Comprehensive Exam (60%) are <strong>offline, MCQ pattern, closed book</strong>. Each module carries 20% weightage. Minimum passing: 30% of top-performer average OR 40% of class median, whichever is lower.
+            </div>
+
+            <div class="module-grid">
+                <a href="module1_individual.html" class="module-card">
+                    <h3>🔷 Module 1: Individual & Society</h3>
+                    <span class="lecture-count">4 Lectures</span>
+                    <p class="topics">Self & Identity · Purusharthas · Communication & Interaction · Self & Attitudes</p>
+                </a>
+                <a href="module2_environment.html" class="module-card m2">
+                    <h3>🔶 Module 2: Environment & Society</h3>
+                    <span class="lecture-count">4 Lectures</span>
+                    <p class="topics">Social & Economic Systems / Green Tech · Climate Change · Sustainability · Anthropocene</p>
+                </a>
+                <a href="module3_culture.html" class="module-card m3">
+                    <h3>🔷 Module 3: Culture & Society</h3>
+                    <span class="lecture-count">5 Lectures</span>
+                    <p class="topics">Ideology · Culture & Communication · Reading Images · Theatre & Social Life · Review</p>
+                </a>
+                <a href="module4_state.html" class="module-card m4">
+                    <h3>🔶 Module 4: State & Society</h3>
+                    <span class="lecture-count">5 Lectures</span>
+                    <p class="topics">Social Movements · State-Society Relationship · Power Dynamics · Digital Ecosystem · Governance in India</p>
+                </a>
+                <a href="module5_ethics.html" class="module-card m5">
+                    <h3>🔷 Module 5: Ethics & Society</h3>
+                    <span class="lecture-count">5 Lectures</span>
+                    <p class="topics">Media Ethics · Ethics in Context · Academic Ethics · Approaches to Ethics · Concluding Session</p>
+                </a>
+            </div>
+            <a href="glossary.html" class="glossary-card" style="margin-top:20px;">
+                <h3>📖 Full Glossary of Key Terms</h3>
+                <p style="margin-top:4px;">All definitions, thinkers, and concepts in one place</p>
+            </a>
+            <div class="exam-alert">
+                <h4>⚠️ Exam Strategy Note</h4>
+                <p>All 5 modules are equally weighted (20% each). The comprehensive exam covers the <strong>entire course</strong>. MCQ pattern means precise recall of definitions, thinker names, and key concepts is essential. Pay special attention to ⭐ flagged high-priority items across all module pages.</p>
+            </div>
+            <div class="info-box" style="margin-top:16px;">
+                <strong>📝 Key Textbooks:</strong> Abraham, F. (2006). <em>Contemporary Sociology</em> · Nealon, J.T. & Giroux, S. (2012). <em>The Theory Toolbox</em> · Plus PPTs and reference materials shared by instructors.
+            </div>
+            <p style="margin-top:30px; color:#888; font-size:0.85rem;">Course No. HSS F101 | BITS Pilani, Pilani Campus | 2025-26 | Created for comprehensive exam preparation.</p>
+        </main>
+    </div>
+</body>
+</html>
