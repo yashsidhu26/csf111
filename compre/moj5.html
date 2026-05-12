@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Programming Masterclass - Vol V: The Grand Finale</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- PrismJS for Code Formatting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0f0a00',
+                        primary: '#f59e0b', /* Amber/Gold theme for Vol 5 */
+                        accent: '#f97316', 
+                        danger: '#ef4444',
+                        warning: '#fbbf24',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f0a00;
+            background-image: 
+                radial-gradient(at 50% 0%, hsla(38, 90%, 15%, 1) 0, transparent 60%), 
+                radial-gradient(at 100% 100%, hsla(20, 90%, 10%, 1) 0, transparent 50%);
+            background-attachment: fixed;
+            color: #f8fafc;
+        }
+        
+        .glass-card {
+            background: rgba(20, 15, 5, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(245, 158, 11, 0.15);
+            border-top: 1px solid rgba(245, 158, 11, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .solution-block {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
+
+        .solution-block.open {
+            max-height: 2500px;
+            opacity: 1;
+            margin-top: 1.5rem;
+        }
+
+        pre[class*="language-"] {
+            background: rgba(0, 0, 0, 0.6) !important;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 0.75rem;
+            margin: 1rem 0;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.8);
+        }
+        
+        .category-header {
+            background: linear-gradient(90deg, rgba(245, 158, 11, 0.15) 0%, transparent 100%);
+            border-left: 4px solid #f59e0b;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen p-4 md:p-8">
+
+    <!-- Header Section -->
+    <header class="max-w-6xl mx-auto mb-12 text-center">
+        <div class="inline-block bg-accent/20 text-accent px-5 py-1.5 rounded-full text-xs font-bold tracking-widest mb-4 border border-accent/40 uppercase shadow-[0_0_15px_rgba(245,158,11,0.3)]">
+            Volume V: The Legendary Tier
+        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-amber-300 via-orange-400 to-red-500 bg-clip-text text-transparent">
+            The Grand Finale
+        </h1>
+        <p class="text-lg text-slate-300 mb-8 max-w-3xl mx-auto">
+            The final scraps of genius from the 8-year archive. These questions cross the boundary of simple syntax, requiring deep knowledge of hardware representation, theoretical AST rules, and 64-bit architecture constraints.
+        </p>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-4xl mx-auto space-y-16 pb-20">
+
+        <!-- ========================================== -->
+        <!-- CATEGORY 1: HARDWARE & REPRESENTATION      -->
+        <!-- ========================================== -->
+        <section class="space-y-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-white category-header pl-4 py-2">I. Hardware & Architecture</h2>
+
+            <!-- Q1 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs font-bold border border-red-500/30 uppercase tracking-wide">Final Boss</span>
+                    <h3 class="text-xl font-bold text-white">1. The IEEE-754 Hex Trap (2021-22)</h3>
+                </div>
+                <p class="text-slate-300 mb-2">A system stores floating-point numbers in IEEE-754 Single Precision (32-bit). The hexadecimal content of registers A, B, and C are <code class="text-pink-400">0xC1400000</code>, <code class="text-pink-400">0x42100000</code>, and <code class="text-pink-400">0x41400000</code> respectively. What is the output?</p>
+                <pre><code class="language-c">if (C == A + B)
+    printf("Condition 1 is true");
+else if (A + C == 0 && B == 3 * C)
+    printf("Condition 2 is true");
+else
+    printf("None of the conditions is true");</code></pre>
+                <button onclick="toggleSolution('sol-1')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-1" class="solution-block">
+                    <div class="bg-amber-950/40 border border-amber-500/30 rounded-xl p-5">
+                        <h4 class="text-amber-400 font-bold text-lg mb-2">Answer: Condition 2 is true</h4>
+                        <p class="text-slate-300"><strong>The Decode:</strong> You must convert Hex to IEEE-754 Binary (1 sign bit, 8 exponent bits, 23 mantissa bits).</p>
+                        <ul class="list-disc list-inside text-slate-300 space-y-2 mt-2 font-mono text-sm">
+                            <li><strong class="text-primary">A (0xC1400000):</strong> `1` `10000010` `1000...0`<br>
+                            Sign = 1 (Negative). Exp = 130 - 127 = 3. Mantissa = 1.1<br>
+                            Value = -1.1 * 2³ = -1100 in binary = <strong>-12.0</strong></li>
+                            
+                            <li><strong class="text-primary">B (0x42100000):</strong> `0` `10000100` `0010...0`<br>
+                            Sign = 0 (Positive). Exp = 132 - 127 = 5. Mantissa = 1.001<br>
+                            Value = +1.001 * 2⁵ = 100100 in binary = <strong>36.0</strong></li>
+                            
+                            <li><strong class="text-primary">C (0x41400000):</strong> `0` `10000010` `1000...0`<br>
+                            Sign = 0 (Positive). Exp = 130 - 127 = 3. Mantissa = 1.1<br>
+                            Value = +1.1 * 2³ = +1100 in binary = <strong>+12.0</strong></li>
+                        </ul>
+                        <p class="text-slate-300 mt-2"><strong>Evaluating Logic:</strong><br>
+                        `C == A + B` -> 12 == -12 + 36 -> 12 == 24 <strong>(False)</strong><br>
+                        `A + C == 0` -> -12 + 12 == 0 <strong>(True)</strong> AND `B == 3 * C` -> 36 == 3 * 12 <strong>(True)</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full text-xs font-bold border border-orange-500/30 uppercase tracking-wide">Architecture</span>
+                    <h3 class="text-xl font-bold text-white">2. The 32 vs 64-Bit Pointer Trap (2020-21)</h3>
+                </div>
+                <p class="text-slate-300 mb-2">Assume this code is compiled and run on a modern <strong>64-bit</strong> system.</p>
+                <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void function(char **ptr) {
+    char *ptr1;
+    ptr1 = (ptr += sizeof(ptr))[-4];
+    printf("%s\n", ptr1);
+}
+
+int main() { 
+    char *arr[] = { "ant", "bat", "cat", "dog", "bee", "fly" };
+    function(arr); 
+    return 0; 
+}</code></pre>
+                <button onclick="toggleSolution('sol-2')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-2" class="solution-block">
+                    <div class="bg-amber-950/40 border border-amber-500/30 rounded-xl p-5">
+                        <h4 class="text-amber-400 font-bold text-lg mb-2">Answer: bee</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> The result of this code depends entirely on the hardware architecture!</p>
+                        <ul class="list-disc list-inside text-slate-300 space-y-2 mt-2">
+                            <li><code class="text-pink-400">ptr</code> is a double pointer (<code class="text-pink-400">char **</code>).</li>
+                            <li>On a <strong>64-bit</strong> system, the size of ANY pointer is <strong>8 bytes</strong>.</li>
+                            <li><code class="text-pink-400">ptr += sizeof(ptr)</code> translates to <code class="text-pink-400">ptr += 8</code>. It moves the pointer forward by 8 indices.</li>
+                            <li>Then it accesses <code class="text-pink-400">[-4]</code>. This translates to <code class="text-pink-400">*(ptr - 4)</code>.</li>
+                            <li>Net movement: <code class="text-pink-400">ptr + 8 - 4 = ptr + 4</code>.</li>
+                            <li><code class="text-pink-400">arr[4]</code> corresponds to the string <strong>"bee"</strong>.</li>
+                        </ul>
+                        <p class="text-slate-400 text-sm italic mt-2">Note: If this were a 32-bit system, sizeof(ptr) would be 4, net movement would be 4 - 4 = 0, printing "ant"!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- CATEGORY 2: THEORETICAL MECHANICS          -->
+        <!-- ========================================== -->
+        <section class="space-y-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-white category-header pl-4 py-2">II. Theoretical Mechanics</h2>
+
+            <!-- Q3 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-xs font-bold border border-purple-500/30 uppercase tracking-wide">AST Theory</span>
+                    <h3 class="text-xl font-bold text-white">3. Precedence Reality Distortion (2014-15)</h3>
+                </div>
+                <p class="text-slate-300 mb-2">The expression <code class="text-pink-400">5 - 2 - 3 * 5 - 2</code> will mathematically evaluate to <strong>18</strong> IF AND ONLY IF:</p>
+                <div class="space-y-2 mt-4 text-slate-300">
+                    <p>A) <code class="text-amber-400">-</code> is left associative and <code class="text-amber-400">*</code> has precedence over <code class="text-amber-400">-</code></p>
+                    <p>B) <code class="text-amber-400">-</code> is right associative and <code class="text-amber-400">*</code> has precedence over <code class="text-amber-400">-</code></p>
+                    <p>C) <code class="text-amber-400">-</code> is right associative and <code class="text-amber-400">-</code> has precedence over <code class="text-amber-400">*</code></p>
+                    <p>D) <code class="text-amber-400">-</code> is left associative and <code class="text-amber-400">-</code> has precedence over <code class="text-amber-400">*</code></p>
+                </div>
+                
+                <button onclick="toggleSolution('sol-3')" class="mt-6 bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-3" class="solution-block">
+                    <div class="bg-amber-950/40 border border-amber-500/30 rounded-xl p-5">
+                        <h4 class="text-amber-400 font-bold text-lg mb-2">Answer: Option C</h4>
+                        <p class="text-slate-300"><strong>The Proof:</strong> Standard C (Option A) evaluates this as <code class="text-sm bg-black px-1">(5 - 2) - (3 * 5) - 2 = -14</code>.<br>To get 18, we have to build a theoretical Abstract Syntax Tree based on the given rules.</p>
+                        <p class="text-slate-300 mt-2">Let's test Option C: <em>Minus is computed first, and it computes right-to-left.</em></p>
+                        <ul class="list-disc list-inside text-slate-300 space-y-1 mt-2">
+                            <li>Expression: <code class="text-pink-400">5 - 2 - 3 * 5 - 2</code></li>
+                            <li>Because <code class="text-amber-400">-</code> has higher priority than <code class="text-amber-400">*</code>, we must resolve all subtractions before the multiplication.</li>
+                            <li>Because it is <strong>Right Associative</strong>, we resolve the right-most subtraction first: <code class="text-pink-400">(5 - 2) = 3</code>.</li>
+                            <li>The next right-most subtraction is <code class="text-pink-400">2 - 3 = -1</code>.</li>
+                            <li>The final subtraction is <code class="text-pink-400">5 - (-1) = 6</code>.</li>
+                            <li>Now that all subtractions are resolved, we perform the multiplication: <code class="text-pink-400">6 * 3 = 18</code>!</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full text-xs font-bold border border-emerald-500/30 uppercase tracking-wide">Initialization</span>
+                    <h3 class="text-xl font-bold text-white">4. Partial Array Initialization (2023-24)</h3>
+                </div>
+                <pre><code class="language-c">int main() {
+    int a[10] = {2, 2, 4, 4, 4};
+    int *ptr = a;
+    printf("%u %u", ptr[5], *ptr + 6);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-4')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-4" class="solution-block">
+                    <div class="bg-amber-950/40 border border-amber-500/30 rounded-xl p-5">
+                        <h4 class="text-amber-400 font-bold text-lg mb-2">Answer: 0 8</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> Two fundamental C rules interacting.</p>
+                        <ol class="list-decimal list-inside text-slate-300 space-y-2 mt-2">
+                            <li><strong>Partial Initialization:</strong> If you initialize <em>any</em> elements of an array, the compiler automatically fills all remaining uninitialized elements with <strong>0</strong>. Therefore, `a[5]` to `a[9]` are all `0`. So <code class="text-pink-400">ptr[5]</code> prints 0.</li>
+                            <li><strong>Pointer Arithmetic Precedence:</strong> <code class="text-pink-400">*ptr + 6</code> means "Dereference `ptr` first, then add 6 to the value." `ptr` points to `a[0]` (which is 2). `2 + 6 = 8`.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- CATEGORY 3: ADVANCED SCOPING               -->
+        <!-- ========================================== -->
+        <section class="space-y-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-white category-header pl-4 py-2">III. Advanced Scoping & Shadowing</h2>
+
+            <!-- Q5 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-indigo-500/20 text-indigo-400 px-3 py-1 rounded-full text-xs font-bold border border-indigo-500/30 uppercase tracking-wide">Shadowing</span>
+                    <h3 class="text-xl font-bold text-white">5. 3D Pointer Inception (2020-21)</h3>
+                </div>
+                <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int f(int a, int *pb, int **ppc) {
+    static int b, c;
+    **ppc += 1;
+    c = **ppc;
+    *pb += 2;
+    c = *pb;
+    a += 3;
+    return a + b + c;
+}
+
+int main() {
+    int c = 4, b = 0, a = 0;
+    b = (int)&c; 
+    a = (int)&b;
+    printf("%d", f(c, (int*)b, (int**)a));
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-5')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-5" class="solution-block">
+                    <div class="bg-amber-950/40 border border-amber-500/30 rounded-xl p-5">
+                        <h4 class="text-amber-400 font-bold text-lg mb-2">Answer: 14</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> Tracking local variables vs pointers to `main`'s variables, alongside local static shadowing.</p>
+                        <ul class="list-disc list-inside text-slate-300 space-y-2 mt-2 text-sm">
+                            <li><code class="text-primary">f(c, &c, &b)</code> is called. Local `a`=4, `pb` points to `main`'s `c`, `ppc` points to `main`'s `b`.</li>
+                            <li><code class="text-pink-400">**ppc += 1;</code> increments the value pointed to by `b` (which is `main`'s `c`). So `main`'s `c` becomes 5.</li>
+                            <li><code class="text-pink-400">c = **ppc;</code> -> The <strong>local static</strong> `c` is assigned 5.</li>
+                            <li><code class="text-pink-400">*pb += 2;</code> -> `pb` points to `main`'s `c`. It increments from 5 to 7.</li>
+                            <li><code class="text-pink-400">c = *pb;</code> -> Local static `c` updates to 7.</li>
+                            <li><code class="text-pink-400">a += 3;</code> -> Local `a` (which was 4) becomes 7.</li>
+                            <li>Returns <code class="text-pink-400">a + b + c</code> (using local statics). `a`=7, `b`=0 (uninitialized static defaults to 0), `c`=7. `7 + 0 + 7 = 14`.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-xs font-bold border border-blue-500/30 uppercase tracking-wide">Lifeline</span>
+                    <h3 class="text-xl font-bold text-white">6. The Static Pointer Escape (2024-25)</h3>
+                </div>
+                <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void update(int **p) {
+    static int val = 20;
+    *p = &val;
+}
+
+int main() {
+    int x = 10; 
+    int *ptr = &x;
+    
+    update(&ptr);
+    printf("%d\n", *ptr);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-6')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-6" class="solution-block">
+                    <div class="bg-amber-950/40 border border-amber-500/30 rounded-xl p-5">
+                        <h4 class="text-amber-400 font-bold text-lg mb-2">Answer: 20</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> A classic beginner rule is "Never return a pointer to a local variable because it gets destroyed when the function exits."</p>
+                        <p class="text-slate-300 mt-2">However, because <code class="text-pink-400">val</code> is declared as <strong>static</strong>, it is stored in the Data Segment, not the Stack. Its lifetime is the entire duration of the program.<br><br>
+                        By passing <code class="text-pink-400">&ptr</code> (a double pointer), the <code class="text-pink-400">update()</code> function successfully repoints `main`'s `ptr` to the static `val`. It safely prints 20.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Script for Toggles and PrismJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script>
+        function toggleSolution(id) {
+            const el = document.getElementById(id);
+            const btn = el.previousElementSibling;
+            
+            if (el.classList.contains('open')) {
+                el.classList.remove('open');
+                btn.innerHTML = 'Reveal Explanation 👁️';
+                btn.classList.remove('bg-white/20');
+                btn.classList.add('bg-white/10');
+            } else {
+                el.classList.add('open');
+                btn.innerHTML = 'Hide Explanation 🙈';
+                btn.classList.remove('bg-white/10');
+                btn.classList.add('bg-white/20');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Programming Masterclass - Vol VI: The Deep Cuts</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- PrismJS for Code Formatting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0f0518', /* Cosmic dark */
+                        primary: '#c084fc', /* Purple 400 */
+                        accent: '#fbbf24', /* Amber 400 */
+                        danger: '#f43f5e',
+                        warning: '#fcd34d',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f0518;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(270, 100%, 15%, 1) 0, transparent 60%), 
+                radial-gradient(at 100% 100%, hsla(240, 100%, 10%, 1) 0, transparent 50%),
+                radial-gradient(at 50% 50%, hsla(280, 50%, 10%, 0.5) 0, transparent 100%);
+            background-attachment: fixed;
+            color: #f8fafc;
+        }
+        
+        .glass-card {
+            background: rgba(20, 10, 30, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(192, 132, 252, 0.2);
+            border-top: 1px solid rgba(192, 132, 252, 0.4);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+        }
+
+        .solution-block {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
+
+        .solution-block.open {
+            max-height: 2500px;
+            opacity: 1;
+            margin-top: 1.5rem;
+        }
+
+        pre[class*="language-"] {
+            background: rgba(0, 0, 0, 0.7) !important;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 0.75rem;
+            margin: 1rem 0;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.8);
+        }
+        
+        .category-header {
+            background: linear-gradient(90deg, rgba(192, 132, 252, 0.2) 0%, transparent 100%);
+            border-left: 4px solid #c084fc;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen p-4 md:p-8">
+
+    <!-- Header Section -->
+    <header class="max-w-6xl mx-auto mb-12 text-center">
+        <div class="inline-block bg-accent/20 text-accent px-5 py-1.5 rounded-full text-xs font-bold tracking-widest mb-4 border border-accent/40 uppercase shadow-[0_0_15px_rgba(251,191,36,0.3)]">
+            Volume VI: The Deep Cuts
+        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-purple-400 via-fuchsia-400 to-amber-300 bg-clip-text text-transparent">
+            The Final Archives
+        </h1>
+        <p class="text-lg text-slate-300 mb-8 max-w-3xl mx-auto">
+            The last remaining questions from the 8-year dataset. These don't rely on syntax tricks; they test your raw ability to map out obscure algorithms, recursive mirrors, and memory boundaries in your head.
+        </p>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-4xl mx-auto space-y-16 pb-20">
+
+        <!-- ========================================== -->
+        <!-- CATEGORY 1: ALGORITHMIC RECOGNITION        -->
+        <!-- ========================================== -->
+        <section class="space-y-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-white category-header pl-4 py-2">I. Algorithmic Disguises</h2>
+
+            <!-- Q1 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-bold border border-primary/30 uppercase tracking-wide">Logic Map</span>
+                    <h3 class="text-xl font-bold text-white">1. The Recursive Prime Cipher (2022-23)</h3>
+                </div>
+                <p class="text-slate-300 mb-2">Trace this function carefully. What values will it output?</p>
+                <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int q(int a, int b) {
+    if (a == b) 
+        return 1;
+    else if (a % b) 
+        return q(a, b + 1);
+    else 
+        return 0;
+}
+
+int main() {
+    printf("%d %d %d\n", q(35, 2), q(11, 2), q(23, 2));
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-1')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-1" class="solution-block">
+                    <div class="bg-purple-950/40 border border-purple-500/30 rounded-xl p-5">
+                        <h4 class="text-purple-300 font-bold text-lg mb-2">Answer: 0 1 1</h4>
+                        <p class="text-slate-300"><strong>The Algorithm:</strong> This recursive function is actually a disguised <strong>Prime Number Checker</strong>.</p>
+                        <ul class="list-disc list-inside text-slate-300 space-y-2 mt-2 text-sm">
+                            <li><code class="text-accent">a % b</code> returns a truthy value if there is a remainder (i.e., `b` does not perfectly divide `a`). If it doesn't divide, it recursively checks the next number: <code class="text-accent">q(a, b + 1)</code>.</li>
+                            <li>If `a % b` is 0 (it divides perfectly), it hits the <code class="text-accent">else</code> block and returns `0` (Not Prime).</li>
+                            <li>If `b` increments all the way up to `a` without ever dividing it perfectly, the base case <code class="text-accent">a == b</code> triggers, returning `1` (Is Prime).</li>
+                            <li><code class="text-accent">q(35, 2)</code> -> Divisible by 5. Returns 0.</li>
+                            <li><code class="text-accent">q(11, 2)</code> -> Prime. Returns 1.</li>
+                            <li><code class="text-accent">q(23, 2)</code> -> Prime. Returns 1.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-accent/20 text-accent px-3 py-1 rounded-full text-xs font-bold border border-accent/30 uppercase tracking-wide">Recursion</span>
+                    <h3 class="text-xl font-bold text-white">2. The Binary Mirror (2022-23)</h3>
+                </div>
+                <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void find(int n) {
+    if (n == 0) return;
+    
+    printf("%d", n % 2);
+    find(n / 2);
+    printf("%d", n % 2);
+}
+
+int main() {
+    find(12);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-2')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-2" class="solution-block">
+                    <div class="bg-purple-950/40 border border-purple-500/30 rounded-xl p-5">
+                        <h4 class="text-purple-300 font-bold text-lg mb-2">Answer: 00111100</h4>
+                        <p class="text-slate-300"><strong>The Algorithm:</strong> This function computes the binary digits of `n`, but the dual `printf` statements create a mirrored output.</p>
+                        <ol class="list-decimal list-inside text-slate-300 space-y-1 mt-2 text-sm font-mono">
+                            <li>n=12: prints `12%2` (<strong>0</strong>). Calls find(6).</li>
+                            <li>n=6: prints `6%2` (<strong>0</strong>). Calls find(3).</li>
+                            <li>n=3: prints `3%2` (<strong>1</strong>). Calls find(1).</li>
+                            <li>n=1: prints `1%2` (<strong>1</strong>). Calls find(0).</li>
+                            <li>n=0: hits base case. Returns.</li>
+                            <li><em>Stack unwinds...</em></li>
+                            <li>n=1: prints `1%2` (<strong>1</strong>).</li>
+                            <li>n=3: prints `3%2` (<strong>1</strong>).</li>
+                            <li>n=6: prints `6%2` (<strong>0</strong>).</li>
+                            <li>n=12: prints `12%2` (<strong>0</strong>).</li>
+                        </ol>
+                        <p class="text-slate-300 mt-2">The output is the digits appended together: <code class="text-accent">00111100</code>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- CATEGORY 2: MEMORY BOUNDARIES              -->
+        <!-- ========================================== -->
+        <section class="space-y-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-white category-header pl-4 py-2">II. Memory Boundaries & Array Math</h2>
+
+            <!-- Q3 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs font-bold border border-red-500/30 uppercase tracking-wide">Danger</span>
+                    <h3 class="text-xl font-bold text-white">3. The Dangling Array Trap (2021-22)</h3>
+                </div>
+                <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int* return_arr() {
+    int arr[] = {1, 4, 5};
+    return arr;
+}
+
+int main() {
+    int *p = return_arr();
+    printf("%d", *p);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-3')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-3" class="solution-block">
+                    <div class="bg-purple-950/40 border border-purple-500/30 rounded-xl p-5">
+                        <h4 class="text-purple-300 font-bold text-lg mb-2">Answer: Undefined Behavior (Dangling Pointer)</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> The array <code class="text-accent">arr[]</code> is created locally on the stack inside the function `return_arr()`. When the function finishes executing, that stack frame is destroyed and handed back to the OS.</p>
+                        <p class="text-slate-300 mt-2">Returning `arr` passes back a memory address that the program no longer owns. While it might occasionally print `1` by pure luck, it is a classic <strong>Dangling Pointer</strong> and will often print garbage or crash.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-xs font-bold border border-blue-500/30 uppercase tracking-wide">Math</span>
+                    <h3 class="text-xl font-bold text-white">4. The Matrix Diagonal Cipher (2014-15)</h3>
+                </div>
+                <p class="text-slate-300 mb-2">What does this matrix traversal logic actually output?</p>
+                <pre><code class="language-c">int main() {
+    int mat[3][3] = { {1, 2, 3}, 
+                      {4, 5, 6}, 
+                      {7, 8, 9} };
+    int q = mat[0][2]; 
+    
+    for (int i = 1; i < 3; i++) { 
+        if (mat[i][2-i] < q) { 
+            q = mat[i][2-i]; 
+        } 
+    }
+    printf("%d", q);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-4')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-4" class="solution-block">
+                    <div class="bg-purple-950/40 border border-purple-500/30 rounded-xl p-5">
+                        <h4 class="text-purple-300 font-bold text-lg mb-2">Answer: 3</h4>
+                        <p class="text-slate-300"><strong>The Algorithm:</strong> The index formula <code class="text-accent">mat[i][N - 1 - i]</code> (where N is the matrix size) is the mathematical formula to traverse the <strong>Secondary Diagonal</strong> of a square matrix (top-right to bottom-left).</p>
+                        <ul class="list-disc list-inside text-slate-300 space-y-1 mt-2 text-sm font-mono">
+                            <li>i=0 (initial): <code class="text-accent">mat[0][2]</code> -> 3</li>
+                            <li>i=1: <code class="text-accent">mat[1][1]</code> -> 5. Is 5 < 3? No.</li>
+                            <li>i=2: <code class="text-accent">mat[2][0]</code> -> 7. Is 7 < 3? No.</li>
+                        </ul>
+                        <p class="text-slate-300 mt-2">The variable `q` holds the minimum value found on the secondary diagonal, which remains 3.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full text-xs font-bold border border-emerald-500/30 uppercase tracking-wide">Pointers</span>
+                    <h3 class="text-xl font-bold text-white">5. Recursive String Reversal (2024-25)</h3>
+                </div>
+                <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void strFunc(char A[], int n) {
+    char t;
+    if (n <= 1) return;
+    
+    t = A[0]; 
+    A[0] = A[n - 1]; 
+    A[n - 1] = t;
+    
+    strFunc(&A[1], n - 2);
+}
+
+int main() {
+    char A[] = "PDS 2005";
+    strFunc(A, 8);
+    printf("%s", A);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-5')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-5" class="solution-block">
+                    <div class="bg-purple-950/40 border border-purple-500/30 rounded-xl p-5">
+                        <h4 class="text-purple-300 font-bold text-lg mb-2">Answer: 5002 SDP</h4>
+                        <p class="text-slate-300"><strong>The Algorithm:</strong> This is a highly optimized recursive string reversal function.</p>
+                        <p class="text-slate-300 mt-2">It swaps the very first character <code class="text-accent">A[0]</code> with the very last character <code class="text-accent">A[n-1]</code>. Then, it calls itself, passing the address of the <em>second</em> character <code class="text-accent">&A[1]</code> as the new "base" of the array, and reduces the length window by 2 (since the outer two chars are already swapped). This cleanly reverses the string in place.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Script for Toggles and PrismJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script>
+        function toggleSolution(id) {
+            const el = document.getElementById(id);
+            const btn = el.previousElementSibling;
+            
+            if (el.classList.contains('open')) {
+                el.classList.remove('open');
+                btn.innerHTML = 'Reveal Explanation 👁️';
+                btn.classList.remove('bg-white/20');
+                btn.classList.add('bg-white/10');
+            } else {
+                el.classList.add('open');
+                btn.innerHTML = 'Hide Explanation 🙈';
+                btn.classList.remove('bg-white/10');
+                btn.classList.add('bg-white/20');
+            }
+        }
+    </script>
+</body>
+</html>

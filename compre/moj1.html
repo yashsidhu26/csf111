@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Programming Masterclass - The Ultimate PYQ Collection</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- PrismJS for Code Formatting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0f172a',
+                        primary: '#38bdf8',
+                        accent: '#818cf8',
+                        danger: '#f43f5e',
+                        warning: '#fbbf24',
+                        success: '#34d399'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f172a;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 100%, hsla(225,39%,30%,0.3) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,0.3) 0, transparent 50%);
+            background-attachment: fixed;
+            color: #f8fafc;
+        }
+        
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .solution-block {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
+
+        .solution-block.open {
+            max-height: 2000px;
+            opacity: 1;
+            margin-top: 1.5rem;
+        }
+
+        pre[class*="language-"] {
+            background: rgba(15, 23, 42, 0.7) !important;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 0.75rem;
+            margin: 1rem 0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .category-header {
+            background: linear-gradient(90deg, rgba(56, 189, 248, 0.1) 0%, transparent 100%);
+            border-left: 4px solid #38bdf8;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen p-4 md:p-8">
+
+    <!-- Header Section -->
+    <header class="max-w-6xl mx-auto mb-12 text-center">
+        <div class="inline-block bg-accent/20 text-accent px-4 py-1 rounded-full text-sm font-bold tracking-widest mb-4 border border-accent/30 uppercase">
+            The Ultimate 8-Year PYQ Mega-Compilation
+        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-primary via-accent to-danger bg-clip-text text-transparent">
+            The C Programming Gauntlet
+        </h1>
+        <p class="text-lg text-slate-300 mb-8 max-w-3xl mx-auto">
+            All 21 of the most deceptive, syntactically obscure, and conceptually brutal questions ever asked in the Comprehensive Exams, merged into one definitive guide.
+        </p>
+
+        <!-- Pro Tips Panel -->
+        <div class="glass-card rounded-2xl p-6 text-left border-l-4 border-l-warning max-w-5xl mx-auto">
+            <h2 class="text-2xl font-bold mb-3 text-white flex items-center gap-2">
+                🛡️ Exam Survival Tactics
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <ul class="list-disc list-inside space-y-2 text-slate-300 ml-2">
+                    <li><strong class="text-warning">Macro Expansion:</strong> It is DUMB text replacement. Write it out physically before doing math.</li>
+                    <li><strong class="text-warning">Visual Traps:</strong> Ignore indentation. Trace the actual curly braces <code class="bg-slate-800 px-1 rounded">{}</code>.</li>
+                    <li><strong class="text-warning">Discarded Execution:</strong> Right sides of <code class="bg-slate-800 px-1 rounded">&&</code> and <code class="bg-slate-800 px-1 rounded">||</code> do NOT execute if short-circuited.</li>
+                </ul>
+                <ul class="list-disc list-inside space-y-2 text-slate-300 ml-2">
+                    <li><strong class="text-warning">Array vs &Array:</strong> <code class="bg-slate-800 px-1 rounded">arr+1</code> skips an element. <code class="bg-slate-800 px-1 rounded">&arr+1</code> skips the ENTIRE array.</li>
+                    <li><strong class="text-warning">String Literals:</strong> <code class="bg-slate-800 px-1 rounded">char *s = "str";</code> is Read-Only. Modifying it = SegFault.</li>
+                    <li><strong class="text-warning">Printf Evaluation:</strong> Arguments are often evaluated Right-To-Left.</li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-5xl mx-auto space-y-16 pb-20">
+
+        <!-- ========================================== -->
+        <!-- CATEGORY 1: PREPROCESSOR & MACRO MINEFIELD -->
+        <!-- ========================================== -->
+        <section class="space-y-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-white category-header pl-4 py-2">I. The Preprocessor Minefield</h2>
+
+            <!-- Q1.1 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-red-500/20 text-red-300 px-3 py-1 rounded-full text-xs font-bold border border-red-500/30 uppercase tracking-wide">Trap</span>
+                    <h3 class="text-xl font-bold text-white">1. The Discarded Argument</h3>
+                </div>
+                <pre><code class="language-c">#define fun1(x) 50 
+#define fun2(x) (fun1(x)<0) ? fun1(x)-5 : fun1(x)+5 
+
+int main() { 
+    int x=5; 
+    printf("\nfun: %d, x: %d", fun2(++x+3), x); 
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-1-1')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-1-1" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: fun: 55, x: 5</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> <code class="text-pink-400">fun1(x)</code> is defined purely as `50`. It never uses `x`. When <code class="text-pink-400">fun2(++x+3)</code> expands, it becomes <code class="text-sm bg-slate-800 px-1 rounded">(50 < 0) ? 50 - 5 : 50 + 5</code>. Because the macro completely discarded the argument, the increment <code class="text-pink-400">++x</code> <strong>never happens</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q1.2 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-xs font-bold border border-blue-500/30 uppercase tracking-wide">Hard</span>
+                    <h3 class="text-xl font-bold text-white">2. The Expansion Nightmare</h3>
+                </div>
+                <pre><code class="language-c">#define ADD(x) x + x + x
+#define FUN(x) ADD(x) * 2
+
+int main() {
+    int a = 5;
+    printf("Result = %d", FUN(ADD(a)));
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-1-2')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-1-2" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: 50</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> Do not calculate mathematically. Do string substitution! <code class="text-sm bg-slate-800 px-1 rounded">FUN(ADD(a))</code> -> <code class="text-sm bg-slate-800 px-1 rounded">ADD(ADD(a)) * 2</code> -> <code class="text-sm bg-slate-800 px-1 rounded">ADD(a + a + a) * 2</code> -> <code class="text-sm bg-slate-800 px-1 rounded">a + a + a + a + a + a + a + a + a * 2</code>. With precedence, this is <code class="text-sm bg-slate-800 px-1 rounded">40 + 10 = 50</code>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q1.3 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-red-500/20 text-red-300 px-3 py-1 rounded-full text-xs font-bold border border-red-500/30 uppercase tracking-wide">Trap</span>
+                    <h3 class="text-xl font-bold text-white">3. Recursive Macros</h3>
+                </div>
+                <pre><code class="language-c">#define fact(n) (n==0 ? 1 : n * fact(n-1))
+int main() {
+    int result = fact(5);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-1-3')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-1-3" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: Compile/Linker Error</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> The C preprocessor does NOT support recursive macros. It expands <code class="text-pink-400">fact(n)</code> exactly once: <code class="bg-slate-800 px-1 rounded">(5==0 ? 1 : 5 * fact(5-1))</code>. The compiler then looks for a real C function named `fact`, doesn't find it, and throws an error.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ========================================== -->
+        <!-- CATEGORY 2: FLOW & SHORT-CIRCUIT ANOMALIES -->
+        <!-- ========================================== -->
+        <section class="space-y-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-white category-header pl-4 py-2">II. Flow & Short-Circuit Anomalies</h2>
+
+            <!-- Q2.1 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-xs font-bold border border-purple-500/30 uppercase tracking-wide">Complex</span>
+                    <h3 class="text-xl font-bold text-white">4. The printf() Loop Maze</h3>
+                </div>
+                <pre><code class="language-c">int main() {
+    int i = 0; 
+    for(printf("A"); printf("B"); printf("C")) { 
+        for(printf("D"); printf("E"); printf("F")) 
+            break; 
+        if (i--) break; 
+    }
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-2-1')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-2-1" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: ABDECBDE</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> `printf()` returns the number of characters printed (1 = True). Inner loop hits <code class="text-red-400">break;</code> immediately, skipping "F". Outer loop checks `if(i--)`. `i` is 0 (False), then becomes -1. Update runs ("C"), Cond runs ("B"), inner loop runs ("D", "E"), breaks. Now `if(i--)` is checked with `i=-1` (True). It breaks the outer loop.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q2.2 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full text-xs font-bold border border-orange-500/30 uppercase tracking-wide">Syntax</span>
+                    <h3 class="text-xl font-bold text-white">5. Top-Default Switch Fallthrough</h3>
+                </div>
+                <pre><code class="language-c">int main() {
+    int i = 4;
+    switch(i) {
+        default: printf("zero");
+        case 1:  printf("one"); break;
+        case 2:  printf("two"); break;
+    }
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-2-2')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-2-2" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: zeroone</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> `default` doesn't have to be at the bottom! `i=4` matches nothing, execution jumps to `default`, prints "zero". Because there is <strong>no break</strong> after `default`, it <em>falls through</em> to `case 1`, printing "one", and then breaks.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q2.3 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-yellow-500/20 text-yellow-300 px-3 py-1 rounded-full text-xs font-bold border border-yellow-500/30 uppercase tracking-wide">Sneaky</span>
+                    <h3 class="text-xl font-bold text-white">6. The Indentation Illusion</h3>
+                </div>
+                <pre><code class="language-c">int main() {
+    int v1 = 99, v2 = -99;
+    if (v1 - v2 < 0) {
+        v2 = v1 * v2;
+    } else 
+        break;
+        printf("Hello");
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-2-3')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-2-3" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: Compile-time Error</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> The `break` statement is only valid inside a `loop` or a `switch`. Placing it inside a standalone `if/else` block throws a compile-time error. The bad indentation is purely to trick you into tracing logic that won't even compile.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q2.4 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-red-500/20 text-red-300 px-3 py-1 rounded-full text-xs font-bold border border-red-500/30 uppercase tracking-wide">Trap</span>
+                    <h3 class="text-xl font-bold text-white">7. Short-Circuit Assignment</h3>
+                </div>
+                <pre><code class="language-c">int main() {
+    int a = 0, b = 0, x;
+    x = 121 || (a = ++b);
+    printf("a = %d, b = %d, x = %d", a, b, x);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-2-4')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-2-4" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: a = 0, b = 0, x = 1</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> Logical OR (<code class="text-pink-400">||</code>) short-circuits. `121` is True. The right side <code class="text-pink-400">(a = ++b)</code> is <strong>completely ignored</strong>. `a` and `b` remain 0. `x` gets the boolean result `1`.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ========================================== -->
+        <!-- CATEGORY 3: POINTERS, ARRAYS & MEMORY      -->
+        <!-- ========================================== -->
+        <section class="space-y-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-white category-header pl-4 py-2">III. Pointers, Arrays & Memory Magic</h2>
+
+            <!-- Q3.1 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-xs font-bold border border-blue-500/30 uppercase tracking-wide">Hard</span>
+                    <h3 class="text-xl font-bold text-white">8. Negative Indexing</h3>
+                </div>
+                <pre><code class="language-c">int main() {
+    int arr[6] = {99, 88, 77, 66, 55, 44};
+    int *p = arr + 4;
+    for(int i=0; i<3; i++)
+        printf("%d ", p[-i]);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-3-1')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-3-1" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: 55 66 77</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> Negative indices are valid if the pointer is in the middle of an array! <code class="text-pink-400">p[-i]</code> is <code class="text-pink-400">*(p - i)</code>. `p` points to 55. `p[-0]`=55, `p[-1]`=66, `p[-2]`=77.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q3.2 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-xs font-bold border border-purple-500/30 uppercase tracking-wide">Conceptual</span>
+                    <h3 class="text-xl font-bold text-white">9. Array Decay vs Address of Array</h3>
+                </div>
+                <p class="text-slate-300 mb-2">Assume <code class="text-pink-400">arr[]</code> begins at memory address <strong>1000</strong> and <code class="text-pink-400">sizeof(int)</code> is 4.</p>
+                <pre><code class="language-c">int main() { 
+    int arr[] = {12, 14, 15, 23, 45}; 
+    printf("%u, %u", arr + 1, &arr + 1); 
+    return 0; 
+}</code></pre>
+                <button onclick="toggleSolution('sol-3-2')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-3-2" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: 1004, 1020</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> <code class="text-primary">arr</code> decays to a pointer to an `int`. <code class="text-pink-400">arr + 1</code> moves 4 bytes (Address 1004). <code class="text-primary">&arr</code> is a pointer to the <em>entire array</em> of 5 integers. <code class="text-pink-400">&arr + 1</code> moves 20 bytes (Address 1020).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q3.3 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-red-500/20 text-red-300 px-3 py-1 rounded-full text-xs font-bold border border-red-500/30 uppercase tracking-wide">Danger</span>
+                    <h3 class="text-xl font-bold text-white">10. String Literals Mutation</h3>
+                </div>
+                <pre><code class="language-c">int main() {
+    char *ptr = "Hello"; 
+    *(ptr + 1) = 'a'; 
+    printf("%s\n", ptr);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-3-3')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-3-3" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: Segmentation Fault</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> <code class="text-pink-400">char *ptr = "Hello"</code> stores the string in the <strong>Read-Only Data</strong> segment. Modifying it crashes the program. Use <code class="text-pink-400">char ptr[] = "Hello"</code> if you want it mutable.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q3.4 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-xs font-bold border border-blue-500/30 uppercase tracking-wide">Hard</span>
+                    <h3 class="text-xl font-bold text-white">11. Double Pointers & Printf Evaluation</h3>
+                </div>
+                <pre><code class="language-c">int main() {
+    int x = 5, *y, z[2] = {22, 33}, **p;
+    y = &x;  p = &y;  **p = 10;
+    y = z;   *(z + 1) += x;
+    printf("%d, %d, %d, %d\n", x, ++**p, z[0], z[1]);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-3-4')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-3-4" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: 10, 23, 22, 43</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> State tracking + RTL `printf` evaluation.<br>
+                        1. `**p=10` changes `x` to 10.<br>
+                        2. `y=z` makes `**p` alias `z[0]` (22).<br>
+                        3. `z[1]` becomes 33+10 = 43.<br>
+                        4. Printf evaluates Right-To-Left: `z[1]` is 43, `z[0]` is 22 (read before increment), `++**p` pre-increments `z[0]` to 23, `x` is 10.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q3.5 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-xs font-bold border border-purple-500/30 uppercase tracking-wide">Complex</span>
+                    <h3 class="text-xl font-bold text-white">12. Pointer to Arrays</h3>
+                </div>
+                <pre><code class="language-c">int main() {
+    int a[][3] = {0, 1, 2, 3, 4, 5};
+    int (*ptr)[3] = a;
+    ++ptr;
+    printf("%d %d\n", (*ptr)[0], (*ptr)[1]);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-3-5')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-3-5" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: 3 4</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> <code class="text-pink-400">int (*ptr)[3]</code> is a pointer to an array of 3 integers. `++ptr` moves it forward by an entire row of 3 elements. It jumps from `{0,1,2}` to `{3,4,5}`.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q3.6 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-indigo-500/20 text-indigo-300 px-3 py-1 rounded-full text-xs font-bold border border-indigo-500/30 uppercase tracking-wide">Puzzle</span>
+                    <h3 class="text-xl font-bold text-white">13. Array of Pointers Arithmetic</h3>
+                </div>
+                <pre><code class="language-c">int main() {
+    int i[] = {10, 20, 30, 40}; 
+    int *pa[] = {i+1, i, i+3, i+2}; 
+    printf("%d", *pa[1]);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-3-6')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-3-6" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: 10</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> <code class="text-pink-400">pa</code> is an array of integer pointers. <code class="text-pink-400">pa[1]</code> holds <code class="text-pink-400">i</code>, which is the base address of the array (points to 10). Dereferencing it yields 10.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ========================================== -->
+        <!-- CATEGORY 4: DATA TYPES, STRUCTS & ENUMS    -->
+        <!-- ========================================== -->
+        <section class="space-y-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-white category-header pl-4 py-2">IV. Data Types, Structs & Enums</h2>
+
+            <!-- Q4.1 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full text-xs font-bold border border-orange-500/30 uppercase tracking-wide">Data Type</span>
+                    <h3 class="text-xl font-bold text-white">14. The Wrapping Char</h3>
+                </div>
+                <p class="text-slate-300 mb-2">Assume <code class="text-pink-400">char</code> is 1 byte using 2's complement.</p>
+                <pre><code class="language-c">int main() { 
+    char c = 125; 
+    c = c + 10; 
+    printf("c = %d", c); 
+    return 0; 
+}</code></pre>
+                <button onclick="toggleSolution('sol-4-1')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-4-1" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: -121</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> A signed <code class="text-pink-400">char</code> maxes out at 127. 125 + 10 = 135. It overflows. Formula: Value - 256 -> 135 - 256 = -121.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q4.2 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-yellow-500/20 text-yellow-300 px-3 py-1 rounded-full text-xs font-bold border border-yellow-500/30 uppercase tracking-wide">Rare</span>
+                    <h3 class="text-xl font-bold text-white">15. The Comma Operator</h3>
+                </div>
+                <pre><code class="language-c">int main() {
+    int x = ((4,5), 3, (8,0));
+    printf("%d", x);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-4-2')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-4-2" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: 0</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> The comma operator evaluates the left operand, discards it, and returns the right. <code class="text-pink-400">(4,5)</code> -> 5. <code class="text-pink-400">(8,0)</code> -> 0. The expression becomes <code class="text-pink-400">(5, 3, 0)</code>. Ultimately evaluates to 0.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q4.3 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full text-xs font-bold border border-emerald-500/30 uppercase tracking-wide">Logic</span>
+                    <h3 class="text-xl font-bold text-white">16. Implicit Enum Values</h3>
+                </div>
+                <pre><code class="language-c">enum day { sun = 1, mon, tue = 5, wed, thu=10, fri, sat }; 
+int main() { 
+    printf("%d ", sun+mon-tue+wed-thu+fri-sat); 
+    return 0; 
+}</code></pre>
+                <button onclick="toggleSolution('sol-4-3')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-4-3" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: -7</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> Unassigned enum values auto-increment from the previous explicit value. <br>sun=1, mon=2, tue=5, wed=6, thu=10, fri=11, sat=12.<br>
+                        1 + 2 - 5 + 6 - 10 + 11 - 12 = -7.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q4.4 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-xs font-bold border border-purple-500/30 uppercase tracking-wide">Memory</span>
+                    <h3 class="text-xl font-bold text-white">17. Pragma Pack Pitfall</h3>
+                </div>
+                <pre><code class="language-c">#pragma pack(1)
+struct x { int a, d; char b; };
+union z { struct x s; int a; };
+int main() {
+    union z u;
+    printf("size=%ld", sizeof(u));
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-4-4')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-4-4" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: size=9</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> <code class="text-pink-400">#pragma pack(1)</code> forces 1-byte alignment, meaning <strong>no padding</strong> is added to the struct. The struct size is `4 + 4 + 1 = 9` bytes. Since it's a union, the size of the union is the size of its largest member, which is the struct (9 bytes).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ========================================== -->
+        <!-- CATEGORY 5: STD LIB, FILE I/O & UNDEFINED BEHAVIOR -->
+        <!-- ========================================== -->
+        <section class="space-y-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-white category-header pl-4 py-2">V. Standard Library & Undefined Behavior</h2>
+
+            <!-- Q5.1 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full text-xs font-bold border border-emerald-500/30 uppercase tracking-wide">Logic</span>
+                    <h3 class="text-xl font-bold text-white">18. The strcmp() Illusion</h3>
+                </div>
+                <pre><code class="language-c">int main(){ 
+    char arr[10]="some"; 
+    while(strcmp("some", arr)) 
+        printf("Strings are not equal!! \n"); 
+    return 0; 
+}</code></pre>
+                <button onclick="toggleSolution('sol-5-1')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-5-1" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: No Output</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> <code class="text-pink-400">strcmp()</code> returns <strong>0</strong> when two strings are equal. In C, `0` is False. The condition fails immediately.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q5.2 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-indigo-500/20 text-indigo-300 px-3 py-1 rounded-full text-xs font-bold border border-indigo-500/30 uppercase tracking-wide">File I/O</span>
+                    <h3 class="text-xl font-bold text-white">19. fseek Arithmetic</h3>
+                </div>
+                <pre><code class="language-c">FILE *fp = fopen("myfile.txt","w+");
+fputs("Comprehensive Examination", fp);
+fseek(fp, 15, SEEK_SET);
+char c = fgetc(fp);
+while (c != EOF) { 
+    printf("%c", c); 
+    c = fgetc(fp); 
+}</code></pre>
+                <button onclick="toggleSolution('sol-5-2')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-5-2" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: xamination</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> <code class="text-pink-400">SEEK_SET</code> moves to absolute index 15 (0-indexed). Index 15 points to the 'x' in Examination. `fgetc` reads it and the loop prints the rest.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q5.3 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-xs font-bold border border-purple-500/30 uppercase tracking-wide">Complex</span>
+                    <h3 class="text-xl font-bold text-white">20. Main Recursion & Static Locals</h3>
+                </div>
+                <pre><code class="language-c">int main() { 
+    static int i = 3; 
+    printf("%d", i--); 
+    return i > 0 ? main() : 0; 
+}</code></pre>
+                <button onclick="toggleSolution('sol-5-3')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-5-3" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: 321</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> Static variables are initialized exactly <strong>once</strong>. <code class="text-pink-400">main()</code> calls itself recursively. On subsequent calls, `i` is not re-initialized to 3, it retains its decremented value.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q5.4 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-red-500/20 text-red-300 px-3 py-1 rounded-full text-xs font-bold border border-red-500/30 uppercase tracking-wide">Trap</span>
+                    <h3 class="text-xl font-bold text-white">21. The Sequence Point Trap</h3>
+                </div>
+                <pre><code class="language-c">int func1() {
+    static int val = 2;
+    return ++val + val++;
+}
+int main() {
+    printf("%d", func1());
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-5-4')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-5-4" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: Undefined Behavior (Compiler Dependent, often evaluates to 6)</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> The C standard explicitly states that modifying a variable more than once between sequence points (like evaluating a single expression `++val + val++`) results in <strong>Undefined Behavior</strong>. You cannot guarantee the order of evaluation. However, in many exam contexts, they evaluate strictly left to right: `val` becomes 3, then it evaluates `3 + 3` (evaluates to 6), and finally `val` becomes 4.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        
+    </main>
+
+    <!-- Script for Toggles and PrismJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script>
+        function toggleSolution(id) {
+            const el = document.getElementById(id);
+            const btn = el.previousElementSibling;
+            
+            if (el.classList.contains('open')) {
+                el.classList.remove('open');
+                btn.innerHTML = 'Reveal Explanation 👁️';
+                btn.classList.remove('bg-white/20');
+                btn.classList.add('bg-white/10');
+            } else {
+                el.classList.add('open');
+                btn.innerHTML = 'Hide Explanation 🙈';
+                btn.classList.remove('bg-white/10');
+                btn.classList.add('bg-white/20');
+            }
+        }
+    </script>
+</body>
+</html>

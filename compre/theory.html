@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Computer Programming Exam Guide</title>
+    
+    <!-- Highlight.js CSS for syntax highlighting (Atom One Dark theme) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --text-color: #2c3e50;
+            --heading-color: #1a365d;
+            --primary-accent: #2980b9;
+            --secondary-accent: #ecf0f1;
+            --warning-bg: #fff3cd;
+            --warning-border: #ffeeba;
+            --warning-text: #856404;
+            --danger-bg: #f8d7da;
+            --danger-border: #f5c6cb;
+            --danger-text: #721c24;
+            --success-bg: #d4edda;
+            --success-border: #c3e6cb;
+            --success-text: #155724;
+            --output-bg: #222;
+            --output-text: #00ff00;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: var(--heading-color);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 { margin: 0 0 10px 0; font-size: 2.8rem; }
+        h2 { color: var(--primary-accent); border-bottom: 3px solid var(--primary-accent); padding-bottom: 5px; margin-top: 50px; font-size: 2rem;}
+        h3 { color: var(--heading-color); margin-top: 30px; font-size: 1.4rem;}
+        h4 { color: #d35400; }
+        
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: var(--heading-color); color: white; }
+        tr:nth-child(even) { background-color: #f8f9fa; }
+        
+        code.inline-code { font-family: 'Courier New', Courier, monospace; background-color: #e2e8f0; color: #c0392b; padding: 2px 6px; border-radius: 4px; font-weight: bold;}
+        pre { border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 15px 0;}
+        
+        .output-box {
+            background-color: var(--output-bg);
+            color: var(--output-text);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: -10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .output-box::before { content: "Output: \A"; color: #fff; font-weight: bold; white-space: pre; }
+
+        .alert { padding: 20px; margin: 25px 0; border: 1px solid transparent; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
+        .alert-warning { background-color: var(--warning-bg); border-color: var(--warning-border); color: var(--warning-text); border-left: 6px solid #ffc107;}
+        .alert-danger { background-color: var(--danger-bg); border-color: var(--danger-border); color: var(--danger-text); border-left: 6px solid #dc3545;}
+        .alert-success { background-color: var(--success-bg); border-color: var(--success-border); color: var(--success-text); border-left: 6px solid #28a745;}
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 30px;}
+        .toc { background: white; padding: 30px; border-radius: 8px; margin-bottom: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .toc ul { column-count: 2; list-style-type: none; padding-left: 0; }
+        .toc li { margin-bottom: 10px; }
+        .toc a { color: var(--primary-accent); text-decoration: none; font-weight: 600; font-size: 1.1rem; display: block; padding: 5px; border-radius: 4px; transition: background 0.3s;}
+        .toc a:hover { background: var(--secondary-accent); }
+        
+        ul { padding-left: 25px; }
+        li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Computer Programming Comprehensive Exam Guide</h1>
+        <p>Exhaustive Notes, Syntax Highlights, Exceptions, Outputs, and Deep-Dives</p>
+    </header>
+
+    <div class="toc">
+        <h2>Table of Contents</h2>
+        <ul>
+            <li><a href="#mod1">1. Basics & Compilation Process</a></li>
+            <li><a href="#mod2">2. Flowcharts & Algorithms</a></li>
+            <li><a href="#mod4">3. Deep Dive: Number Systems & IEEE 754</a></li>
+            <li><a href="#mod5">4. Data Types, Variables & Operators</a></li>
+            <li><a href="#mod6">5. Control Flow: Branching & Looping</a></li>
+            <li><a href="#mod7">6. Functions, Scope & Storage Classes</a></li>
+            <li><a href="#mod8">7. Arrays & Strings</a></li>
+            <li><a href="#mod10">8. Pointers & Pointer Arithmetic</a></li>
+            <li><a href="#mod9">9. Structures, Unions & Enums</a></li>
+            <li><a href="#mod11">10. Dynamic Memory Allocation</a></li>
+            <li><a href="#mod12">11. Linked Lists (Singly, Doubly, Circular)</a></li>
+            <li><a href="#mod13">12. File Handling & Command Line Args</a></li>
+            <li><a href="#mod14">13. Recursion</a></li>
+        </ul>
+    </div>
+
+    <!-- MODULE 1 & 3 -->
+    <section id="mod1">
+        <h2>1. Basics & Compilation Process</h2>
+        <div class="card">
+            <h3>Memory Hierarchy (Fastest to Slowest)</h3>
+            <ol>
+                <li><strong>Registers</strong> (Inbuilt on processor, volatile)</li>
+                <li><strong>Cache</strong> (Inbuilt on processor, volatile)</li>
+                <li><strong>Primary Memory</strong> (RAM is volatile, ROM is non-volatile)</li>
+                <li><strong>Secondary Memory</strong> (HDD, SSD, Tape, CD - non-volatile)</li>
+            </ol>
+
+            <h3>The Compilation Process (4 Phases)</h3>
+            <p>You can generate intermediate files using <code class="inline-code">gcc -save-temps file.c</code></p>
+            <ol>
+                <li><strong>Preprocessor (<code>.i</code>):</strong> Text manipulation. Removes comments, processes directives like <code class="inline-code">#include</code> and <code class="inline-code">#define</code>.</li>
+                <li><strong>Compiler (<code>.s</code>):</strong> Checks syntax, creates <strong>Assembly Code</strong>.</li>
+                <li><strong>Assembler (<code>.o</code>):</strong> Converts assembly language into Machine/Object code. Cannot be run yet.</li>
+                <li><strong>Linker (<code>.exe</code> or <code>.out</code>):</strong> Resolves external references (e.g., <code class="inline-code">printf</code>). Combines multiple object files into the final executable.</li>
+            </ol>
+
+            <div class="alert alert-danger">
+                <strong>Crucial Exam Concept: Types of Errors</strong>
+                <ul>
+                    <li><strong>Syntax Error:</strong> Missing semicolon, open parenthesis, undeclared variable. Detected by Compiler.</li>
+                    <li><strong>Semantic Error:</strong> Valid syntax but conceptually meaningless. E.g., <code class="inline-code">a * b = c;</code> (error: lvalue required as left operand of assignment). Detected by Compiler.</li>
+                    <li><strong>Linker Error:</strong> Multiple definitions of a function or missing library object code when combining files.</li>
+                    <li><strong>Run-time Error:</strong> Divide by zero, Array index out of bounds, memory leaks, infinite loops missing break statements. Usually results in a crash or core dump.</li>
+                    <li><strong>Logical Error:</strong> Runs perfectly, but wrong output. E.g., using <code class="inline-code">=</code> instead of <code class="inline-code">==</code> in an <code class="inline-code">if</code> statement.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODULE 2 -->
+    <section id="mod2">
+        <h2>2. Flowcharts & Algorithms</h2>
+        <div class="card">
+            <p><strong>Algorithm:</strong> A finite set of clear, unambiguous steps in English-like language to solve a computing problem independent of the programming language.</p>
+            <h3>Flowchart Symbols</h3>
+            <ul>
+                <li><strong>Oval:</strong> Start / Stop</li>
+                <li><strong>Parallelogram:</strong> Input / Output</li>
+                <li><strong>Rectangle:</strong> Process / Calculation / Set Variable</li>
+                <li><strong>Diamond:</strong> Decision (One input flow line, two output flow lines: Yes/No)</li>
+                <li><strong>Circle:</strong> Connector</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- MODULE 4 (HEAVY EMPHASIS ON IEEE) -->
+    <section id="mod4">
+        <h2>3. Deep Dive: Number Systems & IEEE 754 Floating Point</h2>
+        <div class="card">
+            <h3>Negative Binary Numbers</h3>
+            <p>The Most Significant Bit (MSB) acts as the sign bit (0 = positive, 1 = negative).</p>
+            <ul>
+                <li><strong>Signed-Magnitude:</strong> 1st bit is sign, next 7 bits are magnitude. (+0 and -0 exist). Range: -127 to +127.</li>
+                <li><strong>1's Complement:</strong> Invert all bits. (+0 and -0 exist). Range: -127 to +127.</li>
+                <li><strong>2's Complement:</strong> Invert all bits and add 1. Range: -128 to +127. <strong>This is the standard used in modern computing.</strong></li>
+            </ul>
+            <div class="alert alert-warning">
+                <strong>Rule of Thumb:</strong> For any <strong>positive</strong> number, its representation in Signed-Magnitude, 1's Complement, and 2's Complement is EXACTLY the same! It is just the binary representation padded with zeros to the left.
+            </div>
+            
+            <h3>Subtraction using 2's Complement</h3>
+            <p>To compute A - B: Take the 2's complement of B, and add it to A. Discard any carry beyond the MSB.</p>
+            <pre><code class="language-plaintext">Example: 7 - 4 (using 8 bits)
+7 = 00000111
+4 = 00000100 -> 1's comp = 11111011 -> 2's comp = 11111100
+Add:
+  00000111 (7)
++ 11111100 (-4)
+----------------
+ 100000011 -> Discard the 9th bit (1).
+Result: 00000011 -> 3 in decimal.
+</code></pre>
+
+            <h3>IEEE 754 Floating Point Representation (32-bit Single Precision)</h3>
+            <p>Formula: <code class="inline-code">(-1)<sup>s</sup> &times; 1.m &times; 2<sup>(e - 127)</sup></code></p>
+            <ul>
+                <li><strong>Sign bit (s) [1 bit]:</strong> Bit 31. 0 for positive, 1 for negative.</li>
+                <li><strong>Exponent (e) [8 bits]:</strong> Bits 30 to 23. Uses <strong>Excess-127</strong>. You must ADD 127 to the actual binary exponent and store that value.</li>
+                <li><strong>Mantissa/Significand (m) [23 bits]:</strong> Bits 22 to 0. The fractional part AFTER the implied <code class="inline-code">1.</code>.</li>
+            </ul>
+
+            <h4>Detailed Exam Example 1: Convert 10.6875 to IEEE 754 32-bit</h4>
+            <ol>
+                <li><strong>Convert integer part (10):</strong> <code class="inline-code">10 / 2 = 5 (R0), 5 / 2 = 2 (R1), 2 / 2 = 1 (R0), 1 / 2 = 0 (R1)</code> &rarr; <code class="inline-code">1010</code></li>
+                <li><strong>Convert fractional part (0.6875):</strong> 
+                    <ul>
+                        <li>0.6875 &times; 2 = <strong>1</strong>.375</li>
+                        <li>0.375 &times; 2 = <strong>0</strong>.75</li>
+                        <li>0.75 &times; 2 = <strong>1</strong>.5</li>
+                        <li>0.5 &times; 2 = <strong>1</strong>.0 (Stops here)</li>
+                    </ul>
+                    &rarr; <code class="inline-code">.1011</code>
+                </li>
+                <li><strong>Combine:</strong> <code class="inline-code">1010.1011</code></li>
+                <li><strong>Normalize:</strong> Move decimal 3 places to the left: <code class="inline-code">1.0101011 &times; 2<sup>3</sup></code></li>
+                <li><strong>Calculate Exponent (e):</strong> Actual exponent is 3. Add 127. <code class="inline-code">3 + 127 = 130</code>. Binary of 130 is <code class="inline-code">10000010</code>.</li>
+                <li><strong>Extract Mantissa:</strong> Take the part after the decimal: <code class="inline-code">0101011</code>. Pad with zeros to make it 23 bits: <code class="inline-code">01010110000000000000000</code>.</li>
+                <li><strong>Sign bit:</strong> Positive number, so <code class="inline-code">0</code>.</li>
+                <li><strong>Final Result:</strong> <code class="inline-code">0 10000010 01010110000000000000000</code></li>
+            </ol>
+
+            <h4>Detailed Exam Example 2: Convert 12.375 to IEEE 754 32-bit</h4>
+            <ul>
+                <li>12 = <code class="inline-code">1100</code></li>
+                <li>0.375 = <code class="inline-code">.011</code></li>
+                <li>Combined = <code class="inline-code">1100.011</code></li>
+                <li>Normalized = <code class="inline-code">1.100011 &times; 2<sup>3</sup></code></li>
+                <li>Exponent = <code class="inline-code">130</code> &rarr; <code class="inline-code">10000010</code></li>
+                <li>Mantissa = <code class="inline-code">10001100000000000000000</code></li>
+                <li><strong>Final Result:</strong> <code class="inline-code">0 10000010 10001100000000000000000</code></li>
+            </ul>
+
+            <h4>Detailed Exam Example 3: IEEE 754 to Decimal</h4>
+            <p>Given: <code class="inline-code">1 10110110 01100000000000000000000</code></p>
+            <ul>
+                <li><strong>Sign:</strong> <code class="inline-code">1</code> &rarr; Negative number.</li>
+                <li><strong>Exponent:</strong> <code class="inline-code">10110110</code> in decimal is <code class="inline-code">128 + 32 + 16 + 4 + 2 = 182</code>. Actual exponent = <code class="inline-code">182 - 127 = 55</code>.</li>
+                <li><strong>Mantissa:</strong> <code class="inline-code">011</code>... implies <code class="inline-code">1.011</code> in binary.</li>
+                <li><strong>Calculation:</strong> <code class="inline-code">-1 &times; 1.011 &times; 2<sup>55</sup></code></li>
+                <li><code class="inline-code">1.011</code> in binary is <code class="inline-code">1 + 0/2 + 1/4 + 1/8 = 1.375</code>.</li>
+                <li><strong>Final Result:</strong> <code class="inline-code">-1.375 &times; 2<sup>55</sup></code></li>
+            </ul>
+
+            <div class="alert alert-danger">
+                <strong>Exception/Edge Case: Infinite Repeating Binary</strong><br>
+                What if you convert <code class="inline-code">-10.7</code> to IEEE 754?<br>
+                The fractional part <code class="inline-code">0.7</code> yields an infinite repeating pattern: <code class="inline-code">.10110011001100...</code><br>
+                <strong>Rule:</strong> You store only the bits that fit the 23-bit mantissa. The rest are truncated. This leads to approximation/precision loss (e.g., it might read back as -10.699999).
+            </div>
+        </div>
+    </section>
+
+    <!-- MODULE 5 -->
+    <section id="mod5">
+        <h2>4. Data Types, Variables & Operators</h2>
+        <div class="card">
+            <h3>Type Hierarchy & Conversions</h3>
+            <p>Implicit conversion promotes to the largest type: <code>int &rarr; unsigned int &rarr; long &rarr; float &rarr; double &rarr; long double</code>. <br><code>char</code> and <code>short</code> are always converted to <code>int</code> before arithmetic.</p>
+            
+            <pre><code class="language-c">float A = 100/3;     // Output: 33.000000 (Integer division first)
+float B = 100/3.0;   // Output: 33.333333 (Float division)
+int C = 10; C = C + 'B'; // 'B' (66) converted to int. C = 76.
+</code></pre>
+
+            <h3>Operator Precedence and Tricks</h3>
+            <ul>
+                <li>Unary operators (<code class="inline-code">++</code>, <code class="inline-code">--</code>, <code class="inline-code">!</code>, <code class="inline-code">*</code>, <code class="inline-code">&</code>) have <strong>Right-to-Left</strong> associativity.</li>
+                <li>Arithmetic <code class="inline-code">*, /, %</code> > <code class="inline-code">+, -</code></li>
+                <li>Bitwise Operators: <code class="inline-code">&</code> (AND), <code class="inline-code">|</code> (OR), <code class="inline-code">^</code> (XOR), <code class="inline-code">~</code> (NOT).</li>
+            </ul>
+
+            <div class="alert alert-danger">
+                <strong>Short-Circuiting Rules (Crucial for output tracing):</strong>
+                <ul>
+                    <li><strong>AND (<code class="inline-code">&&</code>):</strong> Evaluates Left to Right. If the left is 0 (False), the right side is <strong>IGNORED</strong>.</li>
+                    <li><strong>OR (<code class="inline-code">||</code>):</strong> Evaluates Left to Right. If the left is non-zero (True), the right side is <strong>IGNORED</strong>.</li>
+                </ul>
+            </div>
+            
+            <pre><code class="language-c">int a = 0, b = 3;
+int I = a++ && ++b; 
+// a++ returns 0 (then increments a to 1). Left is False.
+// ++b is SKIPPED entirely.
+printf("%d %d %d", a, b, I);
+</code></pre>
+            <div class="output-box">1 3 0</div>
+
+            <pre><code class="language-c">int a = 1, b = 1;
+int c = a || --b; // a is 1 (True). --b is SKIPPED. c = 1.
+int d = a-- && --b; // a-- returns 1 (True). --b executes (b becomes 0, returning 0). d = 0.
+printf("a=%d, b=%d, c=%d, d=%d", a, b, c, d);
+</code></pre>
+            <div class="output-box">a=0, b=0, c=1, d=0</div>
+        </div>
+    </section>
+
+    <!-- MODULE 6 -->
+    <section id="mod6">
+        <h2>5. Control Flow: Branching & Looping</h2>
+        <div class="card">
+            <h3>Loops: while, do...while, for</h3>
+            <table style="width:100%;">
+                <tr><th>while</th><th>do...while</th><th>for</th></tr>
+                <tr><td>Entry-controlled</td><td>Exit-controlled (runs at least once)</td><td>Entry-controlled, best for known iterations</td></tr>
+            </table>
+
+            <div class="alert alert-warning">
+                <strong>Loop Exceptions & Edge Cases:</strong>
+                <ul>
+                    <li><code class="inline-code">while(num > 0);</code> - The semicolon terminates the loop. If num>0, it's an infinite loop doing nothing.</li>
+                    <li><code class="inline-code">for(int i=1, j=10; i<10 && j>0; i++, j--)</code> - Multiple variables can be managed.</li>
+                    <li><code class="inline-code">break;</code> - Immediately suspends the <strong>current/innermost</strong> loop.</li>
+                    <li><code class="inline-code">continue;</code> - Skips the remaining code in the loop body and jumps to the update/condition evaluation.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODULE 7 -->
+    <section id="mod7">
+        <h2>6. Functions, Scope & Storage Classes</h2>
+        <div class="card">
+            <h3>Memory Layout during Execution</h3>
+            <ul>
+                <li><strong>Text Segment:</strong> Compiled machine code.</li>
+                <li><strong>Data Segment:</strong> Global and Static variables. Initialized here.</li>
+                <li><strong>Heap Segment:</strong> Dynamic allocation (<code class="inline-code">malloc</code>). Grows upwards.</li>
+                <li><strong>Stack Segment:</strong> Local (auto) variables, function frames. Grows downwards. Destroyed on return.</li>
+            </ul>
+
+            <h3>Storage Classes Comparison</h3>
+            <table>
+                <tr><th>Storage Class</th><th>Scope</th><th>Default Val</th><th>Location</th><th>Lifetime</th></tr>
+                <tr><td><strong>Auto</strong></td><td>Local block</td><td>Garbage</td><td>Stack</td><td>End of block</td></tr>
+                <tr><td><strong>Global</strong></td><td>Global</td><td><strong>0</strong></td><td>Data</td><td>End of program</td></tr>
+                <tr><td><strong>Static</strong></td><td>Local block</td><td><strong>0</strong></td><td>Data</td><td>End of program (retains value)</td></tr>
+                <tr><td><strong>Register</strong></td><td>Local block</td><td>Garbage</td><td>CPU Register</td><td>End of block</td></tr>
+            </table>
+
+            <div class="alert alert-danger">
+                <strong>Static & Register Exceptions:</strong>
+                <ul>
+                    <li>Static variables are initialized <strong>ONLY ONCE</strong>. If <code class="inline-code">static int y = 0;</code> is inside a loop, it will NOT reset to 0 on the second iteration.</li>
+                    <li>You <strong>CANNOT</strong> access the memory address of a <code class="inline-code">register</code> variable using <code class="inline-code">&</code>. Therefore, <code class="inline-code">scanf("%d", &reg_var);</code> will cause a compilation error.</li>
+                </ul>
+            </div>
+
+            <pre><code class="language-c">#include &lt;stdio.h&gt;
+void f1() {
+    static int i = 0;
+    i = i + 10;
+    printf("i=%d ", i);
+}
+int main() {
+    for(int j=0; j<3; j++) f1();
+}
+</code></pre>
+            <div class="output-box">i=10 i=20 i=30</div>
+        </div>
+    </section>
+
+    <!-- MODULE 8 & 13 -->
+    <section id="mod8">
+        <h2>7. Arrays & Strings</h2>
+        <div class="card">
+            <h3>Arrays</h3>
+            <ul>
+                <li><strong>No Bounds Checking:</strong> C does not stop you from accessing <code class="inline-code">arr[10]</code> in an array of size 5. It will overwrite other memory, causing bugs or "Stack Smashing" errors.</li>
+                <li><strong>Assignment:</strong> You cannot do <code class="inline-code">arr1 = arr2;</code>. You must copy element-by-element using a loop.</li>
+                <li>Arrays are always passed to functions <strong>by reference</strong> (pointer to the first element).</li>
+            </ul>
+
+            <h3>Strings (<code>&lt;string.h&gt;</code>)</h3>
+            <p>Strings are character arrays terminated by <code class="inline-code">'\0'</code>. <code>char str[4] = "BITS";</code> is an ERROR because there is no space for the null terminator.</p>
+            <ul>
+                <li><code class="inline-code">scanf("%s", str)</code> reads until a space.</li>
+                <li><code class="inline-code">scanf("%[^\n]s", str)</code> reads a full line until Enter.</li>
+                <li><code class="inline-code">gets(str)</code> reads a full line and auto-appends <code>\0</code>.</li>
+            </ul>
+
+            <pre><code class="language-c">// String concatenation implementation logic manually:
+int i = 0, j = 0;
+while(s1[i++] != '\0'); i--; // Go to end of s1
+while(s2[j] != '\0') {
+    s1[i++] = s2[j++];
+}
+s1[i] = '\0';
+</code></pre>
+            
+            <p><strong>Key String Functions:</strong></p>
+            <ul>
+                <li><code>strcpy(s1, s2)</code>: Copies s2 into s1.</li>
+                <li><code>strcmp(s1, s2)</code>: Returns 0 if identical. <0 if s1 is alphabetically before s2. >0 if s1 after s2.</li>
+                <li><code>strstr(s1, s2)</code>: Returns pointer to first occurrence of s2 in s1, or NULL.</li>
+                <li><code>atoi(str)</code>: Converts string to integer (needs <code>&lt;stdlib.h&gt;</code>).</li>
+                <li><code>atof(str)</code>: Converts string to double.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- MODULE 10 -->
+    <section id="mod10">
+        <h2>8. Pointers & Pointer Arithmetic</h2>
+        <div class="card">
+            <p>Pointers store memory addresses. <code class="inline-code">int *p = &a;</code></p>
+            <ul>
+                <li><strong>Null Pointer:</strong> <code class="inline-code">int *p = NULL;</code> (Always do this to avoid dangling pointer issues).</li>
+                <li><strong>Void Pointer:</strong> <code class="inline-code">void *p;</code> Generic pointer. Must be typecast to dereference: <code class="inline-code">*(int *)p</code>.</li>
+            </ul>
+
+            <h3>Pointer Arithmetic</h3>
+            <p>Adding K to a pointer moves the address by <code class="inline-code">K * sizeof(type)</code>.</p>
+            <pre><code class="language-c">int a[5] = {5, 10, 15, 20, 25};
+int *ptr = a;  // Assume ptr address is 1000, int is 4 bytes
+ptr = ptr + 2; // Address becomes 1008. Points to 15.
+</code></pre>
+
+            <div class="alert alert-danger">
+                <strong>Tracing Pointer Expressions (Exam Favorites):</strong>
+                <ul>
+                    <li><code class="inline-code">*p++</code> or <code class="inline-code">*(p++)</code> : Evaluates to the value at <code class="inline-code">p</code>, then the pointer <code class="inline-code">p</code> moves to the next address.</li>
+                    <li><code class="inline-code">*++p</code> or <code class="inline-code">*(++p)</code> : Pointer <code class="inline-code">p</code> moves to the next address, then evaluates the value at that new address.</li>
+                    <li><code class="inline-code">++*p</code> or <code class="inline-code">++(*p)</code> : Increments the <strong>value</strong> stored at address <code class="inline-code">p</code>. The address does not change.</li>
+                    <li><code class="inline-code">(*p)++</code> : Evaluates the value at <code class="inline-code">p</code>, then increments the <strong>value</strong> in memory. Address does not change.</li>
+                </ul>
+            </div>
+
+            <pre><code class="language-c">int main() {
+    int v = 3, *pv;
+    pv = &v;
+    (*pv)++;
+    printf("v=%d, *pv=%d\n", v, *pv);
+}
+</code></pre>
+            <div class="output-box">v=4, *pv=4</div>
+
+            <h3>Array-Pointer Equivalence</h3>
+            <p><code class="inline-code">arr[i]</code> is exactly equivalent to <code class="inline-code">*(arr + i)</code>.</p>
+            <p>For 2D arrays: <code class="inline-code">arr2D[i][j]</code> is exactly equivalent to <code class="inline-code">*(*(arr2D + i) + j)</code>.</p>
+        </div>
+    </section>
+
+    <!-- MODULE 9 -->
+    <section id="mod9">
+        <h2>9. Structures, Unions & Enums</h2>
+        <div class="card">
+            <h3>Structures</h3>
+            <p>A custom data type grouping logically related variables.</p>
+            <pre><code class="language-c">struct student {
+    int ID;
+    char Name[20];
+}; // Don't forget the semicolon!
+struct student s1;
+</code></pre>
+
+            <div class="alert alert-warning">
+                <strong>Structure Traps:</strong>
+                <ul>
+                    <li><strong>Padding:</strong> <code>sizeof(struct)</code> is often larger than the sum of its parts. E.g., a struct with a <code>short</code> (2 bytes), <code>int</code> (4 bytes), and <code>char</code> (1 byte) might take 12 bytes instead of 7 due to compiler alignment padding.</li>
+                    <li><strong>Assignment:</strong> <code>s1 = s2;</code> is perfectly legal. It copies all fields.</li>
+                    <li><strong>Comparison:</strong> <code>if(s1 == s2)</code> is <strong>ILLEGAL</strong> in C. You must compare field-by-field: <code>if(s1.ID == s2.ID)</code>.</li>
+                </ul>
+            </div>
+
+            <h3>Pointers to Structures</h3>
+            <pre><code class="language-c">struct student *ptr = &s1;
+printf("%d", ptr->ID);      // Correct
+printf("%d", (*ptr).ID);    // Correct
+// printf("%d", *ptr.ID);   // WRONG! Dot operator has higher precedence than *.
+</code></pre>
+
+            <h3>Enumerators (<code>enum</code>)</h3>
+            <p>Restricts variables to a specific set of integer values.</p>
+            <pre><code class="language-c">typedef enum {A1=1, A2=2, A3=5} Group_lbl;
+Group_lbl myGroup = A3; // Internally treated as integer 5
+</code></pre>
+        </div>
+    </section>
+
+    <!-- MODULE 11 -->
+    <section id="mod11">
+        <h2>10. Dynamic Memory Allocation</h2>
+        <div class="card">
+            <p>Overcomes the static sizing of arrays. Allocated on the <strong>Heap</strong>. Requires <code>&lt;stdlib.h&gt;</code>.</p>
+            
+            <table style="width:100%;">
+                <tr><th>Function</th><th>Syntax</th><th>Description</th></tr>
+                <tr><td><strong>malloc</strong></td><td><code>(int*) malloc(N * sizeof(int))</code></td><td>Allocates uninitialized memory (garbage values). Takes 1 arg.</td></tr>
+                <tr><td><strong>calloc</strong></td><td><code>(int*) calloc(N, sizeof(int))</code></td><td>Allocates memory & initializes to 0. Takes 2 args. Slower than malloc.</td></tr>
+                <tr><td><strong>realloc</strong></td><td><code>realloc(ptr, new_size)</code></td><td>Resizes block. May move data to a new location. Returns NULL if fails.</td></tr>
+                <tr><td><strong>free</strong></td><td><code>free(ptr)</code></td><td>Releases memory back to heap to prevent leaks.</td></tr>
+            </table>
+
+            <div class="alert alert-danger">
+                <strong>Critical Heap Issues:</strong>
+                <ul>
+                    <li><strong>Memory Leaks:</strong> Occurs when you allocate memory but lose the pointer to it (e.g., by overwriting the pointer or the function returning without returning the pointer) without calling <code>free()</code>. The memory is wasted until the program terminates.</li>
+                    <li><strong>Dangling Pointer:</strong> Occurs when you <code>free(ptr);</code> but then try to use <code>*ptr</code>. The address is no longer valid. Fix: ALWAYS set <code>ptr = NULL;</code> after freeing.</li>
+                </ul>
+            </div>
+
+            <h3>Dynamic 2D Arrays</h3>
+            <p>Created using a double pointer (array of pointers). This allows rows to have variable sizes!</p>
+            <pre><code class="language-c">int **arr2D = (int **) malloc(NUM_ROWS * sizeof(int*));
+for (int i=0; i<NUM_ROWS; i++) {
+    arr2D[i] = (int*) malloc(NUM_COLS * sizeof(int));
+}
+arr2D[1][2] = 10; // Accessed just like a static 2D array
+</code></pre>
+
+            <h3>Incorrect vs Correct Array Copy via Pointers</h3>
+            <pre><code class="language-c">// INCORRECT (Segmentation Fault)
+void copy(int *a, int n, int *c) {
+    // Allocates memory to local pointer 'c'. The caller's pointer is unaffected!
+    c = (int*) malloc(sizeof(int)*n); 
+    for(int i=0; i<n; i++) c[i] = a[i];
+}
+
+// CORRECT (Using Double Pointers)
+void copy_correct(int *a, int n, int **d) {
+    *d = (int*) malloc(n * sizeof(int));
+    for(int i=0; i<n; i++) (*d)[i] = a[i];
+}
+// Caller: copy_correct(a, 5, &b);
+</code></pre>
+        </div>
+    </section>
+
+    <!-- MODULE 12 -->
+    <section id="mod12">
+        <h2>11. Linked Lists</h2>
+        <div class="card">
+            <p>Uses <strong>Self-Referential Structures</strong> (contains a pointer to its own type).</p>
+            <pre><code class="language-c">struct node {
+    int data;
+    struct node *next;
+};
+</code></pre>
+
+            <h3>Singly Linked List</h3>
+            <p>One-way traversal. The <code>next</code> pointer of the last node is <code>NULL</code>.</p>
+            <pre><code class="language-c">// Insertion at Beginning
+void insertFront(struct node **head, int val) {
+    struct node *newNode = (struct node*) malloc(sizeof(struct node));
+    newNode->data = val;
+    newNode->next = *head;
+    *head = newNode;
+}
+
+// Deletion at Beginning
+void deleteFront(struct node **head) {
+    if(*head == NULL) return;
+    struct node *temp = *head;
+    *head = (*head)->next;
+    free(temp); // Crucial to prevent memory leaks!
+}
+</code></pre>
+
+            <h3>Doubly Linked List</h3>
+            <p>Nodes contain <code>prev</code> and <code>next</code> pointers. Enables two-way traversal.</p>
+            <pre><code class="language-c">struct dllnode {
+    int data;
+    struct dllnode *prev;
+    struct dllnode *next;
+};</code></pre>
+
+            <h3>Circular Linked List</h3>
+            <p>The <code>next</code> of the last node points back to the <code>head</code> node instead of <code>NULL</code>.</p>
+            <div class="alert alert-warning">
+                <strong>Cycle Traps:</strong> In a circular linked list, iterating until <code>curr != NULL</code> will result in an infinite loop!
+            </div>
+
+            <h3>Detecting Cycles (Floyd's Algorithm)</h3>
+            <p>Traverse the list using two pointers: <code>slow_p</code> (moves 1 node) and <code>fast_p</code> (moves 2 nodes). If they eventually point to the same node, a cycle exists. If either hits NULL, no cycle exists.</p>
+        </div>
+    </section>
+
+    <!-- MODULE 13 -->
+    <section id="mod13">
+        <h2>12. File Handling & Command Line Arguments</h2>
+        <div class="card">
+            <h3>File Handling</h3>
+            <pre><code class="language-c">FILE *fp;
+fp = fopen("data.txt", "r");
+if (fp == NULL) {
+    printf("File not found or no permission");
+    return 0;
+}
+fclose(fp);
+</code></pre>
+            
+            <h4>File Modes</h4>
+            <ul>
+                <li><code>"r"</code>: Read. Fails if missing.</li>
+                <li><code>"w"</code>: Write. Creates new or OVERWRITES existing.</li>
+                <li><code>"a"</code>: Append. Creates new or adds to end.</li>
+                <li><code>"r+"</code>, <code>"w+"</code>, <code>"a+"</code>: Opens for BOTH read and write.</li>
+            </ul>
+
+            <p><strong>Functions:</strong> <code>fgetc</code>, <code>fputc</code>, <code>fgets</code>, <code>fputs</code>, <code>fscanf</code>, <code>fprintf</code>. <br><code>rewind(fp);</code> moves the file position indicator back to the very beginning of the file.</p>
+
+            <h3>Command Line Arguments</h3>
+            <pre><code class="language-c">int main(int argc, char **argv) {
+    // argc: argument count
+    // argv: array of string pointers
+}</code></pre>
+            <ul>
+                <li><code>argv[0]</code> is ALWAYS the name of the executable (e.g., <code>"./a.out"</code>).</li>
+                <li>The first user-provided argument is at <code>argv[1]</code>.</li>
+                <li>If you pass numbers (e.g. <code>./calc 5 10</code>), they are strings. You must convert them: <code>int a = atoi(argv[1]);</code></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- MODULE 14 -->
+    <section id="mod14">
+        <h2>13. Recursion</h2>
+        <div class="card">
+            <p>Recursion is a function calling itself. A valid recursive function MUST have a <strong>Base Case</strong> (a condition to return without making another recursive call) to prevent infinite loops (Stack Overflow).</p>
+
+            <pre><code class="language-c">// Factorial
+long int factr(int n) {
+    if(n == 1) return 1; // Base case
+    return factr(n-1) * n; // Recursive call
+}
+
+// Power Function
+double power(double val, unsigned pow) {
+    if (pow == 0) return 1.0; // Base case
+    return power(val, pow-1) * val;
+}
+</code></pre>
+
+            <h3>How it works in memory</h3>
+            <ul>
+                <li>Every recursive call pushes a <strong>new frame</strong> onto the Stack Segment.</li>
+                <li>Local variables are distinct in every frame.</li>
+                <li>When a base case is hit, the function returns, the top frame is popped, and the caller resumes execution.</li>
+            </ul>
+
+            <div class="grid-2">
+                <div>
+                    <h4 style="color: var(--success-text);">Pros:</h4>
+                    <ul>
+                        <li>Results in cleaner, simpler, and more readable code.</li>
+                        <li>Essential for complex algorithms (MergeSort, QuickSort, Tree Traversals).</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: var(--danger-text);">Cons / Limits:</h4>
+                    <ul>
+                        <li>No reduction in compiled code size.</li>
+                        <li><strong>Slower execution</strong> due to heavy overhead of function calls (saving registers, allocating frames).</li>
+                        <li>High risk of <strong>Stack Overrun (Stack Overflow)</strong> if recursion depth is too high.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Tracing Fibonacci Time Complexity</h3>
+            <pre><code class="language-c">int fib(int num) {
+    if(num == 0) return 0;
+    if(num == 1) return 1;
+    return fib(num-1) + fib(num-2);
+}</code></pre>
+            <p><strong>Number of times fib is called:</strong><br>
+            Input 0 &rarr; 1 call<br>
+            Input 1 &rarr; 1 call<br>
+            Input 2 &rarr; 3 calls<br>
+            Input 3 &rarr; 5 calls<br>
+            Input 4 &rarr; 9 calls<br>
+            Input 5 &rarr; 15 calls...<br>
+            <em>Notice the exponential growth! This is highly inefficient compared to an iterative approach.</em></p>
+        </div>
+    </section>
+
+    <footer>
+        <p style="text-align: center; color: #777; margin-top: 40px; font-size: 1rem;"><strong>Best of luck on your Comprehensive Exam! Read the exceptions carefully!</strong></p>
+    </footer>
+</div>
+
+<!-- Highlight.js Script Initialization -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/c.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+</body>
+</html>

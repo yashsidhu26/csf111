@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Programming Masterclass - Vol II: The Hidden Traps</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- PrismJS for Code Formatting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0f172a',
+                        primary: '#a855f7', /* Purple theme for Vol 2 */
+                        accent: '#ec4899',
+                        danger: '#f43f5e',
+                        warning: '#f59e0b',
+                        success: '#10b981'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f172a;
+            background-image: 
+                radial-gradient(at 100% 0%, hsla(284,58%,15%,1) 0, transparent 50%), 
+                radial-gradient(at 0% 100%, hsla(333,49%,20%,0.3) 0, transparent 50%);
+            background-attachment: fixed;
+            color: #f8fafc;
+        }
+        
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .solution-block {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
+
+        .solution-block.open {
+            max-height: 2000px;
+            opacity: 1;
+            margin-top: 1.5rem;
+        }
+
+        pre[class*="language-"] {
+            background: rgba(15, 23, 42, 0.8) !important;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 0.75rem;
+            margin: 1rem 0;
+            box-shadow: inset 0 4px 6px rgba(0,0,0,0.4);
+        }
+        
+        .category-header {
+            background: linear-gradient(90deg, rgba(168, 85, 247, 0.15) 0%, transparent 100%);
+            border-left: 4px solid #a855f7;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen p-4 md:p-8">
+
+    <!-- Header Section -->
+    <header class="max-w-6xl mx-auto mb-12 text-center">
+        <div class="inline-block bg-accent/20 text-accent px-5 py-1.5 rounded-full text-xs font-bold tracking-widest mb-4 border border-accent/30 uppercase">
+            Volume II: Advanced Compiler Mechanics
+        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-primary via-accent to-danger bg-clip-text text-transparent">
+            The Architect's Abyss
+        </h1>
+        <p class="text-lg text-slate-300 mb-8 max-w-3xl mx-auto">
+            Forget basic syntax. These questions from the 8-year archive test your knowledge of how the C compiler <em>thinks</em>—pointer decay, side-effect nullification, ASCII math, and static constraints.
+        </p>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-4xl mx-auto space-y-16 pb-20">
+
+        <!-- ========================================== -->
+        <!-- CATEGORY 1: MEMORY & COMPILER QUIRKS -->
+        <!-- ========================================== -->
+        <section class="space-y-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-white category-header pl-4 py-2">I. Memory & Compiler Quirks</h2>
+
+            <!-- Q1 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-red-500/20 text-red-300 px-3 py-1 rounded-full text-xs font-bold border border-red-500/30 uppercase tracking-wide">Lethal Trap</span>
+                    <h3 class="text-xl font-bold text-white">1. The sizeof() Illusion (2019-20)</h3>
+                </div>
+                <pre><code class="language-c">#include &lt;stdio.h&gt;
+int main() {
+    static int var; 
+    int new_val = sizeof(var++) + ++var; 
+    printf("var = %d", var);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-1')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-1" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: var = 1</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> The <code class="text-pink-400">sizeof</code> operator evaluates the <em>type</em> of its operand at <strong>compile-time</strong>. It DOES NOT execute the code inside it at runtime.<br><br>
+                        Therefore, <code class="text-pink-400">var++</code> inside the `sizeof` is <strong>completely ignored</strong> during execution! `var` starts at 0 (since it's static), the `sizeof` evaluates to 4 (bytes), and then <code class="text-pink-400">++var</code> executes, making `var` = 1.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-xs font-bold border border-purple-500/30 uppercase tracking-wide">Memory</span>
+                    <h3 class="text-xl font-bold text-white">2. VLA vs Function Decay (2014-15)</h3>
+                </div>
+                <p class="text-slate-300 mb-2">Assume this runs on a 64-bit machine where pointers are 8 bytes and ints are 4 bytes.</p>
+                <pre><code class="language-c">void printSize(int arr[]) { 
+    printf("%lu ", sizeof(arr)); 
+}
+
+int main() { 
+    int SIZE = 10; 
+    int arr[SIZE]; 
+    printf("%lu ", sizeof(arr)); 
+    printSize(arr); 
+    return 0; 
+}</code></pre>
+                <button onclick="toggleSolution('sol-2')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-2" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: 40 8</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> Inside `main`, `arr` is an actual array. <code class="text-pink-400">sizeof(arr)</code> correctly identifies it as 10 integers (10 * 4 = 40).<br><br>
+                        However, when passed to a function, <strong>arrays decay into pointers</strong>. Inside `printSize`, `arr` is strictly treated as an <code class="text-pink-400">int*</code>. Therefore, `sizeof(arr)` returns the size of a pointer, which is 8 bytes on a 64-bit system.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full text-xs font-bold border border-orange-500/30 uppercase tracking-wide">Scope</span>
+                    <h3 class="text-xl font-bold text-white">3. The Static Constraint (2019-20)</h3>
+                </div>
+                <pre><code class="language-c">int main() {
+    int i = 10; 
+    static int x = i;
+    if(x == i) 
+        printf("One"); 
+    else 
+        printf("Two");
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-3')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-3" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: Compile-time Error</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> In C, variables declared as <code class="text-pink-400">static</code> are allocated in the data segment before the program even starts running. Therefore, they <strong>must be initialized with a constant expression</strong>.<br><br>
+                        You cannot initialize a static variable with a local, runtime variable like `i`. The compiler will flag this as: <em>"initializer element is not constant"</em>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- CATEGORY 2: POINTER ARITHMETIC GONE WILD   -->
+        <!-- ========================================== -->
+        <section class="space-y-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-white category-header pl-4 py-2">II. Pointer Arithmetic & ASCII Math</h2>
+
+            <!-- Q4 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-xs font-bold border border-blue-500/30 uppercase tracking-wide">Brilliant</span>
+                    <h3 class="text-xl font-bold text-white">4. ASCII Pointer Shifts (2016-17)</h3>
+                </div>
+                <pre><code class="language-c">int main (void) { 
+    char c[] = "KATEWINCE"; 
+    char *p = c; 
+    printf("%s", p + p[3] - p[1]) ; 
+    return (0); 
+}</code></pre>
+                <button onclick="toggleSolution('sol-4')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-4" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: WINCE</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> You can perform pointer arithmetic using the underlying integer (ASCII) values of characters!<br><br>
+                        1. `p[3]` is the character <strong>'E'</strong> (ASCII 69).<br>
+                        2. `p[1]` is the character <strong>'A'</strong> (ASCII 65).<br>
+                        3. The expression evaluates to: <code class="text-pink-400">p + 69 - 65</code> -> <code class="text-pink-400">p + 4</code>.<br>
+                        4. Adding 4 to pointer `p` shifts it 4 characters forward, making it point to index 4 (the letter 'W'). Printing it as a string yields "WINCE".</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-yellow-500/20 text-yellow-300 px-3 py-1 rounded-full text-xs font-bold border border-yellow-500/30 uppercase tracking-wide">Subtle</span>
+                    <h3 class="text-xl font-bold text-white">5. The Unmoved Pointer Loop (2014-15)</h3>
+                </div>
+                <pre><code class="language-c">int main() {
+    int num[] = {0, 4, 2, 6, 4, 8};
+    int *n = num + 3; 
+    int j = 1, val = 0; 
+    
+    while(j++ <= 3) { 
+        val += (*(n+1) > 4 ? 1 : -1); 
+    } 
+    printf("%d", val);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-5')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-5" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: -3</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> Look closely at the loop body. The pointer `n` is <strong>never incremented</strong> or updated! <br><br>
+                        `n` points to `num[3]` (which is 6). Inside the loop, <code class="text-pink-400">*(n+1)</code> looks at `num[4]` (which is 4).<br>
+                        It asks: <em>Is 4 > 4?</em> No, so the ternary returns `-1`.<br>
+                        The loop runs exactly 3 times (for j=1, 2, 3), and every single time it evaluates the exact same static pointer expression, adding -1 to `val`. <br>
+                        Final result: -3.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- CATEGORY 3: BUGS, FILES & ENUMS            -->
+        <!-- ========================================== -->
+        <section class="space-y-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-white category-header pl-4 py-2">III. Bugs, Files & Enums</h2>
+
+            <!-- Q6 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-red-500/20 text-red-300 px-3 py-1 rounded-full text-xs font-bold border border-red-500/30 uppercase tracking-wide">Trap</span>
+                    <h3 class="text-xl font-bold text-white">6. Missing Null Terminator (2022-23)</h3>
+                </div>
+                <pre><code class="language-c">#include &lt;string.h&gt;
+#include &lt;stdio.h&gt;
+int main() { 
+    char a[15]; 
+    char *s = "Hello BITS"; 
+    int len = strlen(s); 
+    
+    for(int i=0; i&lt;len; i++) 
+        a[i] = s[len-1-i]; 
+        
+    printf("%s", a); 
+    return 0; 
+}</code></pre>
+                <button onclick="toggleSolution('sol-6')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-6" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: STIB olleH[Garbage Values]</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> The code successfully reverses the string character by character into array `a`. However, it <strong>forgets to append the null-terminator</strong> <code class="text-pink-400">'\0'</code> at `a[len]`.<br><br>
+                        When passed to `printf("%s")`, it prints the reversed characters but continues reading adjacent memory until it randomly hits a null byte, resulting in trailing garbage characters.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q7 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-indigo-500/20 text-indigo-300 px-3 py-1 rounded-full text-xs font-bold border border-indigo-500/30 uppercase tracking-wide">File I/O</span>
+                    <h3 class="text-xl font-bold text-white">7. Uninitialized do-while (2024-25)</h3>
+                </div>
+                <pre><code class="language-c">int main() {
+    FILE *pt = fopen("test.txt", "r"); 
+    char ch; 
+    do { 
+        printf("%c", ch); 
+    } while((ch = fgetc(pt)) != EOF);
+    
+    fclose(pt);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-7')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-7" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: Prints a garbage character before the file content.</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> A <code class="text-pink-400">do-while</code> loop executes the body *before* checking the condition. <br><br>
+                        In the very first iteration, `printf` prints the variable `ch`. However, `ch` has just been declared and hasn't been assigned anything from the file yet. It contains memory garbage. Only <em>after</em> the first print does it execute `fgetc` inside the `while` condition.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q8 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-accent/20 text-accent px-3 py-1 rounded-full text-xs font-bold border border-accent/30 uppercase tracking-wide">Scoping</span>
+                    <h3 class="text-xl font-bold text-white">8. Enum Overrides (2016-17)</h3>
+                </div>
+                <pre><code class="language-c">int main (void) { 
+    enum tak {_2 , _3 , _4, _1}; 
+    enum cak {_5, _6, _7 }; 
+    
+    int a = _3 * 6 / _7 % (_1 - 1); 
+    printf ("a=%d\n", a); 
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-8')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-8" class="solution-block">
+                    <div class="bg-emerald-900/30 border border-emerald-500/30 rounded-xl p-5">
+                        <h4 class="text-emerald-400 font-bold text-lg mb-2">Answer: a=1</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> Enums start assigning values at 0 by default, and this resets for <em>each new enum declaration</em>. Also, identifiers starting with underscores are perfectly legal.<br><br>
+                        - From <code class="text-pink-400">enum tak</code>: `_2`=0, `_3`=1, `_4`=2, `_1`=3.<br>
+                        - From <code class="text-pink-400">enum cak</code>: `_5`=0, `_6`=1, `_7`=2.<br><br>
+                        Substitute the math: <code class="text-pink-400">1 * 6 / 2 % (3 - 1)</code><br>
+                        Following precedence (Left to Right for *, /, %):<br>
+                        `6 / 2 % 2` -> `3 % 2` = <strong>1</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        
+    </main>
+
+    <!-- Script for Toggles and PrismJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script>
+        function toggleSolution(id) {
+            const el = document.getElementById(id);
+            const btn = el.previousElementSibling;
+            
+            if (el.classList.contains('open')) {
+                el.classList.remove('open');
+                btn.innerHTML = 'Reveal Explanation 👁️';
+                btn.classList.remove('bg-white/20');
+                btn.classList.add('bg-white/10');
+            } else {
+                el.classList.add('open');
+                btn.innerHTML = 'Hide Explanation 🙈';
+                btn.classList.remove('bg-white/10');
+                btn.classList.add('bg-white/20');
+            }
+        }
+    </script>
+</body>
+</html>

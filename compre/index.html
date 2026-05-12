@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Programming Masterclass - Index</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0a0a0a',
+                        primary: '#e11d48', /* Crimson theme for Vol 4 */
+                        accent: '#f43f5e', 
+                        danger: '#ffedd5',
+                        warning: '#f59e0b',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0a0a0a;
+            background-image: 
+                radial-gradient(at 50% 0%, hsla(343, 80%, 15%, 1) 0, transparent 60%), 
+                radial-gradient(at 100% 100%, hsla(0, 0%, 10%, 1) 0, transparent 50%);
+            background-attachment: fixed;
+            color: #f8fafc;
+        }
+        
+        .glass-card {
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(225, 29, 72, 0.15);
+            border-top: 1px solid rgba(225, 29, 72, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(225, 29, 72, 0.2);
+            border-color: rgba(225, 29, 72, 0.5);
+        }
+
+        .category-header {
+            background: linear-gradient(90deg, rgba(225, 29, 72, 0.2) 0%, transparent 100%);
+            border-left: 4px solid #e11d48;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen p-4 md:p-8">
+
+    <!-- Header Section -->
+    <header class="max-w-6xl mx-auto mb-16 text-center mt-8">
+        <div class="inline-block bg-accent/20 text-accent px-5 py-1.5 rounded-full text-xs font-bold tracking-widest mb-4 border border-accent/40 uppercase shadow-[0_0_15px_rgba(225,29,72,0.3)]">
+            CP Compre Collection
+        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-red-500 via-rose-400 to-orange-300 bg-clip-text text-transparent">
+            C Programming Masterclass Archives
+        </h1>
+        <p class="text-lg text-slate-300 mb-8 max-w-3xl mx-auto">
+            A complete collection of previous year questions, hidden traps, deceptive mechanics, and foundational theory for mastering C programming. Choose a volume below to begin.
+        </p>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-6xl mx-auto pb-20">
+
+        <!-- Practice Volumes -->
+        <section class="space-y-6 mb-12">
+            <h2 class="text-2xl md:text-3xl font-bold text-white category-header pl-4 py-2 mb-8">Practice Problem Sets</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Volume I -->
+                <a href="moj1.html" class="block">
+                    <div class="glass-card rounded-2xl p-6 h-full flex flex-col">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-xs font-bold border border-blue-500/30 uppercase tracking-wide">Volume I</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">The Ultimate PYQ Collection</h3>
+                        <p class="text-slate-400 text-sm flex-grow">The foundational collection of previous year questions covering core concepts, syntax rules, and standard problem-solving patterns.</p>
+                        <div class="mt-4 text-accent text-sm font-semibold flex items-center gap-2">
+                            Enter Volume <span aria-hidden="true">&rarr;</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Volume II -->
+                <a href="moj2.html" class="block">
+                    <div class="glass-card rounded-2xl p-6 h-full flex flex-col">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-xs font-bold border border-purple-500/30 uppercase tracking-wide">Volume II</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">The Hidden Traps</h3>
+                        <p class="text-slate-400 text-sm flex-grow">A deep dive into common pitfalls, misleading syntax, and subtle logic errors that catch even experienced programmers off guard.</p>
+                        <div class="mt-4 text-accent text-sm font-semibold flex items-center gap-2">
+                            Enter Volume <span aria-hidden="true">&rarr;</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Volume III -->
+                <a href="moj3.html" class="block">
+                    <div class="glass-card rounded-2xl p-6 h-full flex flex-col">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full text-xs font-bold border border-orange-500/30 uppercase tracking-wide">Volume III</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">The Executioner's Stack</h3>
+                        <p class="text-slate-400 text-sm flex-grow">Complex problems focusing on stack mechanics, recursion behavior, scope lifetimes, and execution flow manipulations.</p>
+                        <div class="mt-4 text-accent text-sm font-semibold flex items-center gap-2">
+                            Enter Volume <span aria-hidden="true">&rarr;</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Volume IV -->
+                <a href="moj4.html" class="block">
+                    <div class="glass-card rounded-2xl p-6 h-full flex flex-col">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs font-bold border border-red-500/30 uppercase tracking-wide">Volume IV</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">The Compiler's Crypt</h3>
+                        <p class="text-slate-400 text-sm flex-grow">The absolute final layer of questions dealing with Endianness illusions, infinite structs, operator precedence brutality, and sneaky tricks.</p>
+                        <div class="mt-4 text-accent text-sm font-semibold flex items-center gap-2">
+                            Enter Volume <span aria-hidden="true">&rarr;</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Volume V -->
+                <a href="moj5.html" class="block">
+                    <div class="glass-card rounded-2xl p-6 h-full flex flex-col">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full text-xs font-bold border border-yellow-500/30 uppercase tracking-wide">Volume V</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">The Grand Finale</h3>
+                        <p class="text-slate-400 text-sm flex-grow">An intense collection of edge cases, rare behaviors, and ultimate challenges to solidify your mastery of the language.</p>
+                        <div class="mt-4 text-accent text-sm font-semibold flex items-center gap-2">
+                            Enter Volume <span aria-hidden="true">&rarr;</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Volume VI -->
+                <a href="moj6.html" class="block">
+                    <div class="glass-card rounded-2xl p-6 h-full flex flex-col">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-pink-500/20 text-pink-400 px-3 py-1 rounded-full text-xs font-bold border border-pink-500/30 uppercase tracking-wide">Volume VI</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">The Deep Cuts</h3>
+                        <p class="text-slate-400 text-sm flex-grow">Advanced pointers, complex memory management, and deeply nested structures that test your ability to trace C execution accurately.</p>
+                        <div class="mt-4 text-accent text-sm font-semibold flex items-center gap-2">
+                            Enter Volume <span aria-hidden="true">&rarr;</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Volume VII -->
+                <a href="moj7.html" class="block">
+                    <div class="glass-card rounded-2xl p-6 h-full flex flex-col">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full text-xs font-bold border border-emerald-500/30 uppercase tracking-wide">Volume VII</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">The Zenith Archives</h3>
+                        <p class="text-slate-400 text-sm flex-grow">The highest level of difficulty. Obscure library functions, macro black magic, and extremely convoluted program flows.</p>
+                        <div class="mt-4 text-accent text-sm font-semibold flex items-center gap-2">
+                            Enter Volume <span aria-hidden="true">&rarr;</span>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- Theory & Guides -->
+        <section class="space-y-6 mt-16">
+            <h2 class="text-2xl md:text-3xl font-bold text-white category-header pl-4 py-2 mb-8">Theory & Comprehensive Guides</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Theory Guide -->
+                <a href="theory.html" class="block">
+                    <div class="glass-card rounded-2xl p-6 h-full flex flex-col">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-indigo-500/20 text-indigo-400 px-3 py-1 rounded-full text-xs font-bold border border-indigo-500/30 uppercase tracking-wide">Reference Guide</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Comprehensive Computer Programming Exam Guide</h3>
+                        <p class="text-slate-400 text-sm flex-grow mb-4">A complete theoretical breakdown of C programming concepts. Features extensive documentation on arrays, strings, pointers, dynamic memory allocation, and more. Essential reading before attempting the higher volumes.</p>
+                        <div class="mt-auto text-accent text-sm font-semibold flex items-center gap-2">
+                            Read Guide <span aria-hidden="true">&rarr;</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Programming Masterclass - Vol III: The Executioner's Stack</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- PrismJS for Code Formatting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#020617',
+                        primary: '#10b981', /* Emerald theme for Vol 3 */
+                        accent: '#14b8a6', /* Teal */
+                        danger: '#f43f5e',
+                        warning: '#f59e0b',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #020617;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(160, 84%, 10%, 1) 0, transparent 50%), 
+                radial-gradient(at 100% 100%, hsla(175, 80%, 15%, 0.4) 0, transparent 50%);
+            background-attachment: fixed;
+            color: #f8fafc;
+        }
+        
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            border-top: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .solution-block {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
+
+        .solution-block.open {
+            max-height: 2000px;
+            opacity: 1;
+            margin-top: 1.5rem;
+        }
+
+        pre[class*="language-"] {
+            background: rgba(2, 6, 23, 0.8) !important;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 0.75rem;
+            margin: 1rem 0;
+            box-shadow: inset 0 4px 6px rgba(0,0,0,0.6);
+        }
+        
+        .category-header {
+            background: linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, transparent 100%);
+            border-left: 4px solid #10b981;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen p-4 md:p-8">
+
+    <!-- Header Section -->
+    <header class="max-w-6xl mx-auto mb-12 text-center">
+        <div class="inline-block bg-accent/20 text-accent px-5 py-1.5 rounded-full text-xs font-bold tracking-widest mb-4 border border-accent/30 uppercase">
+            Volume III: Deep Mechanics & Logic Traps
+        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-primary via-accent to-blue-400 bg-clip-text text-transparent">
+            The Executioner's Stack
+        </h1>
+        <p class="text-lg text-slate-300 mb-8 max-w-3xl mx-auto">
+            These newly uncovered questions from the archives test your understanding of stack unwinding, static persistence across recursive frames, and operating-system-level file I/O overrides.
+        </p>
+
+        <!-- Pro Tips Panel -->
+        <div class="glass-card rounded-2xl p-6 text-left border-l-4 border-l-primary max-w-5xl mx-auto">
+            <h2 class="text-2xl font-bold mb-3 text-white flex items-center gap-2">
+                🧠 Advanced Concept Reminders
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <ul class="list-disc list-inside space-y-2 text-slate-300 ml-2">
+                    <li><strong class="text-primary">Static Recursion:</strong> A <code class="bg-slate-800 px-1 rounded">static</code> variable inside a recursive function does NOT reset. Its state persists across <em>every</em> layer of the call stack.</li>
+                    <li><strong class="text-primary">Pass-By-Value Illusion:</strong> If you pass an integer into a recursive function and it gets modified, the original variable in `main` remains completely untouched.</li>
+                </ul>
+                <ul class="list-disc list-inside space-y-2 text-slate-300 ml-2">
+                    <li><strong class="text-primary">Append Mode Absolute:</strong> Using <code class="bg-slate-800 px-1 rounded">rewind()</code> or <code class="bg-slate-800 px-1 rounded">fseek()</code> on a file opened in `"a"` mode does nothing to `fprintf/fputs`. The OS forces ALL writes to the EOF.</li>
+                    <li><strong class="text-primary">Pointer Arguments:</strong> Modifying a pointer <em>variable</em> (like <code class="bg-slate-800 px-1 rounded">p++</code>) inside a function doesn't affect the caller's pointer, but modifying what it points to (<code class="bg-slate-800 px-1 rounded">p[0] = 5</code>) absolutely does.</li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-4xl mx-auto space-y-16 pb-20">
+
+        <!-- ========================================== -->
+        <!-- CATEGORY 1: THE RECURSION LABYRINTH        -->
+        <!-- ========================================== -->
+        <section class="space-y-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-white category-header pl-4 py-2">I. The Recursion Labyrinth</h2>
+
+            <!-- Q1 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-red-500/20 text-red-300 px-3 py-1 rounded-full text-xs font-bold border border-red-500/30 uppercase tracking-wide">Mind-Bender</span>
+                    <h3 class="text-xl font-bold text-white">1. The Static Phantom (2024-25)</h3>
+                </div>
+                <p class="text-slate-300 mb-2">Track the state of `r` very carefully across the stack frames.</p>
+                <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int f(int n) { 
+    static int r = 0; 
+    if (n <= 0) return 1; 
+    
+    if (n > 3) { 
+        r = n; 
+        return f(n - 2) + 2; 
+    } 
+    return f(n - 1) + r; 
+}
+
+int main() {
+    printf("%d", f(5));
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-1')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-1" class="solution-block">
+                    <div class="bg-teal-900/30 border border-teal-500/30 rounded-xl p-5">
+                        <h4 class="text-teal-400 font-bold text-lg mb-2">Answer: 18</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> The variable `r` is static. It is shared across ALL recursive calls. Let's trace it:</p>
+                        <ul class="list-disc list-inside text-slate-300 space-y-1 mt-2 font-mono text-sm">
+                            <li><strong class="text-primary">f(5):</strong> `n>3` is true. `r` becomes 5. Returns `f(3) + 2`.</li>
+                            <li><strong class="text-primary">f(3):</strong> `n>3` is false. Returns `f(2) + r`. Since `r` is static, it is STILL 5! Returns `f(2) + 5`.</li>
+                            <li><strong class="text-primary">f(2):</strong> `n>3` is false. Returns `f(1) + 5`.</li>
+                            <li><strong class="text-primary">f(1):</strong> `n>3` is false. Returns `f(0) + 5`.</li>
+                            <li><strong class="text-primary">f(0):</strong> Base case hit. Returns `1`.</li>
+                        </ul>
+                        <p class="text-slate-300 mt-2"><strong>Unwinding the stack:</strong><br>
+                        f(1) = 1 + 5 = 6<br>
+                        f(2) = 6 + 5 = 11<br>
+                        f(3) = 11 + 5 = 16<br>
+                        f(5) = 16 + 2 = <strong>18</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full text-xs font-bold border border-orange-500/30 uppercase tracking-wide">Illusion</span>
+                    <h3 class="text-xl font-bold text-white">2. The Stack Unwind Mirage (2016-17)</h3>
+                </div>
+                <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void foo(int n, int sum) { 
+    int k = 0, j = 0; 
+    if (n == 0) return; 
+    
+    k = n % 10; 
+    j = n / 10; 
+    sum = sum + k; 
+    
+    foo(j, sum); 
+    printf("%d,", k); 
+}
+
+int main() {
+    int a = 2048, sum = 0;
+    foo(a, sum);
+    printf("%d", sum);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-2')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-2" class="solution-block">
+                    <div class="bg-teal-900/30 border border-teal-500/30 rounded-xl p-5">
+                        <h4 class="text-teal-400 font-bold text-lg mb-2">Answer: 2,0,4,8,0</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> Two separate traps here:</p>
+                        <ol class="list-decimal list-inside text-slate-300 space-y-2 mt-2">
+                            <li><strong>Post-Recursion Print:</strong> The <code class="text-pink-400">printf("%d,", k)</code> happens <em>after</em> the recursive call. This means it prints while the stack is unwinding (in reverse order). It extracts digits 8, 4, 0, 2, but prints them as 2, 0, 4, 8,.</li>
+                            <li><strong>Pass-By-Value:</strong> Look at `main()`. It passes `sum` to `foo()`. Even though `foo` accumulates the sum internally, it takes `sum` by <em>value</em>, not by pointer. The original `sum` in main is completely unaffected and remains `0`!</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- CATEGORY 2: POINTER ALIASING & MUTATION    -->
+        <!-- ========================================== -->
+        <section class="space-y-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-white category-header pl-4 py-2">II. Pointer Aliasing & Mutation</h2>
+
+            <!-- Q3 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-xs font-bold border border-purple-500/30 uppercase tracking-wide">Advanced</span>
+                    <h3 class="text-xl font-bold text-white">3. Multi-Dimensional Array Mutation (2022-23)</h3>
+                </div>
+                <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+void modify(int (*b)[4]) {
+    b[1][1] = 100;
+    b++;
+    b[0][1] = 10;
+}
+
+int main() {
+    int a[2][4] = {{1, 2, 3, 4}, {5, 6, 7, 8}};
+    modify(a);
+    printf("%d %d\n", a[0][1], a[1][1]);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-3')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-3" class="solution-block">
+                    <div class="bg-teal-900/30 border border-teal-500/30 rounded-xl p-5">
+                        <h4 class="text-teal-400 font-bold text-lg mb-2">Answer: 2 10</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> Understanding how pointer arithmetic shifts the "base" of an array view.</p>
+                        <ul class="list-disc list-inside text-slate-300 space-y-2 mt-2">
+                            <li>Initially, `b` points to `a[0]`.</li>
+                            <li><code class="text-pink-400">b[1][1] = 100;</code> alters `a[1][1]` (changes 6 to 100).</li>
+                            <li><code class="text-pink-400">b++</code> increments `b`. Since `b` is a pointer to an array of 4 ints, it jumps forward by one whole row. `b` now points to `a[1]`.</li>
+                            <li><code class="text-pink-400">b[0][1] = 10;</code> modifies the 0th row <em>relative to the new pointer</em>. Since `b` points to `a[1]`, this modifies `a[1][1]` (changes 100 to 10).</li>
+                            <li>`a[0][1]` was never touched. It remains 2.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-xs font-bold border border-blue-500/30 uppercase tracking-wide">Danger</span>
+                    <h3 class="text-xl font-bold text-white">4. The Out-of-Bounds Loop Skip (2022-23)</h3>
+                </div>
+                <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    char a[7] = "PILANI"; 
+    int m = 1; 
+    
+    for( ; a[m] != '\0'; m++) {
+        if((m % 2) != 0) {
+            printf("%c", a[++m]); 
+        }
+    }
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-4')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-4" class="solution-block">
+                    <div class="bg-teal-900/30 border border-teal-500/30 rounded-xl p-5">
+                        <h4 class="text-teal-400 font-bold text-lg mb-2">Answer: L N (Followed by Undefined Behavior / Crash)</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> The inline increment <code class="text-pink-400">++m</code> inside the loop body completely bypasses the termination check.</p>
+                        <ol class="list-decimal list-inside text-slate-300 space-y-1 mt-2 text-sm">
+                            <li>m=1. Odd. <code class="text-pink-400">++m</code> makes m=2. Prints `a[2]` ('L'). Loop updates: m=3.</li>
+                            <li>m=3. Odd. <code class="text-pink-400">++m</code> makes m=4. Prints `a[4]` ('N'). Loop updates: m=5.</li>
+                            <li>m=5. Odd. <code class="text-pink-400">++m</code> makes m=6. Prints `a[6]` ('\0' - prints nothing). Loop updates: m=7.</li>
+                            <li><strong>CRASH:</strong> The loop checks `a[7] != '\0'`. But `a` only has indices 0 through 6! Reading `a[7]` is a buffer overread (Undefined Behavior).</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- CATEGORY 3: FILE I/O & OS LEVEL MYTHS      -->
+        <!-- ========================================== -->
+        <section class="space-y-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-white category-header pl-4 py-2">III. File I/O & OS Limitations</h2>
+
+            <!-- Q5 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-warning/20 text-warning px-3 py-1 rounded-full text-xs font-bold border border-warning/30 uppercase tracking-wide">Expert</span>
+                    <h3 class="text-xl font-bold text-white">5. The Append Rewind Myth (2024-25)</h3>
+                </div>
+                <p class="text-slate-300 mb-4">What will be the final content of the file <code class="text-pink-400">data.txt</code>?</p>
+                <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    FILE *fp;
+    
+    fp = fopen("data.txt", "w");
+    fputs("Hello\n", fp);
+    rewind(fp);
+    fputs("Bye", fp);
+    fclose(fp);
+
+    fp = fopen("data.txt", "a");
+    fputs("Hello", fp);
+    rewind(fp);
+    fputs("Bye", fp);
+    fclose(fp);
+    
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-5')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-5" class="solution-block">
+                    <div class="bg-teal-900/30 border border-teal-500/30 rounded-xl p-5">
+                        <h4 class="text-teal-400 font-bold text-lg mb-2">Answer (File Content): Byelo\nHelloBye</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> Operating systems handle Write (`"w"`) and Append (`"a"`) modes fundamentally differently.</p>
+                        <ul class="list-disc list-inside text-slate-300 space-y-2 mt-2">
+                            <li><strong>Write Mode block:</strong> Writes `Hello\n`. <code class="text-pink-400">rewind(fp)</code> moves the cursor back to 0. Writing `Bye` overwrites the first 3 letters. The file now contains `Byelo\n`.</li>
+                            <li><strong>Append Mode block:</strong> Appends `Hello` at the end -> `Byelo\nHello`. It then calls <code class="text-pink-400">rewind(fp)</code>. <strong>HOWEVER</strong>, in Append mode, the C standard and OS POSIX standards dictate that <em>all</em> write operations are forced to the End-Of-File, regardless of where the file pointer is! So `Bye` is simply appended to the end.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="glass-card rounded-2xl p-6 md:p-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-accent/20 text-accent px-3 py-1 rounded-full text-xs font-bold border border-accent/30 uppercase tracking-wide">Macro Logic</span>
+                    <h3 class="text-xl font-bold text-white">6. Nested Macro Arithmetic (2024-25)</h3>
+                </div>
+                <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+#define fun(n) (n==0 ? 1 : (n * 2))
+#define nuf(n) (n==0 ? 1 : (n - 2))
+
+int main() {
+    int n = 5;
+    int result = fun(n * nuf(n) * fun(n));
+    printf("Result = %d", result);
+    return 0;
+}</code></pre>
+                <button onclick="toggleSolution('sol-6')" class="bg-white/10 hover:bg-white/20 text-white font-medium py-2 px-6 rounded-lg transition-colors border border-white/20">Reveal Explanation 👁️</button>
+                <div id="sol-6" class="solution-block">
+                    <div class="bg-teal-900/30 border border-teal-500/30 rounded-xl p-5">
+                        <h4 class="text-teal-400 font-bold text-lg mb-2">Answer: Result = 300</h4>
+                        <p class="text-slate-300"><strong>The Trick:</strong> Tracing the exact resolution of the nested arguments.</p>
+                        <ul class="list-disc list-inside text-slate-300 space-y-1 mt-2">
+                            <li>Evaluate <code class="text-pink-400">nuf(5)</code>: (5==0 ? 1 : (5-2)) -> <strong>3</strong></li>
+                            <li>Evaluate <code class="text-pink-400">fun(5)</code>: (5==0 ? 1 : (5*2)) -> <strong>10</strong></li>
+                            <li>The inner expression becomes: `5 * 3 * 10` = <strong>150</strong>.</li>
+                            <li>Evaluate the outer macro <code class="text-pink-400">fun(150)</code>: (150==0 ? 1 : (150*2)) -> <strong>300</strong>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Script for Toggles and PrismJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script>
+        function toggleSolution(id) {
+            const el = document.getElementById(id);
+            const btn = el.previousElementSibling;
+            
+            if (el.classList.contains('open')) {
+                el.classList.remove('open');
+                btn.innerHTML = 'Reveal Explanation 👁️';
+                btn.classList.remove('bg-white/20');
+                btn.classList.add('bg-white/10');
+            } else {
+                el.classList.add('open');
+                btn.innerHTML = 'Hide Explanation 🙈';
+                btn.classList.remove('bg-white/10');
+                btn.classList.add('bg-white/20');
+            }
+        }
+    </script>
+</body>
+</html>
